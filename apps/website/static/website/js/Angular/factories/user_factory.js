@@ -3,6 +3,12 @@ happy_cup.factory('user_factory',function($http){
 	var factory = {};
 	var currentUser = {};
 
+	factory.authorizeTester = function(pw, callback) {
+		$http.post('/', pw).then(function(response){
+			callback(response.data.status)
+		});
+	};
+
 
 	factory.getCurrentUser = function(callback){
 			currentUser = 'None'
@@ -14,7 +20,6 @@ happy_cup.factory('user_factory',function($http){
 
 		$http.post('customers/register/', userData).then(function(response){
 			currentUser = userData
-			console.log(response);
 			callback(currentUser)
 		});
 		

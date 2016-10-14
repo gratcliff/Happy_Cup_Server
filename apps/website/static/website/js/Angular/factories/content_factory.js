@@ -1,4 +1,4 @@
-happy_cup.factory('content_factory', function(){
+happy_cup.factory('content_factory', function($http){
 
 	var factory = {};
 	var content = {};
