@@ -263,7 +263,7 @@ fieldset legend {
 }
 
 .background-img-10 {
-  background: url("../resources/images/Banners/HC_bean_import.jpg") 50% 0px no-repeat;
+  background: url("/static/website/resources/images/Banners/HC_bean_import.jpg") 50% 0px no-repeat;
 }
 
 #cafe_banner h2 {

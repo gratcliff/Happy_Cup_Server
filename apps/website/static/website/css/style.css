@@ -461,55 +461,55 @@ tbody {
 }
 
 .pattern-1 {
-  background-image: url("../images/pattern-1.png");
+  /*background-image: url("../images/pattern-1.png");*/
   background-repeat: repeat;
   background-position: 0 0;
 }
 
 .pattern-2 {
-  background-image: url("../images/pattern-2.png");
+  /*background-image: url("../images/pattern-2.png");*/
   background-repeat: repeat;
   background-position: 0 0;
 }
 
 .pattern-3 {
-  background-image: url("../images/pattern-3.png");
+  /*background-image: url("../images/pattern-3.png");*/
   background-repeat: repeat;
   background-position: 0 0;
 }
 
 .pattern-4 {
-  background-image: url("../images/pattern-4.png");
+  /*background-image: url("../images/pattern-4.png");*/
   background-repeat: repeat;
   background-position: 0 0;
 }
 
 .pattern-5 {
-  background-image: url("../images/pattern-5.png");
+  /*background-image: url("../images/pattern-5.png");*/
   background-repeat: repeat;
   background-position: 0 0;
 }
 
 .pattern-6 {
-  background-image: url("../images/pattern-6.png");
+  /*background-image: url("../images/pattern-6.png");*/
   background-repeat: repeat;
   background-position: 0 0;
 }
 
 .pattern-7 {
-  background-image: url("../images/pattern-7.png");
+  /*background-image: url("../images/pattern-7.png");*/
   background-repeat: repeat;
   background-position: 0 0;
 }
 
 .pattern-8 {
-  background-image: url("../images/pattern-8.png");
+  /*background-image: url("../images/pattern-8.png");*/
   background-repeat: repeat;
   background-position: 0 0;
 }
 
 .pattern-9 {
-  background-image: url("../images/pattern-9.png");
+  /*background-image: url("../images/pattern-9.png");*/
   background-repeat: repeat;
   background-position: 0 0;
 }
@@ -547,7 +547,7 @@ tbody {
 
 /*Backgrounds
 ---------------------------------- */
-.background-img-1 {
+/*.background-img-1 {
   background: url("../images/background-img-1.jpg") 50% 0px no-repeat;
 }
 
@@ -588,11 +588,11 @@ tbody {
 }
 
 .background-img-11 {
-  background: url("../images/background-img-10.jpg") 50% 0px no-repeat;
+  background: url("../images/background-img-10.jpg") 50% 0px no-repeat;*/
 }
 
 .fullscreen-bg {
-  background: url("../images/fullscreen-bg.jpg") 50% 0px no-repeat;
+  /*background: url("../images/fullscreen-bg.jpg") 50% 0px no-repeat;*/
   position: fixed;
   top: 0;
   left: 0;
