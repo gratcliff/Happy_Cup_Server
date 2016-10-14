@@ -1,0 +1,72 @@
+<div ng-controller = 'locations_controller'>
+			<!-- main-container start -->
+			<br>
+			<div class="banner" >
+				<!-- google map start -->
+				<!-- ================ -->
+				<div id="map-canvas" ng-hide="mapLoaded && mapLoadingError">
+					<div class="text-center" ng-if="!mapLoaded && !mapLoadingError">
+						<i class="fa fa-spinner fa-spin fa-5x"></i>
+						<h3>Loading Google Maps</h3>
+					</div>
+				</div>
+				<div class="text-center" ng-if="mapLoaded && mapLoadingError">
+					<h3>Unable to load Google Maps</h3>
+				</div>
+				<!-- google maps end -->
+			</div>
+			<section class="main-container" ng-show="mapLoaded">
+
+				<div class="container">
+
+					<div class="row" id="row">
+
+						<!-- main start -->
+						<!-- ================ -->
+						<div class="main col-md-10 col-md-offset-1">
+							<!-- page-title start -->
+							<!-- ================ -->
+							<h1 class="page-title">Where to Buy</h1>
+							<div class="separator-2"></div>
+							<!-- page-title end -->
+							<p>Happy Cup can be purchased <a href="#/">online</a> and at our Coffee Shop: Portland City Hall – 1221 SW 4th, Portland, OR 97204, Sandy Blvd.</p>
+							<!-- <a class="btn btn-gray collapsed map-show btn-animated" data-toggle="collapse" href="\\#collapseMap" aria-expanded="false" aria-controls="collapseMap">Show Map <i class="fa fa-plus"></i></a> -->
+							<!-- <div class="block clearfix"> -->
+								<div ng-repeat = "(type, location) in locations | groupBy: 'type'">
+									<v-accordion allow-multiple control="accordionControl" class="vAccordion--default" id = "MyAccordion" >
+										<v-pane>
+											<v-pane-header class="v-pane-header">
+													<h4>[[type]]</h4>
+													<img ng-src="https://maps.google.com/intl/en_us/mapfiles/ms/micons/[[ storeGroup[type] ]]-dot.png">
+											</v-pane-header>
+
+											<v-pane-content>
+												<div class = "row" ng-repeat = "x in location">
+													
+													<p class="col-lg-10 col-md-10 col-xs-7 col-sm-9 scrollToMap" ng-click="updateMap(x)"><a role = "button" class="text-dark"><i class="fa fa-coffee pr-10"></i><b>[[x.name]]</b><br>[[x.address]]</a></p>
+													<p class="col-lg-2 col-md-2 col-xs-5 col-sm-3"><a href="tel:[[x.number]]" role = "button" class="text-dark"><i class="fa fa-phone pr-10"></i>[[x.number]]</a></p>
+												</div>
+											</v-pane-content>
+										</v-pane>
+									</v-accordion>
+								</div>
+							<!-- </div> -->
+							<a href="/static/website/resources/images/catering-form2016.pdf" title="">CATERING IS AVAILABLE! (Menu)</a>
+						</div>
+						<!-- main end -->
+
+						<!-- sidebar start -->
+						<!-- ================ -->
+<!-- 						<div class="col-md-1 col-md-4 col-lg-3 col-lg-offset-1">
+						</div> -->
+						<!-- sidebar end -->
+
+					</div>
+				</div>
+			</section>
+			<!-- main-container end -->
+		
+</div>
+<script type="text/javascript">
+	$.getScript(staticURL+'website/js/template.js');
+</script>

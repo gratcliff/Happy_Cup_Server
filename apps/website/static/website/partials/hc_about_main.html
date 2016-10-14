@@ -1,0 +1,92 @@
+<div ng-controller="about_controller">
+<!-- banner start -->
+<!-- ================ -->
+<!-- Full Screen Banner Images -->
+	<section class="full-width-section">
+			<div class="full-image-container light-gray-bg">
+				<img class="to-right-block" src="/static/website/resources/images/Banners/HC_bean_circulation.jpg" alt="Coffee Beans Circulating">
+				<div class="full-image-overlay text-center">
+					<h1 style = "color:white; font-size: 5em;">Roasted By People With Potential</h1>
+				</div>
+			</div>
+			<div class="full-text-container light-gray-bg border-bottom-clear">
+				<h2>Our Company</h2>
+				<div class="separator-2 visible-lg"></div>
+				<p style = 'font-size:125%;'>We offer employment, a competitive wage and a full life to adults with disabilities in our local community – our People with Potential. Our company helps create a better future for the disabled by donating a percentage of our profits to vocational and recreational programming to them. We strive to do all of this while continuing to deliver a responsible, great-tasting cup of coffee!</p>
+				<div class="separator-3 visible-lg"></div>
+			</div>
+	</section>
+
+	<section class="full-width-section">
+		<div class="full-image-container light-gray-bg visible-xs">
+			<img src="/static/website/resources/images/Banners/HC_packaging.jpg" alt="Employees packaging beans">
+			<div class="full-image-overlay text-center">
+				<h1 style = "color:white; font-size: 5em;">Creating a better future for the folks 6 blocks away, and 6,000 miles away.</h1>
+			</div>
+		</div>
+		<div class="full-text-container left light-gray-bg border-bottom-clear text-right">
+			<h2>Our Mission</h2>
+			<div class="separator-2 visible-lg"></div>
+			<p style = 'font-size:125%;'> Our mission goes beyond the borders of our community. We also promote a better future for farmers and for our planet by making every effort to source the best, ethicially traded coffee, using some of the best beans grown anywhere on the planet.
+			<br>
+			<br> Happy Cup Coffee is ethically farmed and traded from coffee growing regions throughout the world. It is batch roasted 18 lbs at a time, to ensure the highest quality flavor, and a well-balanced cup.</p>
+			<div class="separator-3 visible-lg"></div>
+		</div>
+		<div class="full-image-container light-gray-bg hidden-xs">
+			<img src="/static/website/resources/images/Banners/HC_packaging.jpg" alt="Employees packaging beans">
+			<div class="full-image-overlay text-center">
+				<h1 style = "color:white; font-size: 5em;">Creating a better future for the folks 6 blocks away, and 6,000 miles away.</h1>
+			</div>
+		</div>
+	</section>
+
+	<section class="full-width-section">
+		<div class="full-image-container light-gray-bg">
+			<img class="to-right-block" src="/static/website/resources/images/packaging_people.jpg" alt="Coffee Beans Circulating">
+			<div class="full-image-overlay text-center">
+				<h1 style = "color:white; font-size: 5em;">"Our Goal is to pair great coffee with a great cause."</h1>
+			</div>
+		</div>
+		<div class="full-text-container light-gray-bg border-bottom-clear">
+			<h2>Our Story</h2>
+			<div class="separator-2 visible-lg"></div>
+			<p style = 'font-size:125%;'>Individuals with disabilities want to thrive and be productive members of society. As a social enterprise, Happy Cup provides a pathway for individuals who have aged out of special education programming. Through sustainable employment opportunities, Happy Cup offers real life skill building with a level of cultural relevance that is sorely lacking in most employment programs for special needs adults. 
+			<br>
+			<br>
+			Our “People with Potential” have a hand in every aspect of our business. Bagging, labeling, weighing coffee, and developing the creative blend names are all part of a Happy Cupper’s daily duties.  Our goal is to pair great coffee with a great cause. With every pound of coffee you buy, you commit to reversing the inequities those with disabilities face in the world of employment. We are People with Potential.</p>
+			<div class="separator-3 visible-lg"></div>
+		</div>
+	</section>
+<!-- section end -->
+
+<!-- section start -->
+<!-- ================ -->
+	<section class="section pv-40 stats">
+		<div class="container">
+			<h2 class="text-center">Our Team </h2>
+			<div class="separator"></div>
+			<div class="image-box team-member style-3-b" ng-repeat="person in staff">
+				<div class="row">
+					<div class="col-sm-6 col-md-4 col-lg-3">
+						<img ng-src="[[person.img_url]]" alt="[[person.first_name]] [[person.last_name]]">
+					</div>
+					<div class="col-sm-6 col-md-8 col-lg-9">
+						<div class="body">
+							<h3 class="title margin-clear">[[person.first_name]] [[person.last_name]] <small>([[person.position]])</small></h3>
+							<br>
+							<p>[[person.description]]</p>
+						</div>
+					</div>
+				</div>
+			</div>				
+		</div>
+	</section>
+	<!-- section end -->
+
+	<div class="clearfix"></div>
+	<!-- section end -->
+</div>
+
+<script type="text/javascript">
+	$.getScript(staticURL+'website/js/template.js');
+</script>

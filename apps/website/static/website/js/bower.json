@@ -1,0 +1,25 @@
+{
+  "name": "Happy Cup",
+  "homepage": "https://github.com/gratcliff/Happy-Cup",
+  "authors": [
+    "Gabe Ratcliff",
+    "Nigel Koh",
+    "Alec Barlow"
+  ],
+  "description": "Happy Cup Coffee Company",
+  "main": "",
+  "license": "",
+  "private": true,
+  "dependencies": {
+    "angular": "^1.5.8",
+    "angular-route": "^1.5.8",
+    "v-accordion": "^1.6.0",
+    "angular-filter": "^0.5.11",
+    "angular-messages": "^1.5.8",
+    "ngSanitize": "^0.0.2",
+    "angular-sanitize": "^1.5.8"
+  },
+  "resolutions": {
+    "angular": "^1.5.8"
+  }
+}

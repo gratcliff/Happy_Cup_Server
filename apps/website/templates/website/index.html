@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if gt IE 9]> <html lang="en" class="ie"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang = 'en' ng-app = 'happy_cup' ng-controller='global_controller'>
+	<!--<![endif]-->
+	{% load staticfiles %}
+	<head>
+		 <!-- Meta Info -->
+		<meta charset="utf-8">
+    <title ng-bind="pageTitle"></title>
+    <meta name="description" content="Happy Cup Coffee Company - Portland, OR - Coffee Roasted by People with Potential">
+    <meta name="author" content="happycup.com">
+
+    <!-- Mobile Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'website/resources/images/HC_favicon_16x16.png' %}">
+
+    <!-- Web Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Raleway:700,400,300' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=PT+Serif' rel='stylesheet' type='text/css'>
+    
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'website/bootstrap/css/bootstrap.css' %}" rel="stylesheet">
+
+    <!-- Font Awesome CSS -->
+    <link href="{% static 'website/resources/fonts/font-awesome/css/font-awesome.css' %}" rel="stylesheet">
+
+    <!-- Fontello CSS -->
+    <link href="{% static 'website/resources/fonts/fontello/css/fontello.css' %}" rel="stylesheet">
+
+    <!-- Plugins -->
+    <link href="{% static 'website/plugins/magnific-popup/magnific-popup.css' %}" rel="stylesheet">
+    <link href="{% static 'website/plugins/rs-plugin/css/settings.css' %}" rel="stylesheet">
+    <link href="{% static 'website/css/animations.css' %}" rel="stylesheet">
+    <link href="{% static 'website/plugins/owl-carousel/owl.carousel.css' %}" rel="stylesheet">
+    <link href="{% static 'website/plugins/owl-carousel/owl.transitions.css' %}" rel="stylesheet">
+    <link href="{% static 'website/plugins/hover/hover-min.css' %}" rel="stylesheet"><link rel = 'stylesheet' href = "{% static 'website/plugins/slick/slick.css' %}" type = 'text/css'/>
+		<link href="{% static 'website/plugins/slick/slick-theme.css' %}" rel="stylesheet">
+
+    <!--Pageloader -->
+    <link href = "{% static 'website/css/custom_pageloader.css' %}" rel = 'stylesheet'>     
+    
+    <!-- The Project's core CSS file -->
+    <link href="{% static 'website/css/style.css' %}" rel="stylesheet" >
+    <!-- The Project's Typography CSS file, includes used fonts -->
+    <!-- Used font for body: Roboto -->
+    <!-- Used font for headings: Raleway -->
+    <link href="{% static 'website/css/typography-default.css' %}" rel="stylesheet" >
+    <!-- Color Scheme (In order to change the color scheme, replace the blue.css with the color scheme that you prefer)-->
+    <link href="{% static 'website/css/skins/brown.css' %}" rel="stylesheet">
+    
+    <!-- Base JS -->
+    <!-- Jquery and Bootstap core js files -->
+    <script type="text/javascript" src="{% static 'website/plugins/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'website/bootstrap/js/bootstrap.min.js' %}"></script>
+
+    <!-- Angular App -->
+		<script type = 'text/javascript' src="{% static 'website/js/bower_components/angular/angular.js' %}"></script>
+	  <script type = 'text/javascript' src="{% static 'website/js/bower_components/angular-route/angular-route.js' %}"></script>
+    <script type = 'text/javascript' src="{% static 'website/js/bower_components/angular-filter/dist/angular-filter.min.js' %}"></script>
+    <script type = 'text/javascript' src="{% static 'website/js/bower_components/angular-messages/angular-messages.min.js' %}"></script>
+    <script type = 'text/javascript' src="{% static 'website/js/bower_components/angular-sanitize/angular-sanitize.min.js' %}"></script>
+    <!-- v-accordion scripts-->
+    <link href="{% static 'website/js/bower_components/v-accordion/dist/v-accordion.css' %}" rel="stylesheet" />
+		<script src="{% static 'website/js/bower_components/angular-animate/angular-animate.min.js' %}"></script>
+		<script src="{% static 'website/js/bower_components/v-accordion/dist/v-accordion.min.js' %}"></script>
+		<!-- v-accordion scripts end -->
+
+		<!-- Custom css --> 
+     <link href="{% static 'website/css/custom.css' %}" rel="stylesheet">
+
+		<script type = "text/javascript">
+			var happy_cup = angular.module('happy_cup', ['ngRoute', 'vAccordion', 'ngAnimate', 'ngSanitize', 'angular.filter', 'ngMessages',]);
+			var staticURL = '{% static '' %}';
+		
+		</script>
+		
+		
+		
+		<script type = 'text/javascript' src = "{% static 'website/js/Angular/config/routes.js' %}"></script>
+
+		<!-- angular controllers -->
+		<script type = 'text/javascript' src = "{% static 'website/js/Angular/controllers/shop_controller.js' %}"></script>
+		<script type = "text/javascript" src = "{% static 'website/js/Angular/controllers/cart_controller.js' %}"></script>
+		<script type = 'text/javascript' src = '{% static "website/js/Angular/controllers/global_controller.js" %}'></script>
+		<script type = "text/javascript" src = '{% static "website/js/Angular/controllers/locations_controller.js" %}'></script>
+		<script type = "text/javascript" src = '{% static "website/js/Angular/controllers/checkout_controller.js" %}'></script>
+		<script type = "text/javascript" src = '{% static "website/js/Angular/controllers/payment_controller.js" %}'></script>
+		<script type = "text/javascript" src = '{% static "website/js/Angular/controllers/blog_controller.js" %}'></script>
+		<script type = "text/javascript" src = '{% static "website/js/Angular/controllers/blogpost_controller.js" %}'></script>
+		<script type = "text/javascript" src = '{% static "website/js/Angular/controllers/contact_controller.js" %}'></script>
+		<script type = "text/javascript" src = '{% static "website/js/Angular/controllers/about_controller.js" %}'></script>
+		<!-- end angular controllers -->
+
+		<!-- angular factories -->
+		<script type = "text/javascript" src = '{% static "website/js/Angular/factories/content_factory.js" %}'></script>
+		<script type = "text/javascript" src = '{% static "website/js/Angular/factories/user_factory.js" %}'></script>
+		<script type = "text/javascript" src = '{% static "website/js/Angular/factories/shop_factory.js" %}'></script>
+	</head>
+
+	<body style = 'background-color: #F0EBD2' class="no-trans page-loader-2" >
+		<!-- 
+		<div ng-if = 'pageLoading' class="la-fire">
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+		-->
+
+		<div ng-if="!mobileAndTabletCheck" ng-include="'{% static 'website/partials/hc_modals.html' %}'"></div>
+		<div ng-if="mobileAndTabletCheck" ng-include="'{% static 'website/partials/hc_modals_mobile.html'%}'"></div>
+
+		<!-- scrollToTop -->
+		<!-- ================ -->
+		<div class="scrollToTop circle"><i class="icon-up-open-big"></i></div>
+		
+		<!-- page wrapper start -->
+		<!-- ================ -->
+		<div ng-if="!pageLoading" class="page-wrapper" id="page-top" ng-hide="mobileAndTabletCheck && modalSelection">
+			<!-- header-container start -->
+			<div class="header-container">
+
+				<div class="header-top dark visible-xs">
+						<div class="container">
+							<div class="row">
+								<div class="col-xs-3 col-sm-6 col-md-9">
+									<!-- header-top-first start -->
+									<!-- ================ -->
+									
+									<!-- header-top-first end -->
+								</div>
+								<div class="col-xs-9 col-sm-6 col-md-3">
+
+									<!-- header-top-second start -->
+									<!-- ================ -->
+									<div id="header-top-second"  class="clearfix">
+										<!-- header top dropdowns start -->
+										<!-- ================ -->
+										<div class="header-top-dropdown text-right">
+											<div class="btn-group" ng-if="currentUser === 'None'">
+												<a data-toggle="modal" data-target="#user-reg-modal" class="btn btn-default btn-sm" ng-if="currentUser === 'None' && !mobileAndTabletCheck"><i class="fa fa-user pr-10"></i> Sign Up</a>
+												<a class="btn btn-default btn-sm" ng-click="mobileModal('#user-reg-modal')" ng-if="currentUser === 'None' && mobileAndTabletCheck"><i class="fa fa-user pr-10"></i> Sign Up</a>
+											</div>
+											<div class="btn-group">
+												<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#user-login-modal" ng-if="currentUser === 'None' && !mobileAndTabletCheck"><i class="fa fa-lock pr-10"></i> Login</button>
+												<button type="button" class="btn btn-default btn-sm" ng-click="mobileModal('#user-login-modal')" ng-if="currentUser === 'None' && mobileAndTabletCheck"><i class="fa fa-lock pr-10"></i> Login</button>
+												<button type="button" class="btn btn-default btn-sm" ng-if="currentUser !== 'None'" ng-click="logout()"><i class="fa fa-unlock pr-10"></i> Logout</button>
+											</div>
+										</div>
+										<!--  header top dropdowns end -->
+									</div>
+									<!-- header-top-second end -->
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- header-top end -->
+					
+					<!-- header start -->
+					<!-- classes:  -->
+					<!-- "fixed": enables fixed navigation mode (sticky menu) e.g. class="header fixed clearfix" -->
+					<!-- "dark": dark version of header e.g. class="header dark clearfix" -->
+					<!-- "full-width": mandatory class for the full-width menu layout -->
+					<!-- "centered": mandatory class for the centered logo layout -->
+					<!-- ================ --> 
+					<header class="header  fixed    clearfix" >
+						<div id='user-reg-alert' class="alert alert-success text-center animate-show" role="alert" ng-if="userRegAlert">
+	  					<h2>Welcome, [[currentUser.first_name]]! You have successfully logged in.</h2>
+						</div>
+						<div id='user-logout-alert' class="alert alert-info text-center animate-show" role="alert" ng-if="userLogoutAlert">
+	  					<h3>[[userLogoutAlert]]</h3>
+						</div>
+						
+						<div class="container" id="full-width-header">
+							<div class="row">
+								<div class="col-md-2 ">
+									<!-- header-left start -->
+									<!-- ================ -->
+									<div class="header-left clearfix">
+										
+										<!-- logo -->
+										<div id="logo" class="logo" ng-if="!pageLoading">
+											<a href="#/"><img id="logo_img" style = 'height: 125px;' ng-src="[[globalContent.headerLogo]]" alt="Happy Cup Coffee Company"></a>
+										</div>
+
+									</div>
+									<!-- header-left end -->
+
+								</div>
+								<div class="col-md-10">
+						
+									<!-- header-right start -->
+									<!-- ================ -->
+									<div class="header-right clearfix pull-right">
+										
+									<!-- main-navigation start -->
+									<!-- classes: -->
+									<!-- "onclick": Makes the dropdowns open on click, this the default bootstrap behavior e.g. class="main-navigation onclick" -->
+									<!-- "animated": Enables animations on dropdowns opening e.g. class="main-navigation animated" -->
+									<!-- "with-dropdown-buttons": Mandatory class that adds extra space, to the main navigation, for the search and cart dropdowns -->
+									<!-- ================ -->
+									<div class="main-navigation  animated with-dropdown-buttons">
+
+										<!-- navbar start -->
+										<!-- ================ -->
+										<nav class="navbar navbar-default" role="navigation">
+											<div class="container-fluid">
+
+												<!-- Toggle get grouped for better mobile display -->
+												<div class="navbar-header">
+													<button type="button" id="btn-toggle-navbar" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+														<span class="sr-only">Toggle navigation</span>
+														<span class="icon-bar"></span>
+														<span class="icon-bar"></span>
+														<span class="icon-bar"></span>
+													</button>
+													
+												</div>
+
+												<!-- Collect the nav links, forms, and other content for toggling -->
+												<div class="collapse navbar-collapse" id="navbar-collapse-1">
+													<!-- main-menu -->
+													<ul class="nav navbar-nav " ng-click="navbarCollapse()">
+														<li>
+															<a href="#/" ng-style="currentView === 'home' ? {'color' : '#914E38'} : null ">Home</a>
+														</li>
+														<li>
+															<a href="#/about" ng-style="currentView === 'about' ? {'color' : '#914E38'} : null">About Us</a>
+														</li>
+														<li>
+															<a href="#/blog" ng-style="currentView === 'blog' ? {'color' : '#914E38'} : null">News</a>
+														</li>
+														<li>
+															<a href="#/locations" ng-style="currentView === 'locations' ? {'color' : '#914E38'} : null">Where to Buy</a>
+														</li>
+														<li>
+															<a href="#/cafe" ng-style="currentView === 'cafe' ? {'color' : '#914E38'} : null">Cafe</a>
+														</li>
+														<li>
+															<a href="#/contact" ng-style="currentView === 'contact' ? {'color' : '#914E38'} : null">Contact</a>
+														</li>
+														<li class="visible-xs">
+															<a href="#/cart" ng-style="currentView === 'cart' ? {'color' : '#914E38'} : null">Cart - [[shoppingCart.totalItems]] items</a>
+														</li>
+
+														<li class="hidden-xs" ng-if="currentUser === 'None' && !mobileAndTabletCheck">
+															<a href="" data-toggle="modal" data-target="#user-reg-modal">Sign Up</a>
+														</li>
+														<li class="hidden-xs" ng-if="currentUser === 'None' && !mobileAndTabletCheck">
+															<a href="" data-toggle="modal" data-target="#user-login-modal">Login</a>
+														</li>
+														<li class="hidden-xs" ng-if="currentUser !== 'None' && !mobileAndTabletCheck">
+															<a href=""  ng-click="logout()">Logout</a>
+														</li>
+
+
+														<li class="hidden-xs" ng-if="currentUser === 'None' && mobileAndTabletCheck">
+															<a ng-click="mobileModal('#user-reg-modal')">Sign Up</a>
+														</li>
+														<li class="hidden-xs" ng-if="currentUser === 'None' && mobileAndTabletCheck">
+															<a ng-click="mobileModal('#user-login-modal')">Login</a>
+														</li>
+														<li class="hidden-xs" ng-if="currentUser !== 'None' && mobileAndTabletCheck">
+															<a  ng-click="logout()">Logout</a>
+														</li>
+													</ul>
+													<!-- main-menu end -->
+													
+													<!-- header dropdown buttons -->
+													<div class="header-dropdown-buttons hidden-xs ">
+														<div class="btn-group dropdown">
+
+															<!-- Cart Counter -->
+															<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" ng-style="currentView === 'cart' ? {'background-color' : '#69321f', 'color' : 'white'} : null"><i class="icon-basket-1"></i><span ng-show="currentView != 'cart' && shoppingCart.totalItems > 0" class="cart-count default-bg">[[shoppingCart.totalItems]]</span></button>
+															<ul class="dropdown-menu dropdown-menu-right dropdown-animation cart">
+																<li style="max-height: 65vh; overflow: auto;">
+																	<table class="table table-hover">
+																		<thead>
+																			<tr>
+																				<th class="quantity">QTY</th>
+																				<th class="product">Product</th>
+																				<th>Size</th>
+																				<th class="amount">Subtotal</th>
+																			</tr>
+																		</thead>
+																		<tbody>
+																			<!-- Coffee In Cart -->
+																			<tr ng-if="shoppingCart.coffee.length">
+																				<th colspan="4" class="text-center">Coffee</th>
+																			</tr>
+																			<tr ng-repeat="coffee in shoppingCart.coffee | orderBy: ['-qty','name']">
+																				<td class="quantity">[[coffee.qty]] x</td>
+																				<td class="product">[[coffee.name]]<span class="small">[[coffee.roast]]</span></td>
+																				<td>[[coffee.size.qty]]</td>
+																				<td class="amount">[[coffee.subtotal | currency: symbol : fractionSize ]]</td>
+																			</tr>
+
+																			<!-- Subscriptions in Cart -->
+																			<tr ng-if = 'shoppingCart.subscriptions.length'>
+																				<th colspan = "4" class="text-center">Subscriptions</th></tr>
+																			<tr ng-repeat = 'subscription in shoppingCart.subscriptions | orderBy: ["-qty", "name"]'>
+																				<td class ='quantity'>[[subscription.qty]] x</td>
+																				<td class = 'product' colspan="2">[[subscription.name]]<span class = 'small'>[[subscription.roast.name]]</span></td>
+																				
+																				<td class = 'amount'>[[subscription.subtotal | currency: symbol : fractionSize ]]</td>
+																			</tr>
+
+																			<!-- Merch in Cart -->
+																			<tr ng-if="shoppingCart.merch.length">
+																			<th colspan="4" class= 'text-center'>Merchandise</th>
+																			</tr>
+																			<tr ng-repeat="merch in shoppingCart.merch | orderBy: ['-qty','name']">
+																				<td class="quantity">[[merch.qty]] x</td>
+																				<td class="product">[[merch.name]]<span class ='small'>[[merch.roast.roast_name]]</span></td>
+																				<td></td>
+																				<td class="amount">[[merch.subtotal | currency: symbol : fractionSize ]]</td>
+																			</tr>
+																			<tr>
+																				<td class="total-quantity" colspan="3">Total [[shoppingCart.totalItems]] Item<span ng-hide="shoppingCart.totalItems === 1">s</span></td>
+																				<td class="total-amount">[[shoppingCart.totalPrice | currency : symbol : fractionSize ]]</td>
+																			</tr>
+																		</tbody>
+																	</table>
+																</li>
+																<li>
+																	<div class="panel-body text-right" ng-show="shoppingCart.totalItems">
+																		<a href="#/cart" class="btn btn-group btn-brown btn-sm" data-dismiss="dropdown">View Cart</a>
+																		<a href="#/cart/checkout" class="btn btn-group btn-brown btn-sm" data-dismiss="dropdown">Checkout</a>
+																	</div>
+																</li>
+															</ul>
+														</div>
+													</div>
+													<!-- header dropdown buttons end-->
+													
+												</div>
+
+											</div>
+										</nav>
+										<!-- navbar end -->
+
+									</div>
+									<!-- main-navigation end -->
+									</div>
+									<!-- header-right end -->
+						
+								</div>
+							</div>
+						</div>
+						
+					</header>
+					<!-- header end -->
+				</div>
+				<!-- header-container end -->
+			<div id="ngview-div" ng-view=''>
+
+			</div>
+
+
+
+
+
+			<footer id="footer" class="clearfix ">
+
+				<!-- .footer start -->
+				<!-- ================ -->
+				<div class="footer">
+					<div class="container">
+						<div class="footer-inner">
+							<div class="row">
+								<div class="text-center">
+									<div class="footer-content">
+										<div ng-if = '!contact_marker'>
+											<h2 class="title">Find Us</h2>
+											<div class="separator-2"></div>
+											<ul class="social-links circle animated-effect-1">
+												<li class="facebook"><a target="_blank" href="https://www.facebook.com/Happy-Cup-Coffee-Roasting-124088671039000/?fref=ts"><i class="fa fa-facebook"></i></a></li>
+												<li class="twitter"><a target="_blank" href="https://twitter.com/HappyCupCoffee/"><i class="fa fa-twitter"></i></a></li>
+												<li class="linkedin"><a target="_blank" href="https://www.linkedin.com/company/happy-cup-coffee"><i class="fa fa-linkedin"></i></a></li>
+											</ul>
+										</div>
+										<div ng-if ='contact_marker'>
+											<h2 class = 'title'>Media Kit</h2>
+											<div class="separator-2"></div>
+											<ul class = 'social-links circle animated effect-1'>
+												<li class = ''><a target = '_blank' href="./images/HC_Media-Kit.pdf"><i class = 'fa fa-camera'></i></a></li>
+											</uL>
+										</div>
+										<div class="separator-2"></div>
+										<ul class="list-icons">
+											<li><i class="fa fa-map-marker pr-10 text-default"></i>2850 NE Sandy Blvd. Portland, OR 97232</li>
+											<li><i class="fa fa-phone pr-10 text-default"></i>503-238-4604</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- .footer end -->
+
+				<!-- .subfooter start -->
+				<!-- ================ -->
+				<div class="subfooter">
+					<div class="container">
+						<div class="subfooter-inner">
+							<div class="row">
+								<div class="col-md-12">
+									<p class="text-center">Copyright © 2016 Happy Cup Coffee Company. All Rights Reserved</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- .subfooter end -->
+
+			</footer>
+			<!-- footer end -->
+			
+		</div>
+		<!-- page-wrapper end -->
+		
+		<!-- JavaScript files placed at the end of the document so the pages load faster -->
+		<!-- ================================================== -->
+		
+		<!-- Modernizr javascript -->
+		<script type="text/javascript" src="{% static 'website/plugins/modernizr.js' %}"></script>
+		<!-- jQuery Revolution Slider  -->
+		<script type="text/javascript" src="{% static 'website/plugins/rs-plugin/js/jquery.themepunch.tools.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'website/plugins/rs-plugin/js/jquery.themepunch.revolution.min.js' %}"></script>
+		<!-- Isotope javascript -->
+		<script type="text/javascript" src="{% static 'website/plugins/isotope/isotope.pkgd.min.js' %}"></script>
+		<!-- Magnific Popup javascript -->
+		<script type="text/javascript" src="{% static 'website/plugins/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
+		<!-- Appear javascript -->
+		<script type="text/javascript" src="{% static 'website/plugins/waypoints/jquery.waypoints.min.js' %}"></script>
+		<!-- Count To javascript -->
+		<script type="text/javascript" src="{% static 'website/plugins/jquery.countTo.js' %}"></script>
+		<!-- Parallax javascript -->
+		<script src="{% static 'website/plugins/jquery.parallax-1.1.3.js' %}"></script>
+		<!-- Pace javascript -->
+		<script type="text/javascript" src="{% static 'website/plugins/pace/pace.min.js' %}"></script>
+		<!-- Contact form -->
+		<script src="{% static 'website/plugins/jquery.validate.js' %}"></script>
+		<!-- Google Maps javascript -->
+		<script type="text/javascript" src = "https://maps.googleapis.com/maps/api/js?v=3.exp&amp;key="></script>
+		<!-- Background Video -->
+		<script src="{% static 'website/plugins/vide/jquery.vide.js' %}"></script>
+		<!-- Owl carousel javascript -->
+		<script type="text/javascript" src="{% static 'website/plugins/owl-carousel/owl.carousel.js' %}"></script>
+		<script type = 'text/javascript' src = "{% static 'website/plugins/slick/slick.min.js' %}"></script> 
+		<!-- SmoothScroll javascript -->
+		<script type="text/javascript" src="{% static 'website/plugins/jquery.browser.js' %}"></script>
+		<script type="text/javascript" src="{% static 'website/plugins/SmoothScroll.js' %}"></script>
+		<!-- Initialization of Plugins -->
+		<script type="text/javascript" src="{% static 'website/js/template.js' %}"></script>
+		<!-- Custom Scripts -->
+		<script type="text/javascript" src="{% static 'website/js/custom.js' %}"></script>
+
+	</body>
+</html>

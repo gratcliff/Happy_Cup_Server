@@ -1,0 +1,184 @@
+<div ng-controller = 'shop_controller'>
+	<div class="banner video-background-banner dark-translucent-bg hovered hidden-xs">
+		<div class="container">
+			<div class="row text-left">
+
+				<!-- main start -->
+				<!-- ================ -->
+						<div class="col-md-4">
+							<div class="feature-box-2 object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+								<span class="icon without-bg"><i class="fa fa-users"></i></span>
+								<div class="body">
+									<h3 class="title">People with Potential</h3>
+									<p class = 'white'>We offer employment, a competitive wage and a full life to adults with disabilities in our local community.</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="feature-box-2 object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="150">
+								<span class="icon without-bg"><i class="fa fa-heart"></i></span>
+								<div class="body">
+									<h3 class="title">Supporting Local Communities</h3>
+									<p class ='white'>We help create a better future for the disabled by donating a percentage of our profits to vocational and recreational programming in the local community.</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="feature-box-2 object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="200">
+								<span class="icon without-bg"><i class="fa fa-coffee"></i></span>
+								<div class="body">
+									<h3 class="title">Quality</h3>
+									<p class = 'white'>We strive to deliver a responsible, great-tasting cup of coffee.</p>
+								</div>
+							</div>
+						</div>
+				<!-- main end -->
+
+			</div>
+		</div>
+
+	</div>
+	<!-- banner end -->
+
+	<div id="page-start"></div>
+
+	<!-- section start SHOP START-->
+	<!-- ================ -->
+	<section class="section light-gray-bg clearfix">
+		<div class="container">
+
+			<!-- Nav tabs -->
+			<div class = 'row'>
+				<div class="col-md-12">
+					<ul class="nav nav-pills">
+						<li ng-class="{active: productDisplay.showCoffee === true}"><a ng-click = 'showCoffee()' title="Current Coffee"> <span class = 'tab_text'>Current Roasts</span></a></li>
+						<li ng-class="{active: productDisplay.showMerch === true}"><a ng-click = 'showMerch()' title="Merchandise"><span class = 'tab_text'>Merchandise</span></a></li>
+						<!-- <li ng-class="{active: productDisplay.showSubs === true}"><a ng-click = 'showSubs()' title="Subscriptions"> <span class = 'tab_text'>Subscriptions</span></a></li> -->
+					</ul>
+				</div>
+			</div>
+
+			<!-- Nav Tab End -->
+
+			<!-- Coffee Start -->
+			<div class="row" ng-if = 'productDisplay.showCoffee === true' id="coffee_products">
+
+				<h1 class = 'row row-centered'> Offered In All Sizes </h1>
+					<table id ="coffee-products-table" class = 'table table-hover brown-border'>
+						<thead>
+							<tr>
+								<td>Description</td>
+								<td>Name</td>
+								<td>Roast</td>
+								<td class="hidden-xs">Price</td>
+								<td class="hidden-xs">Size</td>
+								<td class="hidden-xs">Grind</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="coffee in products.coffee track by $index" ng-if="coffee.name !== 'Roaster\'s Choice'">
+								<td ng-if="!mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' data-toggle = 'modal' data-target ="#coffee_modal" ng-click="openCoffeeModal(coffee, $index)">+</a></td>
+								<td ng-if="mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' ng-click="openCoffeeModal(coffee, $index)">+</a></td>
+								<td>[[coffee.name]]</td>
+								<td>[[coffee.roast]]</td>
+								<td class="hidden-xs">[[order.qty.price | currency : symbol : fractionSize]]</td>
+								<td class="hidden-xs"><select class="form-control" ng-init="order.qty=coffee.pricing[0]" ng-model="order.qty" ng-options="value.qty for value in coffee.pricing track by value.qty"></select>
+									</td>
+								<td class="hidden-xs"><select class="form-control" ng-init="order.grind=coffee.grinds[0]" ng-options="grind.type for grind in coffee.grinds track by grind.id" ng-model="order.grind"></select>
+									</td>
+								<td class="hidden-xs">
+								<button class = 'margin-clear btn btn-brown' ng-click="addCoffeeToCart(coffee, order, $index)" ng-disabled="coffee.addingProduct"><span ng-if="!coffee.addingProduct">Add To Cart</span><span ng-if="coffee.addingProduct">Item Added</span> </button>
+								</td>
+							</tr>
+						</tbody>
+
+					</table>
+
+				<h1 class = 'row row-centered'> Offered Wholesale </h1>
+			</div>
+
+						
+			<!-- Coffee End -->
+
+
+			<!--Subscriptions Start -->
+			<div ng-if = 'productDisplay.showSubs === true'>
+
+				<h1 class = 'row row-centered'>Subscriptions</h1>
+				<br>
+				<div class = 'row row-centered'>
+					<p class = 'col-sm-10 col-centered'>Happy Cup sent directly to your door! Choose your favorite roast, or switch things up every month with the "Roaster's Choice" option and try one bag each of our current cofeee lineup! A great way to introduce a friend to Happy Cup and spread the Portland coffee scene.</p>
+				</div>
+
+				<table class = 'table table-hover brown-border'>
+					<thead>
+						<tr>
+							<td>Description</td>
+							<td class = 'visible-xs'>Name</td>
+							<td class="hidden-xs"></td>
+							<td class="hidden-xs">Roast</td>
+							<td class="hidden-xs">Grind</td>
+							<td>Price</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat = 'subscription in products.subscriptions track by subscription.id'>
+							<td ng-if="!mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' data-toggle = 'modal' data-target = '#subscription_modal' ng-click="openSubscriptionModal(subscription, $index)">+</a></td>
+							<td ng-if="mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' ng-click="openSubscriptionModal(subscription, $index)">+</a></td>
+							<td class="hidden-xs"><img class = 'table_image' ng-src ='[[subscription.img_src]]'></td>
+							<td class = 'visible-xs'>[[subscription.name]]</td>
+
+							<td class = 'hidden-xs'><select class = 'form-control' ng-init = 'order.roast=subscription.roasts[0]'
+							ng-model = 'order.roast' ng-options = 'roast.name for roast in subscription.roasts track by roast.id' ></select>
+							</td>
+
+							<td class="hidden-xs"><select class = 'form-control' ng-init="order.grind=order.roast.grinds[0]" ng-model = 'order.grind' ng-options = 'grind.type for grind in order.roast.grinds track by grind.id' ></select>
+							</td>
+
+							<td>[[subscription.pricing | currency : symbol : fractionSize]]</td>
+							<td class="hidden-xs">
+								<button class = 'margin-clear btn btn-brown' ng-click = 'addSubscriptionsToCart(subscription, order, $index)' ng-disabled = 'subscription.addingProduct'><span ng-if = '!subscription.addingProduct'>Add To Cart</span><span ng-if='subscription.addingProduct'>Item Added</span></button>
+							</td>
+						</tr>
+					</tbody>
+
+				</table>
+			</div>
+			<!-- Subscriptions End -->
+
+			<!-- Merch Start -->
+			<div ng-if = 'productDisplay.showMerch === true'>
+
+				<h1 class = 'row row-centered'>Happy Cup Gifts </h1>
+				<table class = 'table table-hover brown-border'>
+					<thead>
+						<tr>
+							<td>Description</td>
+							<td class="hidden-xs"></td>
+							<td>Product</td>
+							<td>Price</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat = 'merch in products.merchandise track by merch.id'>
+							<td ng-if="!mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' data-toggle = 'modal' data-target = '#merch_modal' ng-click = 'openMerchandiseModal(merch, $index)'>+</a></td>
+							<td ng-if="mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' ng-click = 'openMerchandiseModal(merch, $index)'>+</a></td>
+							<td class="hidden-xs"><img class = 'table_image' ng-src = '[[merch.img_src]]'></td>
+							<td>[[merch.name]]</td>
+							<td>[[merch.pricing | currency : symbol : fractionSize]]</td>
+						</tr>
+					</tbody>
+				</table>
+				
+			</div>
+			<!-- Merch End -->
+			
+		</div>
+		<!-- Container End -->
+
+	</section>
+	<!-- section end -->
+</div>
+<script type="text/javascript">
+	$.getScript(staticURL+'website/js/template.js');
+</script>

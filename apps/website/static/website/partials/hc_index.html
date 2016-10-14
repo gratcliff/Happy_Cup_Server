@@ -1,0 +1,1041 @@
+<div ng-controller = 'shop_controller'>
+	
+	<div class="banner video-background-banner pv-10 dark-translucent-bg hovered">
+		<div class="container-fluid">
+			<div class="row">
+
+				<!-- main start -->
+				<!-- ================ -->
+				<div style = 'margin-top:5%;' class="main col-md-12">
+					<div class="row-centered">
+						<div class="col-sm-2 col-centered vertical-center">
+							<div class="feature-box-2 object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="100">
+								<span class="icon without-bg"><i class="fa fa-users"></i></span>
+								<div class="body">
+									<h3 class="title">People with Potential</h3>
+									<p class = 'white'>We offer employment, a competitive wage and a full life to adults with disabilities in our local community.</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-2 col-centered vertical-center">
+							<div class="feature-box-2 object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="150">
+								<span class="icon without-bg"><i class="fa fa-heart"></i></span>
+								<div class="body">
+									<h3 class="title">Supporting Local Communities</h3>
+									<p class ='white'>We help create a better future for the disabled by donating a percentage of our profits to vocational and recreational programming in the local community.</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-2 col-centered vertical-center">
+							<div class="feature-box-2 object-non-visible" data-animation-effect="fadeInDownSmall" data-effect-delay="200">
+								<span class="icon without-bg"><i class="fa fa-coffee"></i></span>
+								<div class="body">
+									<h3 class="title">Quality</h3>
+									<p class = 'white'>We strive to deliver a responsible, great-tasting cup of coffee.</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- main end -->
+
+			</div>
+		</div>
+
+	</div>
+	<!-- banner end -->
+
+	<div id="page-start"></div>
+
+	<!-- section start SHOP START-->
+	<!-- ================ -->
+	<section class="section light-gray-bg clearfix">
+		<div class="container-fluid">
+
+			<!-- Nav tabs -->
+			<div class = 'row row-centered'>
+				<div class="col-md-12">
+					<ul class="nav nav-pills" role="tablist">
+						<li ng-class="{active: productDisplay.showCoffee === true}"><a ng-click = 'showCoffee()' title="Current Coffee"> <span class = 'tab_text'>Current Roasts</span></a></li>
+						<li ng-class="{active: productDisplay.showMerch === true}"><a ng-click = 'showMerch()' title="Merchandise"><span class = 'tab_text'>Merchandise</span></a></li>
+					</ul>
+				</div>
+			</div>
+			<!-- Nav Tab End -->
+
+			<!-- Coffee -->
+			<div ng-if = 'productDisplay.showCoffee === true' id="coffee_products">
+			
+				<!-- First Row -->
+				<div class = 'row row-centered'>
+					
+					<!-- The Buzz -->
+					<div class="col-sm-5 col-centered product_background top-buffer">
+						<div class="col-sm-3">
+							<img src="resources/images/products/the_buzz.png" alt="The Buzz Blend">
+						</div>
+						<div class = 'col-sm-7'>
+							<h3>Medium Roast</h3>
+							<p>12oz Price : $12.99</p>
+							<a class="margin-clear btn btn-group btn-default " data-toggle = 'modal' data-target = '#buzz_modal'>More Info</a>
+						</div>
+					</div>
+
+					<!-- Boom Boom -->
+					<div class="col-sm-offset-1 col-sm-5 col-centered product_background top-buffer">
+						<div class="col-sm-3">
+							<img src="resources/images/products/boomboom.png" alt="Boom Boom Coffee Bag">
+						</div>
+						<div class = 'col-sm-7'>
+							<h3>Dark Roast</h3>
+							<p>12oz Price : $12.99</p>
+							<a class="margin-clear btn btn-group btn-default" data-toggle = 'modal' data-target = '#boomboom_modal'>More Info</a>
+						</div>
+					</div>
+					
+				</div>
+				<!-- Row End -->
+				<!-- Second Row -->
+				<div class = 'row row-centered'>
+
+					<!-- Morning Madness -->
+					<div class="col-sm-5 col-centered product_background top-buffer">
+						<div class="col-sm-3">
+							<img src="resources/images/products/morning_madness.png" alt="Morning Madness Espresso Roast">
+						</div>
+						<div class = 'col-sm-7'>
+							<h3>Espresso Roast</h3>
+							<p>12oz Price : $12.99</p>
+							<a class="margin-clear btn btn-group btn-default " data-toggle = 'modal' data-target = '#morningMadness_modal'>More Info</a>
+						</div>
+					</div>
+
+					<!-- Decaffeination -->
+					<div class="col-sm-offset-1 col-sm-5 col-centered product_background top-buffer">
+						<div class="col-sm-3">
+							<img src="resources/images/products/decaf.png" alt="Decaffeination Blend">
+						</div>
+						<div class = 'col-sm-7'>
+							<h3>Decaf</h3>
+							<p>12oz Price : $12.99</p>
+							<a class="margin-clear btn btn-group btn-default" data-toggle = 'modal' data-target = '#decaffeination_modal'>More Info</a>
+						</div>
+					</div>
+
+				</div>
+				<!-- Row End -->
+				<!-- Third Row -->
+				<div class = 'row row-centered'>
+
+					<!-- Happy Heart -->
+					<div class="col-sm-5 col-centered product_background top-buffer">
+						<div class="col-sm-3">
+							<img src="resources/images/products/happy_heart.png" alt="Happy Heart">
+						</div>
+						<div class = 'col-sm-7'>
+							<h3>Single Origin - Ethiopia</h3>
+							<p>12oz Price : $12.99</p>
+							<a class="margin-clear btn btn-group btn-default" data-toggle = 'modal' data-target = '#happy_heart_modal'>More Info</a>
+						</div>
+					</div>
+
+					<!-- Pondok Baru -->
+					<div class="col-sm-offset-1 col-sm-5 col-centered product_background top-buffer">
+						<div class="col-sm-3">
+							<img src="resources/images/products/pondok_baru.png" alt="Pondok Baru">
+						</div>
+						<div class = 'col-sm-7'>
+							<h3>Single Origin - Sumatra</h3>
+							<p>12oz Price : $12.99</p>
+							<a class="margin-clear btn btn-group btn-default" data-toggle = 'modal' data-target = '#pondok_baru_modal'>More Info</a>
+						</div>
+					</div>
+				<!-- Row End -->
+				</div>
+			</div>
+			<!-- Coffee End -->
+
+			<!-- Merch Start -->
+			<div ng-if = 'productDisplay.showMerch === true'>
+
+				<!-- First Row -->
+				<div class = 'row row-centered'>
+
+					<!-- Gift Mug -->
+					<div class="col-sm-5 col-centered product_background top-buffer">
+						<div class="col-sm-3">
+							<img src="resources/images/products/gift_mug.png" alt="Gift Mug">
+						</div>
+						<div class = 'col-sm-7'>
+							<h3>Mug Gift Box</h3>
+							<p>$16.75</p>
+							<a class="margin-clear btn btn-group btn-default" data-toggle = 'modal' data-target = '#gift_mug_modal'>More Info</a>
+						</div>
+					</div>
+
+					<!-- Gift Box -->
+					<div class="col-sm-offset-1 col-sm-5 col-centered product_background top-buffer">
+						<div class="col-sm-3">
+							<img src="resources/images/products/gift_box.png" alt="Gift Box">
+						</div>
+						<div class = 'col-sm-7'>
+							<h3>Gift Box</h3>
+							<p>$27.00</p>
+							<a class="margin-clear btn btn-group btn-default" data-toggle = 'modal' data-target = '#gift_box_modal'>More Info</a>
+						</div>
+					</div>
+
+				</div>
+				<!-- Row End -->
+				<!-- Second Row -->
+				<div class = 'row row-centered'>
+
+					<!-- 3 Coffee Gift -->
+					<div class="col-sm-5 col-centered product_background top-buffer">
+						<div class="col-sm-3">
+							<img src="resources/images/products/3_coffee_gift_box.png" alt="Three Coffee Box">
+						</div>
+						<div class = 'col-sm-7'>
+							<h3>Three Variety Gift Box</h3>
+							<p>$36.00</p>
+							<a class="margin-clear btn btn-group btn-default" data-toggle = 'modal' data-target = '#three_coffee_modal'>More Info</a>
+						</div>
+					</div>
+
+					<!-- Mug-->
+					<div class="col-sm-offset-1 col-sm-5 col-centered product_background top-buffer">
+						<div class="col-sm-3">
+							<img src="resources/images/products/mug.png" alt="Mug">
+						</div>
+						<div class = 'col-sm-7'>
+							<h3>Happy Cup Mug</h3>
+							<p>$5.50</p>
+							<a class="margin-clear btn btn-group btn-default" data-toggle = 'modal' data-target = '#mug_modal'>More Info</a>
+						</div>
+					</div>
+
+				</div>
+				<!-- Row End -->
+				<!-- Third Row -->
+				<div class = 'row row-centered'>
+
+					<!-- Happy Tee -->
+					<div class="col-sm-5 col-centered product_background top-buffer">
+						<div class="col-sm-3">
+							<img src="resources/images/products/happy_t.png" alt="T Shirt">
+						</div>
+						<div class = 'col-sm-7'>
+							<h3>Happy Tee</h3>
+							<p>$15.00</p>
+							<a class="margin-clear btn btn-group btn-default" data-toggle = 'modal' data-target = '#shirt_modal'>More Info</a>
+						</div>
+					</div>
+
+					<!-- Six Month Sub -->
+					<div class="col-sm-offset-1 col-sm-5 col-centered product_background top-buffer">
+						<div class="col-sm-3">
+							<img src="resources/images/products/6mo_sub.png" alt="6 month sub">
+						</div>
+						<div class = 'col-sm-7'>
+							<h3>Six Month Subscription</h3>
+							<p>$105.00</p>
+							<a class="margin-clear btn btn-group btn-default" data-toggle = 'modal' data-target = '#6_sub_modal'>More Info</a>
+						</div>
+					</div>
+
+				</div>
+				<!-- Row End -->
+				<!-- Fourth Row -->
+				<div class = 'row row-centered'>
+
+					<!-- Twelve Month Sub -->
+					<div class="col-sm-5 col-centered product_background top-buffer">
+						<div class="col-sm-3">
+							<img src="resources/images/products/12mo_sub.png" alt="12 month sub">
+						</div>
+						<div class = 'col-sm-7'>
+							<h3>Twelve Month Subscription</h3>
+							<p >$200.00</p>
+							<a class="margin-clear btn btn-group btn-default" data-toggle = 'modal' data-target = '#12_sub_modal'>More Info</a>
+						</div>
+					</div>
+
+				</div>
+				<!-- Row End -->
+
+			</div>
+			<!-- Merch End -->
+
+			<!--Coffee Modals -->
+
+			<!-- The Buzz Modal -->
+			<div class="modal fade" id="buzz_modal" tabindex="-1" role="dialog" aria-labelledby="buzz_modal_label" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						</div>
+						<div class="modal-body">
+							<div class = 'container-fluid'>
+								<div class = 'row'>
+									<div class="col-md-5 text-center">
+										<img src="resources/images/products/the_buzz.png" alt="The Buzz Blend">
+									</div>
+									<div class = 'col-md-7'>
+										<h3>The Buzz Medium Roast</h3>
+										<p>A sweet coffee with notes of ripe blueberries and rich dark chocolate. Pleasantly complex with a smooth silky body and a clean brisk finish.</p>
+										<form class = 'form-horizontal' role = 'form'>
+											<div class = 'form-group has-feedback'>
+												<label for = 'grind' class = 'col-sm-2 control-label'>Grind:</label>
+												<div class = 'col-sm-8'>  
+													<select class="form-control">
+														<option value = 'Whole Bean'>Whole Bean </option>
+														<option value = 'Espresso'>Espresso </option>
+														<option value = 'Cone Drip Filter'>Cone Drip Filter </option>
+														<option value = 'Flat Bottom Drip Filter'>Flat Bottom Drip Filter </option>
+														<option value = 'Chemex'>Chemex </option>
+														<option value = 'French Press'>French Press </option>
+													</select>
+												</div>
+											</div>
+											<div class = 'form-group has-feedback'>
+												<label for ='size' class = 'col-sm-2 control-label'> Size:</label>
+												<div class = 'col-sm-4'> 
+												 	<select class="form-control">
+														<option value = '12oz'> 12 oz </option>
+														<option value = '2lbs'> 2 lbs </option>
+														<option value = '5lbs'> 5 lbs </option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group text-center">
+													<button type="submit" class="btn btn-group btn-default btn-animated">Add to cart<i class="fa fa-shopping-cart"></i></button>
+													<button type="button" class="btn btn-group btn-dark" data-dismiss="modal">Cancel</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Boom Boom Modal -->
+			<div class="modal fade" id="boomboom_modal" tabindex="-1" role="dialog" aria-labelledby="boomboom_modal_label" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						</div>
+						<div class="modal-body">
+							<div class = 'container-fluid'>
+								<div class = 'row'>
+									<div class="col-md-5 text-center">
+										<img src="resources/images/products/boomboom.png" alt="Boom Boom Coffee Bag">
+									</div>
+									<div class = 'col-md-7'>
+										<h3>Boom! Boom! Dark Roast</h3>
+										<p>The rich, nutty, smoky, bold flavors of our Dark Roast are a classic blend for the dark coffee enthusiast.</p>
+										<form class = 'form-horizontal' role = 'form'>
+											<div class = 'form-group has-feedback'>
+												<label for = 'grind' class = 'col-sm-2 control-label'>Grind:</label>
+												<div class = 'col-sm-8'>  
+													<select class="form-control">
+														<option value = 'Whole Bean'>Whole Bean </option>
+														<option value = 'Espresso'>Espresso </option>
+														<option value = 'Cone Drip Filter'>Cone Drip Filter </option>
+														<option value = 'Flat Bottom Drip Filter'>Flat Bottom Drip Filter </option>
+														<option value = 'Chemex'>Chemex </option>
+														<option value = 'French Press'>French Press </option>
+													</select>
+												</div>
+											</div>
+											<div class = 'form-group has-feedback'>
+												<label for ='size' class = 'col-sm-2 control-label'> Size:</label>
+												<div class = 'col-sm-4'> 
+												 	<select class="form-control">
+														<option value = '12oz'> 12 oz </option>
+														<option value = '2lbs'> 2 lbs </option>
+														<option value = '5lbs'> 5 lbs </option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group text-center">
+													<button type="submit" class="btn btn-group btn-default btn-animated">Add to cart<i class="fa fa-shopping-cart"></i></button>
+													<button type="button" class="btn btn-group btn-dark" data-dismiss="modal">Cancel</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Morning Madness Modal -->
+			<div class="modal fade" id="morningMadness_modal" tabindex="-1" role="dialog" aria-labelledby="morningMadness_modal_label" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						</div>
+						<div class="modal-body">
+							<div class = 'container-fluid'>
+								<div class = 'row'>
+									<div class="col-md-5 text-center">
+										<img src="resources/images/products/morning_madness.png" alt="Morning Madness Espresso Roast">
+									</div>
+									<div class = 'col-md-7'>
+										<h3>Morning Madness Espresso Roast</h3>
+										<p>A blend of Organic, Rainforest Alliance and Direct Trade coffees that combine to produce a smooth and luxurious coffee. Rich chocolate and a hint of roasted nuts lead by a touch of clean citrus.</p>
+										<form class = 'form-horizontal' role = 'form'>
+											<div class = 'form-group has-feedback'>
+												<label for = 'grind' class = 'col-sm-2 control-label'>Grind:</label>
+												<div class = 'col-sm-8'>  
+													<select class="form-control">
+														<option value = 'Whole Bean'>Whole Bean </option>
+														<option value = 'Espresso'>Espresso </option>
+														<option value = 'Cone Drip Filter'>Cone Drip Filter </option>
+														<option value = 'Flat Bottom Drip Filter'>Flat Bottom Drip Filter </option>
+														<option value = 'Chemex'>Chemex </option>
+														<option value = 'French Press'>French Press </option>
+													</select>
+												</div>
+											</div>
+											<div class = 'form-group has-feedback'>
+												<label for ='size' class = 'col-sm-2 control-label'> Size:</label>
+												<div class = 'col-sm-4'> 
+												 	<select class="form-control">
+														<option value = '12oz'> 12 oz </option>
+														<option value = '2lbs'> 2 lbs </option>
+														<option value = '5lbs'> 5 lbs </option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group text-center">
+													<button type="submit" class="btn btn-group btn-default btn-animated">Add to cart<i class="fa fa-shopping-cart"></i></button>
+													<button type="button" class="btn btn-group btn-dark" data-dismiss="modal">Cancel</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Decaffeination Modal-->
+			<div class="modal fade" id="decaffeination_modal" tabindex="-1" role="dialog" aria-labelledby="decaffeination_modal_label" aria-hidden="true">
+				<div class="modal-dialog modal-lg">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+						</div>
+						<div class="modal-body">
+							<div class = 'container-fluid'>
+								<div class = 'row'>
+									<div class="col-md-5 text-center">
+										<img src="resources/images/products/decaf.png" alt="Decaffeination Blend">
+									</div>
+									<div class = 'col-md-7'>
+										<h3>Decaffeination</h3>
+										<p>Crisp and sweet with hints of bakers chocolate and roasted nuts. A well balanced taste, not your typical decaf.</p>
+										<form class = 'form-horizontal' role = 'form'>
+											<div class = 'form-group has-feedback'>
+												<label for = 'grind' class = 'col-sm-2 control-label'>Grind:</label>
+												<div class = 'col-sm-8'>  
+													<select class="form-control">
+														<option value = 'Whole Bean'>Whole Bean </option>
+														<option value = 'Espresso'>Espresso </option>
+														<option value = 'Cone Drip Filter'>Cone Drip Filter </option>
+														<option value = 'Flat Bottom Drip Filter'>Flat Bottom Drip Filter </option>
+														<option value = 'Chemex'>Chemex </option>
+														<option value = 'French Press'>French Press </option>
+													</select>
+												</div>
+											</div>
+											<div class = 'form-group has-feedback'>
+												<label for ='size' class = 'col-sm-2 control-label'> Size:</label>
+												<div class = 'col-sm-4'> 
+												 	<select class="form-control">
+														<option value = '12oz'> 12 oz </option>
+														<option value = '2lbs'> 2 lbs </option>
+														<option value = '5lbs'> 5 lbs </option>
+													</select>
+												</div>
+											</div>
+											<div class="form-group text-center">
+													<button type="submit" class="btn btn-group btn-default btn-animated">Add to cart<i class="fa fa-shopping-cart"></i></button>
+													<button type="button" class="btn btn-group btn-dark" data-dismiss="modal">Cancel</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Happy Heart Modal -->
+				<div class="modal fade" id="happy_heart_modal" tabindex="-1" role="dialog" aria-labelledby="happy_heart_modal_label" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							</div>
+							<div class="modal-body">
+								<div class = 'container-fluid'>
+									<div class = 'row'>
+										<div class="col-md-5 text-center">
+											<img src="resources/images/products/happy_heart.jpg" alt="Happy Heart">
+										</div>
+										<div class = 'col-md-7'>
+											<h3>Happy Heart</h3>
+											<p>Kossa Geshe is a vibrant Ethiopian natural from a single farm in the Limmu Kossa District near the Kebena Forest. A fruit-forward, creamy, full-bodied coffee. Honey-sweetness and juicy berries give way to a floral, tea-like finish.</p>
+											<form class = 'form-horizontal' role = 'form'>
+												<div class = 'form-group has-feedback'>
+													<label for = 'grind' class = 'col-sm-2 control-label'>Grind:</label>
+													<div class = 'col-sm-8'>  
+														<select class="form-control">
+															<option value = 'Whole Bean'>Whole Bean </option>
+															<option value = 'Espresso'>Espresso </option>
+															<option value = 'Cone Drip Filter'>Cone Drip Filter </option>
+															<option value = 'Flat Bottom Drip Filter'>Flat Bottom Drip Filter </option>
+															<option value = 'Chemex'>Chemex </option>
+															<option value = 'French Press'>French Press </option>
+														</select>
+													</div>
+												</div>
+												<div class = 'form-group has-feedback'>
+													<label for ='size' class = 'col-sm-2 control-label'> Size:</label>
+													<div class = 'col-sm-4'> 
+													 	<select class="form-control">
+															<option value = '12oz'> 12 oz </option>
+															<option value = '2lbs'> 2 lbs </option>
+															<option value = '5lbs'> 5 lbs </option>
+														</select>
+													</div>
+												</div>
+												<div class="form-group text-center">
+														<button type="submit" class="btn btn-group btn-default btn-animated">Add to cart<i class="fa fa-shopping-cart"></i></button>
+														<button type="button" class="btn btn-group btn-dark" data-dismiss="modal">Cancel</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Pondok Baru Modal-->
+				<div class="modal fade" id="pondok_baru_modal" tabindex="-1" role="dialog" aria-labelledby="pondok_baru_modal_label" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							</div>
+							<div class="modal-body">
+								<div class = 'container-fluid'>
+									<div class = 'row'>
+										<div class="col-md-5 text-center">
+											<img src="resources/images/products/pondok_baru.png" alt="Pondok Baru">
+										</div>
+										<div class = 'col-md-7'>
+											<h3>Pondok Baru</h3>
+											<p>Produced in the Aceh district of northern Sumatra by a group of 80 farming families. Full bodied with a syrupy mouthfeel. Strong, rich, and earthy, with a hint of bakers chocolate.</p>
+											<form class = 'form-horizontal' role = 'form'>
+												<div class = 'form-group has-feedback'>
+													<label for = 'grind' class = 'col-sm-2 control-label'>Grind:</label>
+													<div class = 'col-sm-8'>  
+														<select class="form-control">
+															<option value = 'Whole Bean'>Whole Bean </option>
+															<option value = 'Espresso'>Espresso </option>
+															<option value = 'Cone Drip Filter'>Cone Drip Filter </option>
+															<option value = 'Flat Bottom Drip Filter'>Flat Bottom Drip Filter </option>
+															<option value = 'Chemex'>Chemex </option>
+															<option value = 'French Press'>French Press </option>
+														</select>
+													</div>
+												</div>
+												<div class = 'form-group has-feedback'>
+													<label for ='size' class = 'col-sm-2 control-label'> Size:</label>
+													<div class = 'col-sm-4'> 
+													 	<select class="form-control">
+															<option value = '12oz'> 12 oz </option>
+															<option value = '2lbs'> 2 lbs </option>
+															<option value = '5lbs'> 5 lbs </option>
+														</select>
+													</div>
+												</div>
+												<div class="form-group text-center">
+														<button type="submit" class="btn btn-group btn-default btn-animated">Add to cart<i class="fa fa-shopping-cart"></i></button>
+														<button type="button" class="btn btn-group btn-dark" data-dismiss="modal">Cancel</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+			<!-- End Coffee Modals -->
+			<!-- Merch Modals -->
+
+				<!-- Gift Mug Modal-->
+				<div class="modal fade" id="gift_mug_modal" tabindex="-1" role="dialog" aria-labelledby="gift_mug_modal_label" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							</div>
+							<div class="modal-body">
+								<div class = 'container-fluid'>
+									<div class = 'row'>
+										<div class="col-md-5 text-center">
+											<img src="resources/images/products/gift_mug.png" alt="Gift Mug">
+										</div>
+										<div class = 'col-md-7'>
+											<h3>Mug Gift Box</h3>
+											<p>The perfect cup! The gift mug set includes one 18 oz. mug, a 12 oz. bag of any coffee variety, and a handwritten thank you card from our Happy Cup crew. A quick simple way to get your artisan coffee fix!</p>
+											<form class = 'form-horizontal' role = 'form'>
+												<div class = 'form-group has-feedback'>
+													<label for ='size' class = 'col-sm-3 control-label'> Coffee:</label>
+													<div class = 'col-sm-8'> 
+													 	<select class="form-control">
+													 		<optgroup label="Roasts">
+																<option value = 'gift_buzz'> The Buzz Medium Roast</option>
+																<option value = 'gift_boomboom'> Boom! Boom! Dark Roast</option>
+																<option value = 'gift_morning_madness'> Morning Madness Espresso Roast</option>
+																<option value = 'gift_decaf'> Decaffeination Decaf</option>
+															</optgroup>
+															<optgroup label="Single Origin">
+																<option value = 'gift_happy_heart'> Happy Heart - Ethiopia</option>
+																<option value = 'gift_pondok'> Pondok Baru - Sumatra</option>
+															</optgroup>
+														</select>
+													</div>
+												</div>
+												<div class = 'form-group has-feedback'>
+													<label for = 'grind' class = 'col-sm-3 control-label'>Grind:</label>
+													<div class = 'col-sm-8'>  
+														<select class="form-control">
+															<option value = 'Whole Bean'>Whole Bean </option>
+															<option value = 'Espresso'>Espresso </option>
+															<option value = 'Cone Drip Filter'>Cone Drip Filter </option>
+															<option value = 'Flat Bottom Drip Filter'>Flat Bottom Drip Filter </option>
+															<option value = 'Chemex'>Chemex </option>
+															<option value = 'French Press'>French Press </option>
+														</select>
+													</div>
+												</div>
+												<div class="form-group text-center">
+														<button type="submit" class="btn btn-group btn-default btn-animated">Add to cart<i class="fa fa-shopping-cart"></i></button>
+														<button type="button" class="btn btn-group btn-dark" data-dismiss="modal">Cancel</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Gift Box Modal-->
+				<div class="modal fade" id="gift_box_modal" tabindex="-1" role="dialog" aria-labelledby="gift_box_modal_label" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							</div>
+							<div class="modal-body">
+								<div class = 'container-fluid'>
+									<div class = 'row'>
+										<div class="col-md-5 text-center">
+											<img src="resources/images/products/gift_box.png" alt="Gift Box">
+										</div>
+										<div class = 'col-md-7'>
+											<h3>Gift Box</h3>
+											<p>A great gift for the coffee lover. Each gift box includes a mug, T-Shirt, and a bag of your favorite coffee. Each box is packaged and prepared by our all star people with potential, so with every purchase, you are helping to keep our amazing staff in a fulfilling job!</p>
+											<form class = 'form-horizontal' role = 'form'>
+												<div class = 'form-group has-feedback'>
+													<label for ='size' class = 'col-sm-3 control-label'> Coffee:</label>
+													<div class = 'col-sm-8'> 
+													 	<select class="form-control">
+													 		<optgroup label="Roasts">
+																<option value = 'gift_buzz'> The Buzz Medium Roast</option>
+																<option value = 'gift_boomboom'> Boom! Boom! Dark Roast</option>
+																<option value = 'gift_morning_madness'> Morning Madness Espresso Roast</option>
+																<option value = 'gift_decaf'> Decaffeination Decaf</option>
+															</optgroup>
+															<optgroup label="Single Origin">
+																<option value = 'gift_happy_heart'> Happy Heart - Ethiopia</option>
+																<option value = 'gift_pondok'> Pondok Baru - Sumatra</option>
+															</optgroup>
+														</select>
+													</div>
+												</div>
+												<div class = 'form-group has-feedback'>
+													<label for = 'grind' class = 'col-sm-3 control-label'>Grind:</label>
+													<div class = 'col-sm-8'>  
+														<select class="form-control">
+															<option value = 'Whole Bean'>Whole Bean </option>
+															<option value = 'Espresso'>Espresso </option>
+															<option value = 'Cone Drip Filter'>Cone Drip Filter </option>
+															<option value = 'Flat Bottom Drip Filter'>Flat Bottom Drip Filter </option>
+															<option value = 'Chemex'>Chemex </option>
+															<option value = 'French Press'>French Press </option>
+														</select>
+													</div>
+												</div>
+												<div class = 'form-group has-feedback'>
+													<label for = 'size' class = 'col-sm-3 control-label'>Shirt Size:</label>
+													<div class = 'col-sm-8'>  
+														<select class="form-control">
+															<option value = 'Small'>Small</option>
+															<option value = 'Medium'>Medium</option>
+															<option value = 'Large'>Large</option>
+															<option value = 'Extra-Large'>Extra-Large</option>
+															<option value = 'XX-Large'>XX-Large</option>
+														</select>
+													</div>
+												</div>
+												<div class="form-group text-center">
+														<button type="submit" class="btn btn-group btn-default btn-animated">Add to cart<i class="fa fa-shopping-cart"></i></button>
+														<button type="button" class="btn btn-group btn-dark" data-dismiss="modal">Cancel</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- 3 Coffee Gift Modal-->
+				<div class="modal fade" id="three_coffee_modal" tabindex="-1" role="dialog" aria-labelledby="three_coffee_modal_label" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							</div>
+							<div class="modal-body">
+								<div class = 'container-fluid'>
+									<div class = 'row'>
+										<div class="col-md-5 text-center">
+											<img src="resources/images/products/3_coffee_gift_box.png" alt="Three Coffee Box">
+										</div>
+										<div class = 'col-md-7'>
+											<h3>Three Variety Gift Box</h3>
+											<p>A gift box for the coffee lover! Each box contains 3 bags of coffee of your choosing, as well as a hand written letter of appreciation from our amazing staff. Great for those who can't make up their mind, or to spread the happiness to a new Happy Cup drinker!</p>
+											<form class = 'form-horizontal' role = 'form'>
+												<div class = 'form-group has-feedback'>
+													<label for ='size' class = 'col-sm-2 control-label'> Coffee:</label>
+													<div class = 'col-sm-8 dropdown'> 
+													 	<button id="three_coffee_select_btn" class="form-control dropdown-toggle text-left" data-toggle="dropdown">&nbsp;&nbsp;None Selected
+													 	</button>
+													 	<ul id="three_cup_gift_options" class="dropdown-menu col-xs-12">
+													 	<li>
+														 	<table id="three_cup_gift_table" class="table">
+														 		<thead>
+																	<th>Roasts</th>
+																</thead>
+																<tbody>
+																	<tr>
+																		<td>
+																		<input type="number" name="gift_buzz" placeholder="0" min="0" max="3">
+																		 The Buzz Medium Roast
+																		</td>
+																	</tr>
+																	<tr >
+																		<td>
+																		<input type="number" name="gift_boomboom" placeholder="0" min="0" max="3"> Boom! Boom! Dark Roast
+																		</td>
+																	</tr>
+																	<tr>
+																		<td>
+																		<input type="number" name="gift_morning_madness" placeholder="0" min="0" max="3"> Morning Madness Espresso Roast
+																		</td>
+																	</tr>
+																	<tr >
+																		<td>
+																		<input type="number" name="gift_decaf" placeholder="0" min="0" max="3"> Decaffeination Decaf
+																		</td>
+																	</tr>
+																</tbody>
+																<thead>
+																	<th>Single Origin</th>
+																</thead>
+																<tbody>
+																	<tr>
+																		<td>
+																		<input type="number" name="gift_happy_heart" placeholder="0" min="0" max="3"> Happy Heart - Ethiopia
+																		</td>
+																	</tr>
+																	<tr >
+																		<td>
+																		<input type="number" name="gift_pondok" placeholder="0" min="0" max="3"> Pondok Baru - Sumatra
+																		</td>
+																	</tr>
+																</tbody>
+															</table>
+													 	</li>
+													 	</ul>
+													 		<!-- <optgroup label="Roasts">
+																<option value = 'gift_buzz'> The Buzz Medium Roast</option>
+																<option value = 'gift_boomboom'> Boom! Boom! Dark Roast</option>
+																<option value = 'gift_morning_madness'> Morning Madness Espresso Roast</option>
+																<option value = 'gift_decaf'> Decaffeination Decaf</option>
+															</optgroup>
+															<optgroup label="Single Origin">
+																<option value = 'gift_happy_heart'> Happy Heart - Ethiopia</option>
+																<option value = 'gift_pondok'> Pondok Baru - Sumatra</option>
+															</optgroup>
+														 -->
+													</div>
+												</div>
+												<div class = 'form-group has-feedback'>
+													<label for = 'grind' class = 'col-sm-2 control-label'>Grind:</label>
+													<div class = 'col-sm-8'>  
+														<select class="form-control">
+															<option value = 'Whole Bean'>Whole Bean </option>
+															<option value = 'Espresso'>Espresso </option>
+															<option value = 'Cone Drip Filter'>Cone Drip Filter </option>
+															<option value = 'Flat Bottom Drip Filter'>Flat Bottom Drip Filter </option>
+															<option value = 'Chemex'>Chemex </option>
+															<option value = 'French Press'>French Press </option>
+														</select>
+													</div>
+												</div>
+												<div class="form-group text-center">
+														<button type="submit" class="btn btn-group btn-default btn-animated">Add to cart<i class="fa fa-shopping-cart"></i></button>
+														<button type="button" class="btn btn-group btn-dark" data-dismiss="modal">Cancel</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Mug Modal-->
+				<div class="modal fade" id="mug_modal" tabindex="-1" role="dialog" aria-labelledby="mug_modal_label" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							</div>
+							<div class="modal-body">
+								<div class = 'container-fluid'>
+									<div class = 'row'>
+										<div class="col-md-5 text-center">
+											<img src="resources/images/products/mug.png" alt="Mug">
+										</div>
+										<div class = 'col-md-7'>
+											<h3>Happy Cup Mug</h3>
+											<p>Keep your cup half full with this large ceramic mug. </p>
+											<form class = 'form-horizontal' role = 'form'>
+												<div class="form-group text-center">
+														<button type="submit" class="btn btn-group btn-default btn-animated">Add to cart<i class="fa fa-shopping-cart"></i></button>
+														<button type="button" class="btn btn-group btn-dark" data-dismiss="modal">Cancel</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Happy Tee Modal-->
+				<div class="modal fade" id="shirt_modal" tabindex="-1" role="dialog" aria-labelledby="shirt_modal_label" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							</div>
+							<div class="modal-body">
+								<div class = 'container-fluid'>
+									<div class = 'row'>
+										<div class="col-md-5 text-center">
+											<img src="resources/images/products/happy_t.png" alt="T Shirt">
+										</div>
+										<div class = 'col-md-7'>
+											<h3>Happy Tee</h3>
+											<p>Show your support with this 100% cotton Happy Cup T-shirt. </p>
+											<form class = 'form-horizontal' role = 'form'>
+												<div class = 'form-group has-feedback'>
+													<label for = 'size' class = 'col-sm-3 control-label'>Shirt Size:</label>
+													<div class = 'col-sm-8'>  
+														<select class="form-control">
+															<option value = 'Small'>Small</option>
+															<option value = 'Medium'>Medium</option>
+															<option value = 'Large'>Large</option>
+															<option value = 'Extra-Large'>Extra-Large</option>
+															<option value = 'XX-Large'>XX-Large</option>
+														</select>
+													</div>
+												</div>
+												<div class="form-group text-center">
+														<button type="submit" class="btn btn-group btn-default btn-animated">Add to cart<i class="fa fa-shopping-cart"></i></button>
+														<button type="button" class="btn btn-group btn-dark" data-dismiss="modal">Cancel</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Six Month Sub Modal-->
+				<div class="modal fade" id="6_sub_modal" tabindex="-1" role="dialog" aria-labelledby="6_sub_modal_label" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							</div>
+							<div class="modal-body">
+								<div class = 'container-fluid'>
+									<div class = 'row'>
+										<div class="col-md-5 text-center">
+											<img src="resources/images/products/6mo_sub.png" alt="6 month sub">
+										</div>
+										<div class = 'col-md-7'>
+											<h3>Six Month Subscription</h3>
+											<p>Happy Cup sent directly to your door for six months! Choose your favorite roast, or switch things up every month with the roasters choice option. A six month subscription gives you a chance to try one bag each of our current coffee lineup! A great way to introduce a friend to Happy Cup and spread the Portland coffee scene.</p>
+											<form class = 'form-horizontal' role = 'form'>
+												<div class = 'form-group has-feedback'>
+													<label for ='size' class = 'col-sm-2 control-label'> Coffee:</label>
+													<div class = 'col-sm-8'> 
+													 	<select class="form-control">
+													 		<optgroup label="Roasts">
+													 			<option value = 'roaster_choice'> Roaster's Choice</option>
+																<option value = 'gift_buzz'> The Buzz Medium Roast</option>
+																<option value = 'gift_boomboom'> Boom! Boom! Dark Roast</option>
+																<option value = 'gift_morning_madness'> Morning Madness Espresso Roast</option>
+																<option value = 'gift_decaf'> Decaffeination Decaf</option>
+															</optgroup>
+															<optgroup label="Single Origin">
+																<option value = 'gift_happy_heart'> Happy Heart - Ethiopia</option>
+																<option value = 'gift_pondok'> Pondok Baru - Sumatra</option>
+															</optgroup>
+														</select>
+													</div>
+												</div>
+												<div class = 'form-group has-feedback'>
+													<label for = 'grind' class = 'col-sm-2 control-label'>Grind:</label>
+													<div class = 'col-sm-8'>  
+														<select class="form-control">
+															<option value = 'Whole Bean'>Whole Bean </option>
+															<option value = 'Espresso'>Espresso </option>
+															<option value = 'Cone Drip Filter'>Cone Drip Filter </option>
+															<option value = 'Flat Bottom Drip Filter'>Flat Bottom Drip Filter </option>
+															<option value = 'Chemex'>Chemex </option>
+															<option value = 'French Press'>French Press </option>
+														</select>
+													</div>
+												</div>
+												<div class="form-group text-center">
+														<button type="submit" class="btn btn-group btn-default btn-animated">Add to cart<i class="fa fa-shopping-cart"></i></button>
+														<button type="button" class="btn btn-group btn-dark" data-dismiss="modal">Cancel</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Twelve Month Sub Modal-->
+				<div class="modal fade" id="12_sub_modal" tabindex="-1" role="dialog" aria-labelledby="12_sub_modal_label" aria-hidden="true">
+					<div class="modal-dialog modal-lg">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+							</div>
+							<div class="modal-body">
+								<div class = 'container-fluid'>
+									<div class = 'row'>
+										<div class="col-md-5 text-center">
+											<img src="resources/images/products/12mo_sub.png" alt="12 month sub">
+										</div>
+										<div class = 'col-md-7'>
+											<h3>Twelve Month Subscription</h3>
+											<p>Happy Cup sent directly to your door for an entire year! Choose your favorite roast, or switch things up every month with the roasters choice option. A great way to introduce a friend to Happy Cup and spread the Portland coffee scene. </p>
+											<form class = 'form-horizontal' role = 'form'>
+												<div class = 'form-group has-feedback'>
+													<label for ='size' class = 'col-sm-2 control-label'> Coffee:</label>
+													<div class = 'col-sm-8'> 
+													 	<select class="form-control">
+													 		<optgroup label="Roasts">
+													 			<option value = 'roaster_choice'> Roaster's Choice</option>
+																<option value = 'gift_buzz'> The Buzz Medium Roast</option>
+																<option value = 'gift_boomboom'> Boom! Boom! Dark Roast</option>
+																<option value = 'gift_morning_madness'> Morning Madness Espresso Roast</option>
+																<option value = 'gift_decaf'> Decaffeination Decaf</option>
+															</optgroup>
+															<optgroup label="Single Origin">
+																<option value = 'gift_happy_heart'> Happy Heart - Ethiopia</option>
+																<option value = 'gift_pondok'> Pondok Baru - Sumatra</option>
+															</optgroup>
+														</select>
+													</div>
+												</div>
+												<div class = 'form-group has-feedback'>
+													<label for = 'grind' class = 'col-sm-2 control-label'>Grind:</label>
+													<div class = 'col-sm-8'>  
+														<select class="form-control">
+															<option value = 'Whole Bean'>Whole Bean </option>
+															<option value = 'Espresso'>Espresso </option>
+															<option value = 'Cone Drip Filter'>Cone Drip Filter </option>
+															<option value = 'Flat Bottom Drip Filter'>Flat Bottom Drip Filter </option>
+															<option value = 'Chemex'>Chemex </option>
+															<option value = 'French Press'>French Press </option>
+														</select>
+													</div>
+												</div>
+												<div class="form-group text-center">
+														<button type="submit" class="btn btn-group btn-default btn-animated">Add to cart<i class="fa fa-shopping-cart"></i></button>
+														<button type="button" class="btn btn-group btn-dark" data-dismiss="modal">Cancel</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			<!-- End Merch Modals -->
+			
+		</div>
+		<!-- Container End -->
+
+	</section>
+	<!-- section end -->
+</div>
+<script type="text/javascript">
+	$.getScript('js/template.js');
+</script>
+<script type="text/javascript">
+	$('#three_cup_gift_options').on('click', function(e) {
+		console.log('test')
+	e.stopPropagation();
+	});
+</script>

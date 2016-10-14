@@ -1,0 +1,417 @@
+
+<!-- main-container start -->
+<section class="main-container">
+
+	<div class="container" ng-controller="checkout_controller">
+		<div class="row" ng-if="userAllowedInView">
+
+			<!-- main start -->
+			<!-- ================ -->
+			<div class="main col-md-12">
+
+				<!-- page-title start -->
+				<!-- ================ -->
+				<h1 class="page-title">Checkout</h1>
+				<div class="separator-2"></div>
+				<!-- page-title end -->
+
+				<table class="table cart">
+					<thead>
+						<tr>
+							<th>Product </th>
+							<th>Price </th>
+							<th>Quantity</th>
+							<th class="amount">Total </th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-if="currentCart.coffee.length" >
+							<th colspan="5">Coffee</th>
+						</tr>
+						<tr ng-repeat="coffee in currentCart.coffee track by $index">
+							<td class="product">[[coffee.name]] ([[coffee.size.qty]]) <small>[[coffee.roast]] - [[coffee.grind.type]]</small></td>
+							<td class="price">[[coffee.size.price | currency : symbol : fractonSize]]</td>
+							<td class="quantity">[[coffee.qty]]</td>
+							<td class="amount">[[coffee.subtotal | currency : symbol : fractonSize]] </td>
+						</tr>
+						<tr ng-if="currentCart.subscriptions.length">
+							<th colspan="5">Subscriptions</th>
+						</tr>
+						<tr ng-repeat="sub in currentCart.subscriptions track by $index">
+							<td class="product">[[sub.name]] <small>[[sub.roast.name]] - [[sub.grind.type]]</small></td>
+							<td class="price">[[sub.subtotal / sub.qty | currency : symbol : fractonSize]]</td>
+							<td class="quantity">[[sub.qty]]</td>
+							<td class="amount">[[sub.subtotal | currency : symbol : fractonSize]] </td>
+						</tr>
+						<tr ng-if="currentCart.merch.length">
+							<th colspan="5">Merchandise</th>
+						</tr>
+						<tr ng-repeat="merch in currentCart.merch track by $index">
+							<td class="product">[[merch.name]]
+								<small>
+									<span ng-if = '!merch.roast.length && merch.roast != undefined'>Coffee: [[merch.roast.name]] - [[merch.grind.type]]<br></span>
+									<span ng-if = 'merch.roast.length'>Coffee: <br><span ng-repeat="roast in merch.roast | unique: 'id' ">&nbsp;&nbsp;[[roast.qty]]x [[roast.name]] - [[merch.grind.type]]<br></span></span>
+									<span ng-if = 'merch.size'>T-Shirt: [[merch.size.size]]</span>
+								</small>
+							</td>
+							<td class="price">[[merch.subtotal / merch.qty | currency : symbol : fractonSize]]</td>
+							<td class="quantity">[[merch.qty]]</td>
+							<td class="amount">[[merch.subtotal | currency : symbol : fractonSize]] </td>
+						</tr>
+						<tr>
+							<td class="total-quantity" colspan="3">Subtotal</td>
+							<td class="amount">[[currentCart.totalPrice | currency : symbol : fractonSize]]</td>
+						</tr>
+						<tr ng-if="currentCart.coupon.valid">										
+							<td class="total-quantity" colspan="2">Discount Coupon</td>
+							<td class="price">[[currentCart.coupon.code]]</td>
+							<td class="amount">[[currentCart.coupon.discount * 100 | number : 0]]%</td>
+						</tr>
+						<tr>
+							<td class="total-quantity" colspan="3">Total [[currentCart.totalItems]] Item<span ng-hide="currentCart.totalItems === 1">s</span></td>
+							<td class="total-amount">[[currentCart.totalPrice * (1 - currentCart.coupon.discount) | currency : symbol : fractonSize]]</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="space-bottom" id="billing-form-start"></div>
+				<fieldset>
+					<legend>Billing information</legend>
+					<form role="form" name="forms.checkoutForm" novalidate class="form-horizontal" id="billing-information">
+						<div class="row">
+							<div class="col-lg-3">
+								<h3 class="title">Personal Info</h3>
+							</div>
+							<div class="col-lg-8 col-lg-offset-1">
+								<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.checkoutForm.$submitted ||  forms.checkoutForm.first_name.$touched) && forms.checkoutForm.first_name.$invalid}">
+									<label for="first_name" class="col-md-2 control-label">First Name<small class="text-default">*</small></label>
+									<div class="col-md-10">
+										<input type="text" name="first_name" class="form-control" id="billingFirstName" placeholder="First Name" ng-model="billingInfo.first_name" required maxlength="24">
+										<div ng-messages="forms.checkoutForm.first_name.$error" class="text-danger" role="alert" ng-if="forms.checkoutForm.first_name.$touched || forms.checkoutForm.$submitted">
+											<span ng-message="required">Please enter a value for this field.</span>
+										</div>
+									</div>
+								</div>
+								<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.checkoutForm.$submitted ||  forms.checkoutForm.last_name.$touched) && forms.checkoutForm.last_name.$invalid}">
+									<label for="last_name" class="col-md-2 control-label">Last Name<small class="text-default">*</small></label>
+									<div class="col-md-10">
+										<input type="text" name="last_name" class="form-control" id="billingLastName" placeholder="Last Name" ng-model="billingInfo.last_name" required maxlength="48">
+										<div ng-messages="forms.checkoutForm.last_name.$error" class="text-danger" role="alert" ng-if="forms.checkoutForm.last_name.$touched || forms.checkoutForm.$submitted">
+											<span ng-message="required">Please enter a value for this field.</span>
+										</div>
+									</div>
+								</div>
+								<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.checkoutForm.$submitted ||  forms.checkoutForm.phone_number.$touched) && forms.checkoutForm.phone_number.$invalid}">
+									<label for="billingTel" class="col-md-2 control-label">Telephone<small class="text-default">*</small></label>
+									<div class="col-md-10">
+										<input type="text" name="phone_number" class="form-control" id="billingTel" placeholder="Telephone" required ng-model="billingInfo.phone_number">
+										<div ng-messages="forms.checkoutForm.phone_number.$error" class="text-danger" role="alert" ng-if="forms.checkoutForm.phone_number.$touched || forms.checkoutForm.$submitted">
+											<span ng-message="required">Please enter a value for this field.</span>
+										</div>
+									</div>
+								</div>
+								<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.checkoutForm.$submitted ||  forms.checkoutForm.billing_email.$touched) && forms.checkoutForm.billing_email.$invalid}">
+									<label for="billing_email" class="col-md-2 control-label">Email<small class="text-default">*</small></label>
+									<div class="col-md-10">
+										<input type="email" name="billing_email" class="form-control" id="billingemail" placeholder="Email" required ng-model="billingInfo.email">
+										<div ng-messages="forms.checkoutForm.billing_email.$error" class="text-danger" role="alert" ng-if="forms.checkoutForm.billing_email.$touched || forms.checkoutForm.$submitted">
+											<span ng-message="required">Please enter a value for this field.</span>
+											<span ng-message="email">Please enter a valid email address.</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="space"></div>
+						<div class="row">
+							<div class="col-lg-3">
+								<h3 class="title">Your Address</h3>
+							</div>
+							<div class="col-lg-8 col-lg-offset-1">
+								<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.checkoutForm.$submitted ||  forms.checkoutForm.billing_address1.$touched) && forms.checkoutForm.billing_address1.$invalid}">
+									<label for="billing_address1" class="col-md-2 control-label">Address 1<small class="text-default">*</small></label>
+									<div class="col-md-10">
+										<input type="text" name="billing_address1" class="form-control" id="billingAddress1" placeholder="Address 1" required ng-model="billingInfo.address">
+										<div ng-messages="forms.checkoutForm.billing_address1.$error" class="text-danger" role="alert" ng-if="forms.checkoutForm.billing_address1.$touched || forms.checkoutForm.$submitted">
+											<span ng-message="required">Please enter a value for this field.</span>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="billingAddress2" class="col-md-2 control-label">Address 2</label>
+									<div class="col-md-10">
+										<input type="text" name="billing_address2" class="form-control" id="billingAddress2" placeholder="Address 2" ng-model="billingInfo.address2">
+									</div>
+								</div>
+								<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.checkoutForm.$submitted ||  forms.checkoutForm.billing_city.$touched) && forms.checkoutForm.billing_city.$invalid}">
+									<label for="billingCity" class="col-md-2 control-label">City<small class="text-default">*</small></label>
+									<div class="col-md-10">
+										<input type="text" name="billing_city" class="form-control" id="billingCity" placeholder="City" required ng-model="billingInfo.city">
+										<div ng-messages="forms.checkoutForm.billing_city.$error" class="text-danger" role="alert" ng-if="forms.checkoutForm.billing_city.$touched || forms.checkoutForm.$submitted">
+											<span ng-message="required">Please enter a value for this field.</span>
+										</div>
+									</div>
+								</div>
+								<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.checkoutForm.$submitted ||  forms.checkoutForm.billing_state.$touched) && forms.checkoutForm.billing_state.$invalid}">
+									<label class="col-md-2 control-label">State<small class="text-default">*</small></label>
+									<div class="col-md-10">
+										<select class="form-control" name="billing_state" required ng-model="billingInfo.state">
+											<option value="">Select State</option>
+											<option value="AA">Armed Forces America</option>
+											<option value="AE">Armed Forces Europe</option>
+											<option value="AK">Alaska</option>
+											<option value="AL">Alabama</option>
+											<option value="AP">Armed Forces Pacific</option>
+											<option value="AR">Arkansas</option>
+											<option value="AS">American Samoa</option>
+											<option value="AZ">Arizona</option>
+											<option value="CA">California</option>
+											<option value="CO">Colorado</option>
+											<option value="CT">Connecticut</option>
+											<option value="DC">District of Columbia</option>
+											<option value="DE">Delaware</option>
+											<option value="FL">Florida</option>
+											<option value="FM">Micronesia, Federated States Of</option>
+											<option value="GA">Georgia</option>
+											<option value="GU">Guam</option>
+											<option value="HI">Hawaii</option>
+											<option value="IA">Iowa</option>
+											<option value="ID">Idaho</option>
+											<option value="IL">Illinois</option>
+											<option value="IN">Indiana</option>
+											<option value="KS">Kansas</option>
+											<option value="KY">Kentucky</option>
+											<option value="LA">Louisiana</option>
+											<option value="MA">Massachusetts</option>
+											<option value="MD">Maryland</option>
+											<option value="ME">Maine</option>
+											<option value="MH">Marshall Islands</option>
+											<option value="MI">Michigan</option>
+											<option value="MN">Minnesota</option>
+											<option value="MO">Missouri</option>
+											<option value="MP">Northern Mariana Islands</option>
+											<option value="MS">Mississippi</option>
+											<option value="MT">Montana</option>
+											<option value="NC">North Carolina</option>
+											<option value="ND">North Dakota</option>
+											<option value="NE">Nebraska</option>
+											<option value="NH">New Hampshire</option>
+											<option value="NJ">New Jersey</option>
+											<option value="NM">New Mexico</option>
+											<option value="NV">Nevada</option>
+											<option value="NY">New York</option>
+											<option value="OH">Ohio</option>
+											<option value="OK">Oklahoma</option>
+											<option value="OR">Oregon</option>
+											<option value="PA">Pennsylvania</option>
+											<option value="PR">Puerto Rico</option>
+											<option value="PW">Palau (Micronesia)</option>
+											<option value="RI">Rhode Island</option>
+											<option value="SC">South Carolina</option>
+											<option value="SD">South Dakota</option>
+											<option value="TN">Tennessee</option>
+											<option value="TX">Texas</option>
+											<option value="UM">US Minor Outlying Islands</option>
+											<option value="UT">Utah</option>
+											<option value="VA">Virginia</option>
+											<option value="VI">Virgin Islands Of The United States</option>
+											<option value="VT">Vermont</option>
+											<option value="WA">Washington</option>
+											<option value="WI">Wisconsin</option>
+											<option value="WV">West Virginia</option>
+											<option value="WY">Wyoming</option>
+										</select>
+										<div ng-messages="forms.checkoutForm.billing_state.$error" class="text-danger" role="alert" ng-if="forms.checkoutForm.billing_state.$touched || forms.checkoutForm.$submitted">
+											<span ng-message="required">Please select a value for this field.</span>
+										</div>
+									</div>
+								</div>
+								<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.checkoutForm.$submitted ||  forms.checkoutForm.billing_zip.$touched) && forms.checkoutForm.billing_zip.$invalid}">
+									<label for="billing_zip" class="col-md-2 control-label">Zip Code<small class="text-default">*</small></label>
+									<div class="col-md-10">
+										<input type="text" name=billing_zip class="form-control" id="billingPostalCode" placeholder="Postal Code" required ng-model="billingInfo.zip">
+										<div ng-messages="forms.checkoutForm.billing_zip.$error" class="text-danger" role="alert" ng-if="forms.checkoutForm.billing_zip.$touched || forms.checkoutForm.$submitted">
+											<span ng-message="required">Please enter a value for this field.</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="space"></div>
+						<div class="row">
+							<div class="col-lg-3">
+								<h3 class="title">Additional Info</h3>
+							</div>
+							<div class="col-lg-8 col-lg-offset-1">
+								<div class="form-group">
+									<div class="col-md-12">
+										<textarea class="form-control" name="message" rows="4" maxlength="255" ng-model="billingInfo.message"></textarea>
+										<p class="pull-right" ng-show="billingInfo.message"><small>Characters remaining: [[255 - billingInfo.message.length]]</small><p>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</form>
+				</fieldset>
+				<fieldset>
+					<legend>Shipping information</legend>
+					<form role="form" class="form-horizontal" id="shipping-information-container">
+						<div id="shipping-information" class="space-bottom">
+							<div class="row">
+								<div class="col-lg-3">
+									<h3 class="title">Personal Info</h3>
+								</div>
+								<div class="col-lg-8 col-lg-offset-1">
+									<div class="form-group">
+										<label for="shippingFirstName" class="col-md-2 control-label">First Name<small class="text-default">*</small></label>
+										<div class="col-md-10">
+											<input type="text" class="form-control" id="shippingFirstName" placeholder="First Name">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="shippingLastName" class="col-md-2 control-label">Last Name<small class="text-default">*</small></label>
+										<div class="col-md-10">
+											<input type="text" class="form-control" id="shippingLastName" placeholder="Last Name">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="shippingTel" class="col-md-2 control-label">Telephone<small class="text-default">*</small></label>
+										<div class="col-md-10">
+											<input type="text" class="form-control" id="shippingTel" placeholder="Telephone">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="shippingemail" class="col-md-2 control-label">Email<small class="text-default">*</small></label>
+										<div class="col-md-10">
+											<input type="email" class="form-control" id="shippingemail" placeholder="Email">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="space"></div>
+							<div class="row">
+								<div class="col-lg-3">
+									<h3 class="title">Your Address</h3>
+								</div>
+								<div class="col-lg-8 col-lg-offset-1">
+									<div class="form-group">
+										<label for="shippingAddress1" class="col-md-2 control-label">Address 1<small class="text-default">*</small></label>
+										<div class="col-md-10">
+											<input type="text" class="form-control" id="shippingAddress1" placeholder="Address 1">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="shippingAddress2" class="col-md-2 control-label">Address 2</label>
+										<div class="col-md-10">
+											<input type="text" class="form-control" id="shippingAddress2" placeholder="Address 2">
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="shippingCity" class="col-md-2 control-label">City<small class="text-default">*</small></label>
+										<div class="col-md-10">
+											<input type="text" class="form-control" id="shippingCity" placeholder="City">
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-md-2 control-label">State<small class="text-default">*</small></label>
+										<div class="col-md-10">
+											<select class="form-control">
+											<option value="">Select State</option>
+											<option value="AA">Armed Forces America</option>
+											<option value="AE">Armed Forces Europe</option>
+											<option value="AK">Alaska</option>
+											<option value="AL">Alabama</option>
+											<option value="AP">Armed Forces Pacific</option>
+											<option value="AR">Arkansas</option>
+											<option value="AS">American Samoa</option>
+											<option value="AZ">Arizona</option>
+											<option value="CA">California</option>
+											<option value="CO">Colorado</option>
+											<option value="CT">Connecticut</option>
+											<option value="DC">District of Columbia</option>
+											<option value="DE">Delaware</option>
+											<option value="FL">Florida</option>
+											<option value="FM">Micronesia, Federated States Of</option>
+											<option value="GA">Georgia</option>
+											<option value="GU">Guam</option>
+											<option value="HI">Hawaii</option>
+											<option value="IA">Iowa</option>
+											<option value="ID">Idaho</option>
+											<option value="IL">Illinois</option>
+											<option value="IN">Indiana</option>
+											<option value="KS">Kansas</option>
+											<option value="KY">Kentucky</option>
+											<option value="LA">Louisiana</option>
+											<option value="MA">Massachusetts</option>
+											<option value="MD">Maryland</option>
+											<option value="ME">Maine</option>
+											<option value="MH">Marshall Islands</option>
+											<option value="MI">Michigan</option>
+											<option value="MN">Minnesota</option>
+											<option value="MO">Missouri</option>
+											<option value="MP">Northern Mariana Islands</option>
+											<option value="MS">Mississippi</option>
+											<option value="MT">Montana</option>
+											<option value="NC">North Carolina</option>
+											<option value="ND">North Dakota</option>
+											<option value="NE">Nebraska</option>
+											<option value="NH">New Hampshire</option>
+											<option value="NJ">New Jersey</option>
+											<option value="NM">New Mexico</option>
+											<option value="NV">Nevada</option>
+											<option value="NY">New York</option>
+											<option value="OH">Ohio</option>
+											<option value="OK">Oklahoma</option>
+											<option value="OR">Oregon</option>
+											<option value="PA">Pennsylvania</option>
+											<option value="PR">Puerto Rico</option>
+											<option value="PW">Palau (Micronesia)</option>
+											<option value="RI">Rhode Island</option>
+											<option value="SC">South Carolina</option>
+											<option value="SD">South Dakota</option>
+											<option value="TN">Tennessee</option>
+											<option value="TX">Texas</option>
+											<option value="UM">US Minor Outlying Islands</option>
+											<option value="UT">Utah</option>
+											<option value="VA">Virginia</option>
+											<option value="VI">Virgin Islands Of The United States</option>
+											<option value="VT">Vermont</option>
+											<option value="WA">Washington</option>
+											<option value="WI">Wisconsin</option>
+											<option value="WV">West Virginia</option>
+											<option value="WY">Wyoming</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label for="shippingPostalCode" class="col-md-2 control-label">Zip Code<small class="text-default">*</small></label>
+										<div class="col-md-10">
+											<input type="text" class="form-control" id="shippingPostalCode" placeholder="Postal Code">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="checkbox padding-top-clear">
+							<label>
+								<input type="checkbox" name="same-as-billing" id="shipping-info-check" ng-init="shippingInfo.sameAsBilling = true" ng-model="shippingInfo.sameAsBilling"> My Shipping information is the same as my Billing information. [[shippingInfo.sameAsBilling]]
+							</label>
+						</div>
+					</form>
+				</fieldset>
+				<div class="text-right">	
+					<a href="#/cart" class="btn btn-group btn-default"><i class="icon-left-open-big"></i> Go Back To Cart</a>
+					<a ng-click="submitBillingInfo()" class="btn btn-group btn-default">Next Step <i class="icon-right-open-big"></i></a>
+				</div>
+
+			</div>
+			<!-- main end -->
+
+		</div>
+	</div>
+</section>
+
+<!-- main-container end -->
+<script type="text/javascript">
+	$.getScript(staticURL+'website/js/template.js');
+</script>

@@ -1,0 +1,314 @@
+	<!-- User Registration Modal Start -->
+<div class="modal fade" id="user-reg-modal" tabindex="-1" role="dialog" aria-labelledby="user-reg-modalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" ng-click="resetForm(forms.userRegForm, 'userReg')"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="user-reg-modalLabel">Sign Up</h4>
+			</div>
+			<div class="modal-body">
+				<span class="text-danger small">* Required</span>
+				<form class="form-horizontal" role="form" name="forms.userRegForm" novalidate ng-submit="registerUser()">
+					<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.userRegForm.$submitted ||  forms.userRegForm.first_name.$touched) && forms.userRegForm.first_name.$invalid}">
+						<label for="first_name" class="col-sm-3 control-label">First Name <span class="text-danger small">*</span></label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" name="first_name" id="inputName" placeholder="First Name" ng-model="userReg.first_name" required maxlength="24">
+							<i class="fa fa-pencil form-control-feedback"></i>
+							<div ng-messages="forms.userRegForm.first_name.$error" class="text-danger" role="alert" ng-if="forms.userRegForm.first_name.$touched || forms.userRegForm.$submitted">
+								<span ng-message="required">Please enter a value for this field.</span>
+							</div>
+						</div>
+
+					</div>
+					<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.userRegForm.$submitted || forms.userRegForm.last_name.$touched) && forms.userRegForm.last_name.$invalid}">
+						<label for="last_name" class="col-sm-3 control-label">Last Name <span class="text-danger small">*</span></label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" name="last_name" id="inputLastName" placeholder="Last Name" ng-model="userReg.last_name" required maxlength="48">
+							<i class="fa fa-pencil form-control-feedback"></i>
+							<div ng-messages="forms.userRegForm.last_name.$error" class="text-danger" role="alert" ng-if="forms.userRegForm.last_name.$touched || forms.userRegForm.$submitted">
+								<span ng-message="required">Please enter a value for this field.</span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.userRegForm.$submitted || forms.userRegForm.username.$touched) && forms.userRegForm.username.$invalid}">
+						<label for="username" class="col-sm-3 control-label">Username <span class="text-danger small">*</span></label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" name="username" id="inputUserName" placeholder="Username" ng-model="userReg.username" required maxlength="24">
+							<i class="fa fa-user form-control-feedback"></i>
+							<div ng-messages="forms.userRegForm.username.$error" class="text-danger" role="alert" ng-if="forms.userRegForm.username.$touched || forms.userRegForm.$submitted">
+								<span ng-message="required">Please enter a value for this field.</span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.userRegForm.$submitted || forms.userRegForm.reg_email.$touched) && forms.userRegForm.reg_email.$invalid}">
+						<label for="email" class="col-sm-3 control-label">Email <span class="text-danger small">*</span></label>
+						<div class="col-sm-8">
+							<input type="email" class="form-control" name="reg_email" id="inputEmail" placeholder="Email" ng-model="userReg.email" required>
+							<i class="fa fa-envelope form-control-feedback"></i>
+							<div ng-messages="forms.userRegForm.reg_email.$error" class="text-danger" role="alert" ng-if="forms.userRegForm.reg_email.$touched || forms.userRegForm.$submitted">
+								<span ng-message="required">Please enter a value for this field.</span>
+								<span ng-message="email">Please enter a valid email address.</span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.userRegForm.$submitted || forms.userRegForm.password.$touched) && forms.userRegForm.password.$invalid}">
+						<label for="inputPassword" class="col-sm-3 control-label">Password <span class="text-danger small">*</span></label>
+						<div class="col-sm-8">
+							<input type="password" class="form-control" name="password" id="inputPassword" placeholder="Password" ng-model="userReg.password" required>
+							<i class="fa fa-lock form-control-feedback"></i>
+							<div ng-messages="forms.userRegForm.password.$error" class="text-danger" role="alert" ng-if="forms.userRegForm.password.$touched || forms.userRegForm.$submitted">
+								<span ng-message="required">Please enter a value for this field.</span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.userRegForm.$submitted || forms.userRegForm.confirmPassword.$touched) && forms.userRegForm.confirmPassword.$invalid}">
+						<label for="confirmPassword" class="col-sm-3 control-label">Confirm PW <span class="text-danger small">*</span></label>
+						<div class="col-sm-8">
+							<input type="password" class="form-control" name="confirmPassword" id="inputConfirmPassword" placeholder="Confirm Password" ng-model="userReg.confirmPassword" required pattern="[[userReg.password]]">
+							<i class="fa fa-lock form-control-feedback"></i>
+							<div ng-messages="forms.userRegForm.confirmPassword.$error" class="text-danger" role="alert" ng-if="forms.userRegForm.confirmPassword.$touched || forms.userRegForm.$submitted">
+								<span ng-message="required">Please enter a value for this field.</span>
+								<span ng-message="pattern">Passwords do not match.</span>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-3 col-sm-8">
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" name="acceptPolicy" ng-model="userReg.acceptPolicy" required> Accept our <a href="#">privacy policy</a> and <a href="#">customer agreement</a>
+									<div ng-messages="forms.userRegForm.acceptPolicy.$error" class="text-danger" role="alert" ng-if="forms.userRegForm.acceptPolicy.$touched || forms.userRegForm.$submitted">
+										<span ng-message="required" >The privacy policy and customer agreement must be accepted.</span>
+									</div>
+								</label>
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-3 col-sm-8">
+							<button type="submit" class="btn btn-group btn-default btn-animated">Sign Up <i class="fa fa-check"></i></button>
+							<button type="button" class="btn btn-group btn-dark" data-dismiss="modal" ng-click="resetForm(forms.userRegForm, 'userReg')">Cancel</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- User Registration Modal End -->
+<!-- User Login Modal Start -->
+<div class="modal fade" id="user-login-modal" tabindex="-1" role="dialog" aria-labelledby="user-login-modalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" ng-click="resetForm(forms.userLoginForm, 'userLogin')"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="user-login-modalLabel">Login</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-horizontal" role="form" name="forms.userLoginForm" novalidate>
+					<div class="text-danger text-center" ng-if="userLogin.error">
+						<span>Invalid user credentials.</span>
+					</div>
+					<div class="form-group has-feedback" ng-class="{ 'has-error' : userLogin.error}">
+						<label for="email_username" class="col-sm-3 control-label">Email/Username</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" name="email_username" id="loginName" placeholder="Email or Username" required ng-model="userLogin.email_username">
+							<i class="fa fa-pencil form-control-feedback"></i>
+						</div>
+					</div>
+					<div class="form-group has-feedback" ng-class="{ 'has-error' : userLogin.error}">
+						<label for="password" class="col-sm-3 control-label">Password</label>
+						<div class="col-sm-8">
+							<input type="password" class="form-control" name="password" id="loginPassword" placeholder="Password" required ng-model="userLogin.password">
+							<i class="fa fa-lock form-control-feedback"></i>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-3 col-sm-8">
+							<button type="submit" class="btn btn-group btn-default btn-animated" ng-click="loginUser()" >Login<i class="fa fa-check"></i></button>
+							<button type="button" class="btn btn-group btn-dark" data-dismiss="modal" ng-click="resetForm(forms.userLoginForm, 'userLogin')">Cancel</button>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="col-sm-offset-3 col-sm-8"><a href="#">Forgot your password?</a>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- User Login Modal End -->
+
+<!--Coffee Modal -->
+<div class="modal fade" id="coffee_modal" tabindex="-1" role="dialog" aria-labelledby="coffee_modal_label" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			</div>
+			<div class="modal-body">
+				<div class = 'container-fluid'>
+					<div class = 'row'>
+						<div class="col-xs-8 col-md-5 col-xs-offset-2 col-sm-offset-2 col-md-offset-0 text-center">
+							<img ng-src="[[coffeeModal.img_src]]" alt="[[coffeeModal.name]]">
+						</div>
+						<div class = 'col-xs-12 col-md-7'>
+							<h3>[[coffeeModal.name]]</h3>
+							<p>[[coffeeModal.description]]</p>
+							<form class = 'form-horizontal' role = 'form'>
+								<div class = 'form-group has-feedback'>
+									<label for = 'grind' class = 'col-sm-2 control-label'>Grind:</label>
+									<div class = 'col-sm-8'>
+										<select class="form-control" ng-options="grind.type for grind in coffeeModal.grinds track by grind.id" ng-model="coffeeOrder.grind" >
+										</select>
+									</div>
+								</div>
+								<div class = 'form-group has-feedback'>
+									<label for ='size' class = 'col-sm-2 control-label'> Size:</label>
+									<div class = 'col-sm-4'> 
+									 	<select class="form-control" ng-options="value.qty for value in coffeeModal.pricing track by value.qty" ng-model="coffeeOrder.qty">
+										</select>
+									</div>
+								</div>
+								<div class="form-group text-center">
+										<button type="submit" class="btn btn-group btn-default btn-animated" ng-click="broadcastToCart(coffeeModal, coffeeOrder, coffeeModal.idx)"><span ng-if="!addingProduct">Add To Cart</span><span ng-if="addingProduct">Item Added</span><i class="fa fa-shopping-cart"></i></button>
+										<button type="button" class="btn btn-group btn-dark" data-dismiss="modal">Cancel</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- End Coffee Modals -->
+
+<!-- Subscription Modals -->
+	<div class="modal fade" id="subscription_modal" tabindex="-1" role="dialog" aria-labelledby="subscription_modal_label" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				</div>
+				<div class="modal-body">
+					<div class = 'container-fluid'>
+						<div class = 'row'>
+							<div class="col-xs-8 col-md-5 col-xs-offset-2 col-sm-offset-2 col-md-offset-0 text-center">
+								<img ng-src="[[subscriptionModal.img_src]]" alt="[[subscriptionModal.name]]">
+							</div>
+							<div class = 'col-xs-12 col-md-7'>
+								<h3>[[subscriptionModal.name]]</h3>
+								<p>[[subscriptionModal.description]]</p>
+								<form class = 'form-horizontal' role = 'form'>
+									<div class = 'form-group has-feedback'>
+										<label for ='size' class = 'col-sm-2 control-label'> Coffee:</label>
+										<div class = 'col-sm-8'> 
+										 	<select class = 'form-control' ng-options = 'roast.name for roast in subscriptionModal.roasts track by roast.id' ng-model = 'modalOrder.roast'></select>
+										</div>
+									</div>
+									<div class = 'form-group has-feedback'>
+										<label for = 'grind' class = 'col-sm-2 control-label'>Grind:</label>
+										<div class = 'col-sm-8'>  
+											<select class = 'form-control' ng-options = 'grind.type for grind in modalOrder.roast.grinds track by grind.id' ng-model = 'modalOrder.grind'></select>
+										</div>
+									</div>
+									<div class="form-group text-center">
+											<button type="submit" class="btn btn-group btn-default btn-animated" ng-click="broadcastToCart(subscriptionModal, modalOrder, subscriptionModal.idx)"><span ng-if="!addingProduct">Add To Cart</span><span ng-if="addingProduct">Item Added</span><i class="fa fa-shopping-cart"></i></button>
+											<button type="button" class="btn btn-group btn-dark" data-dismiss="modal">Cancel</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!-- End Subscription Modals -->
+
+<!-- Merchandise Modals -->
+	<div class="modal fade" id="merch_modal" tabindex="-1" role="dialog" aria-labelledby="merch_modal_label" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				</div>
+				<div class="modal-body">
+					<div class = 'container-fluid'>
+						<div class = 'row'>
+							<div class="col-xs-8 col-md-5 col-xs-offset-2 col-sm-offset-2 col-md-offset-0 text-center">
+								<img ng-src="[[merchandiseModal.img_src]]" alt="[[merchandiseModal.name]]">
+							</div>
+							<div class = 'col-xs-12 col-md-7'>
+								<h3>[[merchandiseModal.name]]</h3>
+								<p>[[merchandiseModal.description]]</p>
+								<form class = 'form-horizontal' role = 'form'>
+									<div ng-if = 'merchandiseModal.roasts' class = 'form-group has-feedback'>
+										<label for ='size' class = 'col-sm-3 control-label'>Coffee:</label>
+										<div ng-if = 'merchandiseModal.hasCoffee === 1' class = 'col-sm-8'> 
+										 	<select class = 'form-control' ng-options = 'roast.name for roast in merchandiseModal.roasts track by roast.id' ng-model = 'modalOrder.roast'></select>
+										</div>
+										<div ng-if = 'merchandiseModal.hasCoffee > 1' class = 'col-sm-8'> 
+										 	<div class = 'dropdown has-feedback' ng-class="{'has-error': giftBoxError}"> 
+										 		<button id="three_coffee_select_btn" class="form-control dropdown-toggle text-left " data-toggle="dropdown" ng-click="stopDefaultAction('#three_cup_gift_options')">&nbsp;&nbsp;[[modalOrder.roast.length]] Selected <span class="text-danger" ng-if="giftBoxError">* Must choose 3</span>
+										 		</button>
+
+										 		<ul id="three_cup_gift_options" class="dropdown-menu col-xs-12">
+										 			
+												 	<li class="three_cup_gift_table" ng-repeat="roast in merchandiseModal.roasts track by $index" ng-show="roast.name !== 'Roaster\'s Choice'">
+														<input type="number" min="0" ng-model="roast.qty" ng-change="updateVarietyBox(merchandiseModal.roasts, merchandiseModal.hasCoffee)">
+														[[roast.name]]
+												 	</li>
+
+												</ul>
+										 	</div>
+										</div>
+									</div>
+									<div ng-if = 'merchandiseModal.hasCoffee > 1' class = 'form-group has-feedback'>
+										<label for = 'grind' class = 'col-sm-3 control-label'>Grind:</label>
+										<div class = 'col-sm-8'>  
+											<select class = 'form-control' ng-options = 'grind.type for grind in modalOrder.roast[0].grinds track by grind.id' ng-model = 'modalOrder.grind'></select>
+										</div>
+									</div>
+									<div ng-if = 'merchandiseModal.hasCoffee === 1' class = 'form-group has-feedback'>
+										<label for = 'grind' class = 'col-sm-3 control-label'>Grind:</label>
+										<div class = 'col-sm-8'>  
+											<select class = 'form-control' ng-options = 'grind.type for grind in modalOrder.roast.grinds track by grind.id' ng-model = 'modalOrder.grind'></select>
+										</div>
+									</div>
+									<div ng-if = 'merchandiseModal.size' class = 'form-group has-feedback'>
+										<label for = 'size' class = 'col-sm-3 control-label'>Shirt Size:</label>
+										<div class = 'col-sm-8'>  
+											<select class = 'form-control' ng-options = 'size.size for size in merchandiseModal.size track by size.id' ng-model = 'modalOrder.size'></select>
+										</div>
+									</div>
+									<div class="form-group text-center">
+											<button type="submit" class="btn btn-group btn-default btn-animated" ng-click="broadcastToCart(merchandiseModal, modalOrder, merchandiseModal.idx)"><span ng-if="!addingProduct">Add To Cart</span><span ng-if="addingProduct">Item Added</span><i class="fa fa-shopping-cart"></i></button>
+											<button type="button" class="btn btn-group btn-dark" data-dismiss="modal">Cancel</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- End Merch Modals -->
+
+<script type="text/javascript">
+		$('.modal').on('show.bs.modal', function(){
+			if ($('.video-background-banner video')[0]) {
+				$('.video-background-banner video')[0].pause();
+			}
+		
+	});
+	$('.modal').on('hide.bs.modal', function(){
+		if ($('.video-background-banner video')[0]) {
+				$('.video-background-banner video')[0].play();
+			}
+	})
+</script>

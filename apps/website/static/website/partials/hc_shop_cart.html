@@ -1,0 +1,131 @@
+
+<!-- main-container start -->
+<section class="main-container">
+
+	<div class="container" ng-controller="cart_controller">
+		<div class="row">
+
+			<!-- main start -->
+			<!-- ================ -->
+			<div class="main col-md-12">
+
+				<!-- page-title start -->
+				<!-- ================ -->
+				<h1 class="page-title">Shopping Cart <span class="animate-show pull-right" ng-if="cartSavedMessage">Your cart has been updated</span></h1>
+				<div class="separator-2"></div>
+				<!-- page-title end -->
+
+				<table class="table cart table-hover table-colored">
+					<thead ng-show="currentCart.totalItems">
+						<tr>
+							<th>Product </th>
+							<th>Price </th>
+							<th>Quantity</th>
+							<th>Remove </th>
+							<th class="amount">Total </th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- Coffee -->
+						<tr ng-if = 'currentCart.coffee.length'>
+							<th colspan = "5"><h3>Coffee</h3></th>
+						</tr>
+						<tr ng-repeat="coffee in currentCart.coffee track by $index">
+							<td class="product">[[coffee.name]] ([[coffee.size.qty]])<small>[[coffee.roast]] - [[coffee.grind.type]]</small></td>
+							<td class="price">[[coffee.size.price | currency : symbol : fractonSize]]</td>
+							<td class="quantity">
+								<div class="form-group">
+									<input type="number" class="form-control" ng-model="coffee.qty" ng-change="currentCart.unsavedChanges=true; coffee.subtotal = coffee.size.price * coffee.qty; currentCart.countTotals();" min="0">
+								</div>											
+							</td>
+							<td class="remove"><button class="btn btn-default" ng-show="coffee.qty" ng-click="coffee.qty = 0; removeProduct($index, 'coffee');" move-to-top>Remove</button></td>
+							<td class="amount">[[coffee.subtotal | currency : symbol : fractonSize]]</td>
+						</tr>
+
+						<!--Subscriptions -->
+						<tr ng-if = 'currentCart.subscriptions.length'>
+							<th colspan = "5"><h3>Subscriptions</h3></th>
+						</tr>
+						<tr ng-repeat="sub in currentCart.subscriptions track by $index">
+							<td class="product">[[sub.name]] <small>[[sub.roast.name]] - [[sub.grind.type]]</small></td>
+							<td class="price">[[sub.price | currency : symbol : fractonSize]]</td>
+							<td class="quantity">
+								<div class="form-group">
+									<input type="number" class="form-control" ng-model="sub.qty" ng-change="currentCart.unsavedChanges=true; sub.subtotal = sub.price * sub.qty; currentCart.countTotals();" min="0">
+								</div>											
+							</td>
+							<td class="remove"><button class="btn btn-default" ng-show="sub.qty" ng-click="sub.qty = 0; removeProduct($index, 'subscriptions');">Remove</button></td>
+							<td class="amount">[[sub.subtotal | currency : symbol : fractonSize]]</td>
+						</tr>
+
+						<!-- Merch -->
+						<tr ng-if = 'currentCart.merch.length'>
+							<th colspan = "5"><h3>Merchandise</h3></th>
+						</tr>
+						<tr ng-repeat="merch in currentCart.merch track by $index">
+							<td class="product">[[merch.name]]
+								<small>
+									<span ng-if = '!merch.roast.length && merch.roast != undefined'>Coffee: [[merch.roast.name]] - [[merch.grind.type]]<br></span>
+									<span ng-if = 'merch.roast.length'>Coffee: <br><span ng-repeat="roast in merch.roast | unique: 'id' ">&nbsp;&nbsp;[[roast.qty]]x [[roast.name]] - [[merch.grind.type]]<br></span></span>
+									<span ng-if = 'merch.size'>T-Shirt: [[merch.size.size]]</span>
+								</small>
+							</td>
+							<td class="price">[[merch.price| currency : symbol : fractonSize]]</td>
+							<td class="quantity">
+								<div class="form-group">
+									<input type="number" class="form-control" ng-model="merch.qty" ng-change="currentCart.unsavedChanges=true; merch.subtotal = merch.price * merch.qty; currentCart.countTotals();" min="0">
+								</div>											
+							</td>
+							<td class="remove"><button class="btn btn-default" ng-show="merch.qty" ng-click="merch.qty = 0; removeProduct($index, 'merch');">Remove</button></td>
+							<td class="amount">[[merch.subtotal | currency : symbol : fractonSize]]</td>
+						</tr>
+
+						<!-- Total-->
+						<tr ng-show="currentCart.totalItems">
+							<td colspan="2">Discount Coupon <span ng-if="currentCart.coupon.valid">submitted and will be applied on Checkout</span><span class="pull-right" ng-if="invalidCoupon">Invalid Discount Coupon</span></td>
+							
+							<td colspan="3">
+								<div class="form-group">
+									<div class="input-group" id="coupon-input">
+										
+										<input type="text" class="form-control" ng-model="currentCart.coupon.code" ng-disabled="currentCart.coupon.valid">
+
+										<div class="input-group-addon" id="coupon-input-addon" ng-show="currentCart.coupon.code">
+
+											<button class="btn btn-default" ng-click="submitCoupon()" ng-show="!currentCart.coupon.valid">Apply</button>
+											<button class="btn btn-default" ng-click="currentCart.coupon.code = undefined; currentCart.coupon.valid = false;" ng-show="currentCart.coupon.valid">Remove</button>
+
+										</div>
+
+										
+									</div>
+								</div>											
+							</td>
+						</tr>
+						<tr>
+							<td class="total-quantity" colspan="4">Total [[currentCart.totalItems]] Items</td>
+							<td class="total-amount">[[currentCart.totalPrice | currency : symbol : fractonSize]]</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="text-right">
+					<a href="#/" class="btn btn-group btn-default pull-left">Continue Shopping</a>	
+					<button class="btn btn-group btn-default" ng-show="currentCart.unsavedChanges" ng-click="updateCart()" move-to-top>Update Cart</button>
+					<a href="#/cart/checkout" class="btn btn-group btn-default" ng-hide="currentCart.unsavedChanges || !currentCart.totalItems">Checkout</a>
+				</div>
+
+			</div>
+			<!-- main end -->
+
+		</div>
+	</div>
+</section>
+<script type="text/javascript">
+	$.getScript(staticURL+'website/js/template.js');
+</script>
+
+
+
+
+
+<!-- main-container end -->
