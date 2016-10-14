@@ -12,10 +12,11 @@ happy_cup.factory('user_factory',function($http){
 
 	factory.registerUser = function(userData, callback){
 
-		// $http.post('customers/register/', userData).then(function(response){
+		$http.post('customers/register/', userData).then(function(response){
 			currentUser = userData
+			console.log(response);
 			callback(currentUser)
-		// });
+		});
 		
 	};
 
