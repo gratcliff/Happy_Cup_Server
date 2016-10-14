@@ -102,7 +102,7 @@
 		<script type = "text/javascript" src = '{% static "website/js/Angular/factories/shop_factory.js" %}'></script>
 	</head>
 
-	<body style = 'background-color: #F0EBD2' class="no-trans page-loader-2" ng-init="userSession.auth = getSession('{{request.session.authorizedUser}}')">
+	<body style = 'background-color: #F0EBD2' class="no-trans page-loader-2">
 		<!-- 
 		<div ng-if = 'pageLoading' class="la-fire">
 			<div></div>
@@ -122,7 +122,7 @@
 		
 		<!-- page wrapper start -->
 		<!-- ================ -->
-		<div ng-if="authorizedUser" class="page-wrapper" id="page-top" ng-hide="mobileAndTabletCheck && modalSelection">
+		<div ng-if="!pageLoading" class="page-wrapper" id="page-top" ng-hide="mobileAndTabletCheck && modalSelection">
 			<!-- header-container start -->
 			<div class="header-container">
 
@@ -423,14 +423,6 @@
 			</footer>
 			<!-- footer end -->
 			
-		</div>
-
-		<div ng-if="!authorizedUser && !pageLoading" class="text-center" style="margin-top: 10%;">
-			<p>This website is under contruction.  Access is limited to authorized testers only.</p>
-			<span class="text-danger" ng-if="testUser.error">Incorrect password</span>
-			<input type="password" placeholder="Password" ng-model="testUser.password">
-			<br>
-			<button class="btn btn-default" ng-click="authorizeTester()">Enter Site</button>
 		</div>
 		<!-- page-wrapper end -->
 		

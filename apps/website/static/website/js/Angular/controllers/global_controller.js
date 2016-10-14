@@ -1,54 +1,15 @@
 happy_cup.controller('global_controller', function ($window, $scope, $location, $timeout, $anchorScroll, content_factory, user_factory, shop_factory){
 
 	$scope.mobileAndTabletCheck = mobileAndTabletCheck();
-
-	$scope.userSession = {};
 	$scope.currentView = getCurrentView()
 	$scope.pageTitle = 'Happy Cup Coffee Company - Portland, OR - Coffee Roasted by People with Potential'
 	$scope.pageLoading = true;
 	$scope.globalContent = {};
 	$scope.userReg = {};
 	$scope.userLogin = {};
-	$scope.testUser = {};
 	$scope.authorizedUser = false;
 	$scope.contact_marker = false;
 
-	$scope.getSession = function(auth) {
-		if (auth !== "False") {
-				$scope.authorizedUser = true;
-				// $timeout(function(){
-				// 		$location.path('/cafe');
-				// 	}, 50)
-				// 	$timeout(function(){
-				// 		$location.path('/');
-				// 	}, 51)
-		}
-	}
-
-	$scope.authorizeTester = function() {
-
-		if (!$scope.testUser.password) {
-			$scope.testUser.error = true;
-		} else {
-			$scope.testUser.error = false;
-			user_factory.authorizeTester($scope.testUser.password, function(status){
-				if (status) {
-					$scope.authorizedUser = true;
-					$timeout(function(){
-						$location.path('/cafe');
-					}, 50)
-					$timeout(function(){
-						$location.path('/');
-					}, 51)
-
-				} else {
-					$scope.testUser.error = true
-				}
-			});
-		}
-		
-		
-	}
 
 	content_factory.getContent(function(content){
 			$scope.globalContent = content.global;
@@ -61,9 +22,7 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 
 	shop_factory.getShoppingCart(function(cart){
 		$scope.shoppingCart = cart;
-		$timeout(function(){
-			$scope.pageLoading = false;
-		}, 1000);
+		$scope.pageLoading = false;
 		
 	});
 

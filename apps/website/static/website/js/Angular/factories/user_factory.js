@@ -3,13 +3,6 @@ happy_cup.factory('user_factory',function($http){
 	var factory = {};
 	var currentUser = {};
 
-	factory.authorizeTester = function(pw, callback) {
-		$http.post('/', pw).then(function(response){
-			callback(response.data.status)
-		});
-	};
-
-
 	factory.getCurrentUser = function(callback){
 			currentUser = 'None'
 			callback(currentUser);
