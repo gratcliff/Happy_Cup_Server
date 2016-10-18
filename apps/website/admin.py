@@ -5,8 +5,16 @@ from ..products.models import Coffee, FeaturedProduct
 
 # Register your models here.
 
+class CoffeeAdmin(admin.ModelAdmin):
+	filter_horizontal = ('grinds', 'sizes')
+
+
+class FeaturedProductAdmin(admin.ModelAdmin):
+	filter_horizontal = ('coffees',)
+
+
 admin.site.register(CoffeeRoast)
 admin.site.register(CoffeeGrind)
 admin.site.register(CoffeeVolume)
-admin.site.register(Coffee)
-admin.site.register(FeaturedProduct)
+admin.site.register(Coffee, CoffeeAdmin)
+admin.site.register(FeaturedProduct, FeaturedProductAdmin)
