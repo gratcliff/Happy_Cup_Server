@@ -3,6 +3,7 @@ import views
 
 urlpatterns = [
 
-	url(r'^$', views.Index.as_view())
+	url(r'^$', views.Index.as_view()),
+	url(r'^content/$', views.ProvideContent.as_view())
 
 ]

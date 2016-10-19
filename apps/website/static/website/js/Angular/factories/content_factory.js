@@ -5,6 +5,11 @@ happy_cup.factory('content_factory', function($http){
 
 
 	factory.getContent = function(callback){
+
+			$http.get('content/').then(function(response){
+				console.log(JSON.parse(response.data))
+			});
+
 			content.global = {
 			headerLogo : staticURL+"website/resources/images/Banners/HC_Logo.png",
 
