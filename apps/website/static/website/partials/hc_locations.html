@@ -4,14 +4,11 @@
 			<div class="banner" >
 				<!-- google map start -->
 				<!-- ================ -->
-				<div id="map-canvas" ng-hide="mapLoaded && mapLoadingError">
-					<div class="text-center" ng-if="!mapLoaded && !mapLoadingError">
-						<i class="fa fa-spinner fa-spin fa-5x"></i>
-						<h3>Loading Google Maps</h3>
+				<div id="map-canvas">
+					<div class="text-center" ng-if="!mapLoaded">
+					<i class="fa fa-spinner fa-spin fa-5x"></i>
+					<h3>Loading Google Maps</h3>
 					</div>
-				</div>
-				<div class="text-center" ng-if="mapLoaded && mapLoadingError">
-					<h3>Unable to load Google Maps</h3>
 				</div>
 				<!-- google maps end -->
 			</div>
@@ -43,8 +40,8 @@
 											<v-pane-content>
 												<div class = "row" ng-repeat = "x in location">
 													
-													<p class="col-lg-10 col-md-10 col-xs-7 col-sm-9 scrollToMap" ng-click="updateMap(x)"><a role = "button" class="text-dark"><i class="fa fa-coffee pr-10"></i><b>[[x.name]]</b><br>[[x.address]]</a></p>
-													<p class="col-lg-2 col-md-2 col-xs-5 col-sm-3"><a href="tel:[[x.number]]" role = "button" class="text-dark"><i class="fa fa-phone pr-10"></i>[[x.number]]</a></p>
+													<p class="col-lg-9 col-md-9 col-xs-7 col-sm-9 scrollToMap" ng-click="updateMap(x)"><a role = "button" class="text-dark"><i class="fa fa-coffee pr-10"></i><b>[[x.name]]</b><br>[[x.address]]</a></p>
+													<p class="col-lg-3 col-md-3 col-xs-5 col-sm-3"><a href="tel:[[x.number]]" role = "button" class="text-dark"><i class="fa fa-phone pr-10"></i>[[x.number | tel]]</a></p>
 												</div>
 											</v-pane-content>
 										</v-pane>

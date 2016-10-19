@@ -3,47 +3,47 @@ happy_cup.controller('blog_controller', function($scope, $http, $location, conte
 	$scope.posts = {};
 	$scope.first_post = [];
 	$scope.other_posts = [];
+	$scope.blog_blocks = [];
+	$scope.blog_block = [];
+	$scope.limit = 1;
+	$scope.loadMoreButton = true;
+	$scope.count = 0;
+	$scope.idx = 0;
 
 	content_factory.getPageContent('blog', function(content){
 			$scope.posts = content;
 			$scope.first_post.push($scope.posts[0]);
+			
 			for(var x = 1; x < $scope.posts.length; x++){
+				
+				if(x % 3 == 0) {
+					$scope.blog_block.push($scope.posts[x]);
+					$scope.blog_blocks.push($scope.blog_block);
+					$scope.blog_block = [];
+					$scope.count = 0;
+					$scope.idx += 1; 
+					// if($scope.limit*3 == $scope.other_posts.length){
+					// 	$scope.loadMoreButton = false;
+					// }
+				} else {
+					$scope.blog_block.push($scope.posts[x]);
+					$scope.blog_blocks[$scope.idx] = $scope.blog_block;
+					$scope.count += 1;
+				}
 				$scope.other_posts.push($scope.posts[x]);
 			};
 	});
+	console.log($scope.blog_blocks);
 
-	$scope.backgrounds = [
-		$scope.first_post[0].img_url, 
-		$scope.other_posts[0].img_url,
-		$scope.other_posts[1].img_url,
-	]
-	$scope.background = $scope.backgrounds[0];
-
-	$('#carousel-blog-post').bind('slide.bs.carousel', function (e) {
-		if($scope.background == $scope.backgrounds[0]) {
-			$scope.background = $scope.backgrounds[1];
-			$scope.$apply();
-		} else if($scope.background == $scope.backgrounds[1]) {
-			$scope.background = $scope.backgrounds[2];
-			$scope.$apply();
-		} else if($scope.background == $scope.backgrounds[2]) {
-			$scope.background = $scope.backgrounds[0];
-			$scope.$apply();
+	$scope.loadMore = function() {
+		$scope.limit += 3;
+		if ($scope.limit >= $scope.other_posts.length - 1){
+			$scope.loadMoreButton = false;
 		}
-	});
 
-	// if($('#first_post').is(":visible")){
-	// 	$('.parallax').css("background", "url('"+$scope.first_post[0].img_url+"') 50% 0px no-repeat");	
-	// }
-
-	// var x = document.getElementById($scope.other_posts[0].id);
-	// var y = document.getElementById($scope.other_posts[1].id);
-	// if($(x).is(":visible")){
-	// 	$('.parallax').css("background", "url('"+$scope.other_posts[0].img_url+"') 50% 0px no-repeat");	
-	// }
-
-	// if($(y).is(":visible")){
-	// 	$('.parallax').css("background", "url('"+$scope.other_posts[1].img_url+"') 50% 0px no-repeat");	
-	// }
+		// $('html,body').animate({
+		// 	scrollTop: $('.blogpost').offset().top
+		// }, 500);
+	};
 
 });

@@ -4,86 +4,78 @@
 <!-- ================ -->
 <section class="main-container" style="padding-top: 0px;">
 
-	<article class="ding-bottom-clear parallax dark-translucent-bg hovered" style="background-image: url([[background]]);">
-		<div id="carousel-blog-post" class="carousel slide" data-ride="carousel" data-interval="4000">
-			<!-- Indicators -->
-			<ol class="carousel-indicators bottom margin-clear">
-				<li data-target="#carousel-blog-post" data-slide-to="0" class="active"></li>
-				<li data-target="#carousel-blog-post" data-slide-to="1"></li>
-				<li data-target="#carousel-blog-post" data-slide-to="2"></li>
-			</ol>
-
-			<!-- Wrapper for slides -->
-			<div class="carousel-inner" role="listbox">
-				<div id="first_post" class="item active">
-					<div class="">
-					<div class="overlay-box">
-						<div  class="overlay-container">
-							<img ng-src="[[first_post[0].img_url]]" alt="">
-							<a class="overlay-link" ng-href="#/blog/[[first_post[0].id]]"></a>
-							<div class="carousel-title">
-								<h3 data-animation="animated zoomInLeft">[[first_post[0].title]]</h3>
-							</div>
-						</div>
-					</div>
-					</div>
-				</div>
-				<div class="item" ng-repeat = "post in other_posts | limitTo: 2">
-					<div class="overlay-box">
-						<div id="[[post.id]]" class="overlay-container">
-							<img ng-src="[[post.img_url]]" alt="">
-							<a class="overlay-link" ng-href="#/blog/[[post.id]]"></a>
-							<div class="carousel-title">
-								<h3 data-animation="animated zoomInLeft">[[post.title]]</h3>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<header>
-	</article>
 	<div class="container">
-		<div class="row">
 
+		<h1 class="page-title">News</h1>	
+		<!-- banner post start -->
+		<div class="row blog_banner">
+				<div class="banner_post">
+					<div class="overlay-container">		
+						<a ng-href="#/blog/[[first_post[0].id]]"><img class="banner_img" ng-src="[[first_post[0].img_url]]" ></a>
+					</div>
+				</div>
+				<div class="carousel-title">
+					<a ng-href="#/blog/[[first_post[0].id]]" style="text-decoration: none"><h3>[[first_post[0].title]]</h3></a>
+				</div>
+		</div>
+		<!-- banner post end -->
+		<br>
+		<div class="row">
 			<!-- main start -->
-			<!-- ================ -->
 			<div class="main col-md-8">
 
-				<!-- page-title start -->
-				<!-- ================ -->
-				<h1 class="page-title">Latest News</h1>
-				<div class="separator-2"></div>
-				<!-- page-title end -->
-
 				<!-- blogpost start -->
-				
-				<!-- blogpost end -->
-
-				<!-- blogpost start -->
-				<article class="blogpost" ng-repeat = "post in posts | limitTo: 5">
-<!-- 					<div class="embed-responsive embed-responsive-16by9">
-						<iframe class="embed-responsive-item" src="//www.youtube.com/embed/91J8pLHdDB0"></iframe>
-					</div> -->
-					<header>
-						<div class = "blog_images_container">
-							<a ng-href="#/blog/[[post.id]]"><img class="blog_images" ng-src="[[post.img_url]]" alt=""></a>
+				<article class="blogpost" ng-repeat = "post in blog_blocks | limitTo: limit">
+					<header class="col-lg-12 col-xs-12" ng-if="post[0]">
+						<div class = "blog_images_first_container">
+							
+							<a ng-href="#/blog/[[post[0].id]]"><img class="blog_images" ng-src="[[post[0].img_url]]" alt=""></a>
 						</div>
-						<h2><a ng-href="#/blog/[[post.id]]">[[post.title]]</a></h2>
+						<div class="blog_titles">
+							<h2><a ng-href="#/blog/[[post[0].id]]"><b>[[post[0].title]]</b></a></h2>
+						</div>
+					</header>
+					<header class="col-lg-6 col-xs-6" ng-if="post[1]">
+						<div class = "blog_images_container">
+							<div class="inner">
+							<a ng-href="#/blog/[[post[1].id]]"><img class="blog_images" ng-src="[[post[1].img_url]]" alt=""></a>
+							</div>
+						</div>
+						<div class="blog_titles">
+							<h2><a ng-href="#/blog/[[post[1].id]]"><b>[[post[1].title]]</b></a></h2>
+						</div>
+					</header>
+					<header class="col-lg-6 col-xs-6" ng-if="post[2]">
+						<div class = "blog_images_container">
+							<div class="inner">
+							<a ng-href="#/blog/[[post[2].id]]"><img class="blog_images" ng-src="[[post[2].img_url]]" alt=""></a>
+							</div>
+						</div>
+						<div class="blog_titles">
+							<h2><a ng-href="#/blog/[[post[2].id]]"><b>[[post[2].title]]</b></a></h2>
+						</div>
+					</header>
+<!-- 					<header class="col-lg-12 col-xs-6">
+						<div class = "blog_images_container">
+							<a href="#/blog/[[post.id]]"><img class="blog_images" ng-src="[[post.img_url]]" alt=""></a>
+						</div>
+						<div class="blog_titles">
+							<h2><a href="#/blog/[[post.id]]"><b>[[post.title]]</b></a></h2>
+						</div>
 						<div class="post-info">
 							<span class="post-date">
 								<span class="date">[[post.created_at | date: mediumDate]]</span>
 							</span>
 						</div>
-					</header>
-					<div class="blogpost-content">
+					</header> -->
+<!-- 					<div class="blogpost-content">
 						<p ng-bind-html="post.description"></p>
-						<div class="link pull-right"><i class="icon-link"></i><a ng-href="#/blog/[[post.id]]">Read More</a></div>
-					</div>
+						<div class="link pull-right"><i class="icon-link"></i><a href="#/blog/[[post.id]]">Read More</a></div>
+					</div> -->
 				</article>
 				<!-- blogpost end -->
 				<!-- pagination start -->
-				<nav>
+<!-- 				<nav>
 					<ul class="pagination">
 						<li><a href="#" aria-label="Previous"><i class="fa fa-angle-left"></i></a></li>
 						<li class="active"><a href="#">1</a></li>
@@ -93,7 +85,8 @@
 						<li><a href="#">5</a></li>
 						<li><a href="#" aria-label="Next"><i class="fa fa-angle-right"></i></a></li>
 					</ul>
-				</nav>
+				</nav> -->
+				<a href="" role="button" ng-show="loadMoreButton" ng-click="loadMore()"><b>Load More...</b></a>
 				<!-- pagination end -->
 
 			</div>
@@ -101,14 +94,8 @@
 
 			<!-- sidebar start -->
 			<!-- ================ -->
-			<aside class="col-md-4 col-lg-3 col-lg-offset-1">
+			<div class="col-xs-12 col-md-4 col-lg-3 col-lg-offset-1">
 				<div class="sidebar">
-					<div class="block clearfix">
-						<br>
-						<h3 class="title">Happy Cup Coffee</h3>
-						<div class="separator-2"></div>
-						<p class="margin-clear">Based in Portland, Happy Cup is a unique cafe and coffee roaster using ethicially traded coffee sourced from all over the world. The humanitarian, community oriented company offers employment to adults with disabilities and donates a percentage of their profits to vocational and recreational programming for the disabled community. <a href="#/about">Learn more</a></p>
-					</div>	
 					<div class="block clearfix">
 						<h3 class="title">Latest tweets</h3>
 							<div class="twitter_feed">
@@ -119,7 +106,7 @@
 
 					<div class="block clearfix">
 						<h3 class="title">Latest News</h3>
-						<div class="separator-2"></div>
+						<!-- <div class="separator-2"></div> -->
 						<div class="media margin-clear" ng-repeat = "post in posts | limitTo: 5">
 							<div class="media-left">
 								<div class="overlay-container">
@@ -131,11 +118,11 @@
 								<h6 class="media-heading"><a ng-href="#/blog/[[post.id]]">[[post.title]]</a></h6>
 								<p class="small margin-clear"><i class="fa fa-calendar pr-10"></i>[[post.created_at | date: mediumDate]]</p>
 							</div>
-							<hr>
+							<br>
 						</div>
 					</div>						
 				</div>
-			</aside>
+			</div>
 			<!-- sidebar end -->
 
 		</div>
@@ -147,35 +134,4 @@
 
 <script type="text/javascript">
 	$.getScript(staticURL+'website/js/template.js');
-	$('.carousel').carousel({
-		interval: 4000
-	});
-
-// 	(function( $ ) {
-
-//     //Function to animate slider captions 
-//     function doAnimations( elems ) {
-//         //Cache the animationend event in a variable
-//         var animEndEv = 'webkitAnimationEnd animationend';
-        
-//         elems.each(function () {
-//             var $this = $(this),
-//                 $animationType = $this.data('animation');
-//             $this.addClass($animationType).one(animEndEv, function () {
-//                 $this.removeClass($animationType);
-//             });
-//         });
-//     }
-    
-//     //Variables on page load 
-//     var $myCarousel = $('#carousel-blog-post'),
-//         $firstAnimatingElems = $myCarousel.find('.item:first').find("[data-animation ^= 'animated']");
-//     //Other slides to be animated on carousel slide event 
-//     $myCarousel.on('slide.bs.carousel', function (e) {
-//         var $animatingElems = $(e.relatedTarget).find("[data-animation ^= 'animated']");
-//         doAnimations($animatingElems);
-//     });  
-    
-// })(jQuery);
-
 </script>
