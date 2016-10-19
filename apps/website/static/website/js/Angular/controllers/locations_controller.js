@@ -857,7 +857,7 @@ happy_cup.controller('locations_controller', function($scope, $http, $location, 
 		secondChild.style.margin = '5px';
 		secondChild.style.width = '18px';
 		secondChild.style.height = '18px';
-		secondChild.style.backgroundImage = 'url(resources/images/mylocation-sprite-1x.png)';
+		secondChild.style.backgroundImage = 'url('+staticURL+'website/resources/images/mylocation-sprite-1x.png)';
 		secondChild.style.backgroundSize = '180px 18px';
 		secondChild.style.backgroundPosition = '0px 0px';
 		secondChild.style.backgroundRepeat = 'no-repeat';

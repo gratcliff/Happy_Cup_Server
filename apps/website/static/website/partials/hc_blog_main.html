@@ -11,11 +11,11 @@
 		<div class="row blog_banner">
 				<div class="banner_post">
 					<div class="overlay-container">		
-						<a href="#/blog/[[first_post[0].id]]"><img class="banner_img" ng-src="[[first_post[0].img_url]]" ></a>
+						<a ng-href="#/blog/[[first_post[0].id]]"><img class="banner_img" ng-src="[[first_post[0].img_url]]" ></a>
 					</div>
 				</div>
 				<div class="carousel-title">
-					<a href="#/blog/[[first_post[0].id]]" style="text-decoration: none"><h3>[[first_post[0].title]]</h3></a>
+					<a ng-href="#/blog/[[first_post[0].id]]" style="text-decoration: none"><h3>[[first_post[0].title]]</h3></a>
 				</div>
 		</div>
 		<!-- banner post end -->
@@ -29,30 +29,30 @@
 					<header class="col-lg-12 col-xs-12" ng-if="post[0]">
 						<div class = "blog_images_first_container">
 							
-							<a href="#/blog/[[post[0].id]]"><img class="blog_images" ng-src="[[post[0].img_url]]" alt=""></a>
+							<a ng-href="#/blog/[[post[0].id]]"><img class="blog_images" ng-src="[[post[0].img_url]]" alt=""></a>
 						</div>
 						<div class="blog_titles">
-							<h2><a href="#/blog/[[post[0].id]]"><b>[[post[0].title]]</b></a></h2>
+							<h2><a ng-href="#/blog/[[post[0].id]]"><b>[[post[0].title]]</b></a></h2>
 						</div>
 					</header>
 					<header class="col-lg-6 col-xs-6" ng-if="post[1]">
 						<div class = "blog_images_container">
 							<div class="inner">
-							<a href="#/blog/[[post[1].id]]"><img class="blog_images" ng-src="[[post[1].img_url]]" alt=""></a>
+							<a ng-href="#/blog/[[post[1].id]]"><img class="blog_images" ng-src="[[post[1].img_url]]" alt=""></a>
 							</div>
 						</div>
 						<div class="blog_titles">
-							<h2><a href="#/blog/[[post[1].id]]"><b>[[post[1].title]]</b></a></h2>
+							<h2><a ng-href="#/blog/[[post[1].id]]"><b>[[post[1].title]]</b></a></h2>
 						</div>
 					</header>
 					<header class="col-lg-6 col-xs-6" ng-if="post[2]">
 						<div class = "blog_images_container">
 							<div class="inner">
-							<a href="#/blog/[[post[2].id]]"><img class="blog_images" ng-src="[[post[2].img_url]]" alt=""></a>
+							<a ng-href="#/blog/[[post[2].id]]"><img class="blog_images" ng-src="[[post[2].img_url]]" alt=""></a>
 							</div>
 						</div>
 						<div class="blog_titles">
-							<h2><a href="#/blog/[[post[2].id]]"><b>[[post[2].title]]</b></a></h2>
+							<h2><a ng-href="#/blog/[[post[2].id]]"><b>[[post[2].title]]</b></a></h2>
 						</div>
 					</header>
 <!-- 					<header class="col-lg-12 col-xs-6">
@@ -111,11 +111,11 @@
 							<div class="media-left">
 								<div class="overlay-container">
 									<img class="media-object" ng-src="[[post.img_url]]" alt="blog-thumb">
-									<a href="#/blog/[[post.id]]" class="overlay-link small" ng-click="newPost()"><i class="fa fa-link"></i></a>
+									<a ng-href="#/blog/[[post.id]]" class="overlay-link small" ng-click="newPost()"><i class="fa fa-link"></i></a>
 								</div>
 							</div>
 							<div class="media-body">
-								<h6 class="media-heading"><a href="#/blog/[[post.id]]">[[post.title]]</a></h6>
+								<h6 class="media-heading"><a ng-href="#/blog/[[post.id]]">[[post.title]]</a></h6>
 								<p class="small margin-clear"><i class="fa fa-calendar pr-10"></i>[[post.created_at | date: mediumDate]]</p>
 							</div>
 							<br>
@@ -133,5 +133,5 @@
 </div>
 
 <script type="text/javascript">
-	$.getScript('js/template.js');
+	$.getScript(staticURL+'website/js/template.js');
 </script>

@@ -38,7 +38,7 @@
 								<ul class="social-links circle small colored clearfix margin-clear text-right animated-effect-1">
 									<li class="twitter"><a class="twitter" href="https://twitter.com/intent/tweet?text=[[post[0].title]]&amp;hashtags=happycupcoffee&amp;via=HappyCupCoffee&amp;url=[[post[0].url]]"><i class="fa fa-twitter"></i></a></li>
 									<li class="facebook"><a href='' ng-click="fbShare([[post[0].url]], [[post[0].title]], [[post[0].description]], [[post[0].img_url]], 520, 350)"><i class="fa fa-facebook"></i></a></li>
-									<li class="linkedin"><a href="" ng-click="lkShare([[post[0].url]], [[post[0].title]], [[post[0].description]], [[post[0].img_url]], 520, 350)" target="_blank""><i class="fa fa-linkedin"></i></a></li>
+									<li class="linkedin"><a href="" ng-click="lkShare([[post[0].url]], [[post[0].title]], [[post[0].description]], [[post[0].img_url]], 520, 350)" target="_blank"><i class="fa fa-linkedin"></i></a></li>
 								</ul>
 							</div>
 						</footer>
@@ -66,11 +66,11 @@
 							<div class="media-left">
 								<div class="overlay-container">
 									<img class="media-object" ng-src="[[post.img_url]]" alt="blog-thumb">
-									<a href="#/blog/[[post.id]]" class="overlay-link small"><i class="fa fa-link"></i></a>
+									<a ng-href="#/blog/[[post.id]]" class="overlay-link small"><i class="fa fa-link"></i></a>
 								</div>
 							</div>
 							<div class="media-body">
-								<h6 class="media-heading"><a href="#/blog/[[post.id]]">[[post.title]]</a></h6>
+								<h6 class="media-heading"><a ng-href="#/blog/[[post.id]]">[[post.title]]</a></h6>
 								<p class="small margin-clear">[[post.created_at | date: mediumDate]]</p>
 							</div>
 							<hr>
@@ -89,7 +89,7 @@
 </div>
 
 <script type="text/javascript">
-	$.getScript('js/template.js');
+	$.getScript(staticURL+'website/js/template.js');
 </script>
 
 
