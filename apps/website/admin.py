@@ -5,6 +5,8 @@ from ..products.models import Coffee, FeaturedProduct
 
 # Register your models here.
 
+admin.site.disable_action('delete_selected')
+
 class CoffeeAdmin(admin.ModelAdmin):
 	filter_horizontal = ('grinds', 'sizes')
 
