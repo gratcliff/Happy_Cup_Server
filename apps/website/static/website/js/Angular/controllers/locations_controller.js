@@ -1,4 +1,4 @@
-happy_cup.controller('locations_controller', function($scope, $http, $location, $timeout){
+happy_cup.controller('locations_controller', function($scope, $http, $location, $filter){
 
 	$scope.expanded;
 	$scope.mapLoaded = false;
@@ -22,16 +22,8 @@ happy_cup.controller('locations_controller', function($scope, $http, $location, 
 		});
 		
 	},function(error) {
-		console.log(error)
 		alert('Unable to get location: ' + error.message);
 	}, options);
-
-	$timeout(function(){
-		if (!$scope.mapLoaded) {
-			$scope.mapLoadingError = true;
-			$scope.mapLoaded = true;
-		}
-	}, 10000);
 	
 	var locations = [{
 				name: 'Arbor Lodge',
@@ -865,7 +857,7 @@ happy_cup.controller('locations_controller', function($scope, $http, $location, 
 		secondChild.style.margin = '5px';
 		secondChild.style.width = '18px';
 		secondChild.style.height = '18px';
-		secondChild.style.backgroundImage = 'url('+staticURL+'website/resources/images/mylocation-sprite-1x.png)';
+		secondChild.style.backgroundImage = 'url(resources/images/mylocation-sprite-1x.png)';
 		secondChild.style.backgroundSize = '180px 18px';
 		secondChild.style.backgroundPosition = '0px 0px';
 		secondChild.style.backgroundRepeat = 'no-repeat';
@@ -925,3 +917,44 @@ happy_cup.controller('locations_controller', function($scope, $http, $location, 
 	}
 
 });
+
+	happy_cup.filter('tel', function () {
+	    return function (tel) {
+	        if (!tel) { return ''; }
+
+	        var value = tel.toString().trim().replace(/^\+/, '');
+
+	        if (value.match(/[^0-9]/)) {
+	            return tel;
+	        }
+
+	        var country, city, number;
+
+	        switch (value.length) {
+	            case 1:
+	            case 2:
+	            case 3:
+	                city = value;
+	                break;
+
+	            default:
+	                city = value.slice(0, 3);
+	                number = value.slice(3);
+	        }
+
+	        if(number){
+	            if(number.length>3){
+	                number = number.slice(0, 3) + '-' + number.slice(3,7);
+	            }
+	            else{
+	                number = number;
+	            }
+
+	            return ("(" + city + ") " + number).trim();
+	        }
+	        else{
+	            return "(" + city;
+	        }
+
+	    };
+	});
