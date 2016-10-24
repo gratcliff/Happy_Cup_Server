@@ -496,7 +496,7 @@ fieldset legend {
 
 /* media queries  */
 
-@media (min-width: 1200px) {
+@media (min-width: 1199px) {
 	.carousel-title {
 		margin-bottom: 150px;
 		bottom: 0;
@@ -505,16 +505,17 @@ fieldset legend {
 	.blog_images_first_container{
    		width: 100%;
    		position: relative;
-		height: 400px;
+		height: 300px;
 		overflow: hidden;
 	    font-weight:bold;
 	    background-color: rgb(50,50,50);
 	    opacity: 1;
+	    scale: 1.5;
 	}
 
 	.blog_images_container{
 		position: relative;
-		height: 400px;
+		height: 300px;
 		overflow: hidden;
 	    font-weight:bold;
 	    background-color: rgb(50,50,50);
