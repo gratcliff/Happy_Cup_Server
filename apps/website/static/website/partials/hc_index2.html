@@ -61,7 +61,7 @@
 			<!-- Nav Tab End -->
 
 			<!-- Coffee Start -->
-			<div class="row" ng-if = 'productDisplay.showCoffee === true' id="coffee_products">
+			<div class="row" ng-show = 'productDisplay.showCoffee === true' id="coffee_products">
 
 				<h1 class = 'row row-centered'> Offered In All Sizes </h1>
 					<table id ="coffee-products-table" class = 'table table-hover brown-border'>
@@ -102,7 +102,7 @@
 
 
 			<!--Subscriptions Start -->
-			<div ng-if = 'productDisplay.showSubs === true'>
+			<div ng-show = 'productDisplay.showSubs === true'>
 
 				<h1 class = 'row row-centered'>Subscriptions</h1>
 				<br>
@@ -147,7 +147,7 @@
 			<!-- Subscriptions End -->
 
 			<!-- Merch Start -->
-			<div ng-if = 'productDisplay.showMerch === true'>
+			<div ng-show = 'productDisplay.showMerch === true'>
 
 				<h1 class = 'row row-centered'>Happy Cup Gifts </h1>
 				<table class = 'table table-hover brown-border'>

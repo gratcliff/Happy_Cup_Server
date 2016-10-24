@@ -1,41 +1,59 @@
-happy_cup.factory('shop_factory', function(){
+happy_cup.factory('shop_factory', function($http){
 
 	var factory = {};
-
-	
-
-	//-------creating shoppingCart object
 	var shoppingCart = {};
-	shoppingCart.coffee = [];
-	shoppingCart.subscriptions = [];
-	shoppingCart.merch = [];
-	shoppingCart.unsavedChanges = false;
-	shoppingCart.coupon = {code: undefined, valid:false, discount: 0};
-	shoppingCart.checkoutStatus = {
-		payment : false,
-		review : false,
-		complete : false
-	}
+
+	//syncing or creating shoppingCart object
+
 	
-	shoppingCart.countTotals = function() {
-		var totalItems = 0;
-		var totalPrice = 0;
-		for (idx in this.coffee) {
-			totalItems += this.coffee[idx].qty;
-			totalPrice += this.coffee[idx].subtotal;
-		}
-		for (idx in this.merch) {
-			totalItems += this.merch[idx].qty;
-			totalPrice += this.merch[idx].subtotal;
-		}
-		this.totalItems = totalItems;
-		this.totalPrice = totalPrice;
-	};
-	shoppingCart.countTotals();
+	
+	
 	//------- done creating shopping cart
 
 	factory.getShoppingCart = function(callback) {
-		callback(shoppingCart);
+
+		$http.get('sync/').then(function(response){
+			if (response.data.new) {
+
+				shoppingCart.coffee = [];
+				shoppingCart.subscriptions = [];
+				shoppingCart.merch = [];
+				shoppingCart.unsavedChanges = false;
+				shoppingCart.coupon = {code: undefined, valid:false, discount: 0};
+				shoppingCart.checkoutStatus = {
+					payment : false,
+					review : false,
+					complete : false
+				}
+
+
+			} else {
+				shoppingCart = response.data
+
+			}
+
+			shoppingCart.countTotals = function(){
+				var totalItems = 0;
+				var totalPrice = 0;
+				for (idx in this.coffee) {
+					totalItems += this.coffee[idx].qty;
+					totalPrice += this.coffee[idx].subtotal;
+				}
+				for (idx in this.merch) {
+					totalItems += this.merch[idx].qty;
+					totalPrice += this.merch[idx].subtotal;
+				}
+				this.totalItems = totalItems;
+				this.totalPrice = totalPrice;
+
+
+			}
+			shoppingCart.countTotals();
+			callback(shoppingCart);
+
+		});
+
+		
 	};
 
 	factory.addCoffeeToCart = function(order, callback) {
@@ -44,8 +62,8 @@ happy_cup.factory('shop_factory', function(){
 			// adjust the qty and price of the existing one
 
 			if (shoppingCart.coffee[idx].id === order.id &&
-			shoppingCart.coffee[idx].grind === order.grind &&
-			shoppingCart.coffee[idx].size === order.size) {
+			shoppingCart.coffee[idx].grind.id === order.grind.id &&
+			shoppingCart.coffee[idx].size.id === order.size.id) {
 
 				shoppingCart.coffee[idx].qty += order.qty;
 				shoppingCart.coffee[idx].subtotal += order.subtotal;
@@ -60,7 +78,14 @@ happy_cup.factory('shop_factory', function(){
 
 		shoppingCart.totalItems += order.qty;
 		shoppingCart.totalPrice += order.subtotal;
-		callback(shoppingCart);
+
+		$http.post('sync/', shoppingCart).then(function(response){
+			callback(shoppingCart);
+		});
+
+
+
+		
 	}		// if an identical product exists in the cart, 
 
 	factory.addSubscriptionsToCart = function(order, callback) {
@@ -69,8 +94,8 @@ happy_cup.factory('shop_factory', function(){
 			// adjust the qty and price of the existing one
 
 			if (shoppingCart.subscriptions[idx].id === order.id &&
-			shoppingCart.subscriptions[idx].grind === order.grind &&
-			shoppingCart.subscriptions[idx].roast === order.roast) {
+			shoppingCart.subscriptions[idx].grind.id === order.grind.id &&
+			shoppingCart.subscriptions[idx].roast.id === order.roast.id) {
 
 				shoppingCart.subscriptions[idx].qty += order.qty;
 				shoppingCart.subscriptions[idx].subtotal += order.subtotal;
@@ -85,7 +110,10 @@ happy_cup.factory('shop_factory', function(){
 
 		shoppingCart.totalItems += order.qty;
 		shoppingCart.totalPrice += order.subtotal;
-		callback(shoppingCart);
+
+		$http.post('sync/', shoppingCart).then(function(response){
+			callback(shoppingCart);
+		});
 	}		
 
 	factory.addMerchandiseToCart = function(order, callback) {
@@ -95,7 +123,7 @@ happy_cup.factory('shop_factory', function(){
 
 			for (key in order) {
 
-				if (key === 'qty' || key === 'subtotal') {
+				if (key == 'qty' || key == 'subtotal') {
 					continue;
 				}
 				if (!shoppingCart.merch[idx][key]) {
@@ -103,7 +131,15 @@ happy_cup.factory('shop_factory', function(){
 					break;
 				}
 
-				if (shoppingCart.merch[idx][key] !== order[key]) {
+				if (typeof shoppingCart.merch[idx][key] == 'object') {
+
+					if (shoppingCart.merch[idx][key].id === order[key].id) {
+						continue;
+					}
+
+				}
+
+				if (shoppingCart.merch[idx][key] != order[key]) {
 					identicalProduct = false;
 					break;
 				}
@@ -129,7 +165,12 @@ happy_cup.factory('shop_factory', function(){
 
 		shoppingCart.totalItems += order.qty;
 		shoppingCart.totalPrice += order.subtotal;
-		callback(shoppingCart);
+
+
+
+		$http.post('sync/', shoppingCart).then(function(response){
+			callback(shoppingCart);
+		});
 	}			
 
 	factory.updateCart = function(cart, callback){
@@ -162,13 +203,18 @@ happy_cup.factory('shop_factory', function(){
 
 
 
-		callback(shoppingCart);
+		$http.post('sync/', shoppingCart).then(function(response){
+			callback(shoppingCart);
+		});
 	};
 
 	factory.removeProduct = function(idx, arrayName, callback) {
 		shoppingCart[arrayName].splice(idx, 1);
 		shoppingCart.countTotals();
-		callback(shoppingCart);
+
+		$http.post('sync/', shoppingCart).then(function(response){
+			callback(shoppingCart);
+		});
 
 	}
 
@@ -181,8 +227,12 @@ happy_cup.factory('shop_factory', function(){
 			cart.coupon.valid = true;
 			cart.coupon.discount = 0.15;
 		}
-		callback(shoppingCart);
+
+		$http.post('sync/', shoppingCart).then(function(response){
+			callback(shoppingCart);
+		});
 	};
+
 
 
 	return factory;

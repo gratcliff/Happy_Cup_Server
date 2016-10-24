@@ -14,6 +14,7 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 	content_factory.getContent(function(content){
 			$scope.globalContent = content.global;
 			$scope.forms = {};
+			$scope.pageLoading = false;
 	});
 
 	user_factory.getCurrentUser(function(currentUser){
@@ -22,7 +23,7 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 
 	shop_factory.getShoppingCart(function(cart){
 		$scope.shoppingCart = cart;
-		$scope.pageLoading = false;
+		
 		
 	});
 

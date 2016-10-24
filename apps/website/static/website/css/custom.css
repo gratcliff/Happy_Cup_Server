@@ -479,6 +479,10 @@ fieldset legend {
 	top: -100%;
 }
 
+.ng-hide.ng-hide-animate {
+	display: none !important;
+}
+
 #social-links-overlay-container {
 	overflow: visible;
 }

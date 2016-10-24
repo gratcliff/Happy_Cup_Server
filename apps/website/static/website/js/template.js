@@ -1342,7 +1342,7 @@
 				$(".video-background").vide({
 					mp4: staticURL+"website/resources/videos/background-video.mp4",
 					webm: staticURL+"website/resources/videos/background-video.webm",
-					poster: staticURL+"website/resources/videos/video-fallback.jpg"
+					poster: staticURL+"website/resources/videos/video-banner-poster_orig.jpg"
 				}, {
 					volume: 1,
 					playbackRate: 1,
@@ -1357,7 +1357,7 @@
 				$(".video-background").vide({
 					mp4: staticURL+"website/resources/videos/background-video.mp4",
 					webm: staticURL+"website/resources/videos/background-video.webm",
-					poster: staticURL+"website/resources/videos/video-poster.jpg"
+					poster: staticURL+"website/resources/videos/video-banner-poster_orig.jpg"
 				}, {
 					volume: 1,
 					playbackRate: 1,
@@ -1376,7 +1376,7 @@
 				$(".video-background-banner").vide({
 					mp4: staticURL+"website/resources/videos/background-video-banner.mp4",
 					webm: staticURL+"website/resources/videos/background-video-banner.webm",
-					poster: staticURL+"website/resources/videos/video-fallback.jpg"
+					poster: staticURL+"website/resources/videos/video-banner-poster_orig.jpg"
 				}, {
 					volume: 1,
 					playbackRate: 0.75,

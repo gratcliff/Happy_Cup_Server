@@ -15,11 +15,11 @@ happy_cup.controller('cart_controller', function ($scope, $location, $timeout, u
 	
 
 	$scope.updateCart = function() {
-
+		$scope.cartSavedMessage = "Updating Shopping Cart..."
 		shop_factory.updateCart($scope.currentCart, function(newCart){
 			$scope.currentCart = newCart;
 			$scope.currentCart.unsavedChanges = false;
-			$scope.cartSavedMessage = true;
+			$scope.cartSavedMessage = 'Your cart has been updated';
 			$timeout(function(){
 				$scope.cartSavedMessage = false;
 			}, 1500)
@@ -27,23 +27,24 @@ happy_cup.controller('cart_controller', function ($scope, $location, $timeout, u
 	}
 
 	$scope.removeProduct = function(idx, arrayName) {
-		$timeout(function(){
-			shop_factory.removeProduct(idx, arrayName,  function(newCart) {
-				$scope.currentCart = newCart;
-				$scope.currentCart.unsavedChanges = false;
-				$scope.cartSavedMessage = true;
-
-				if ($scope.currentCart.coffee.length === 0 && 
-					$scope.currentCart.subscriptions.length === 0 && 
-					$scope.currentCart.merch.length === 0){
+		$scope.cartSavedMessage = "Updating Shopping Cart..."
+		
+		shop_factory.removeProduct(idx, arrayName,  function(newCart) {
+			$scope.currentCart = newCart;
+			$scope.currentCart.unsavedChanges = false;
+			$scope.cartSavedMessage = 'Your cart has been updated';
+			$timeout(function(){
+				$scope.cartSavedMessage = false;
+				if ($scope.currentCart.totalItems === 0){
 					$location.path('/');
 				}
-			})
-		}, 100);
+			}, 1500);
 
-		$timeout(function(){
-			$scope.cartSavedMessage = false;
-		}, 1500);
+
+			
+		});
+
+		
 	};
 
 	$scope.submitCoupon = function() {

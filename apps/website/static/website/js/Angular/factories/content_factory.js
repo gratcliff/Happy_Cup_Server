@@ -11,7 +11,7 @@ happy_cup.factory('content_factory', function($http){
 			});
 
 			content.global = {
-			headerLogo : staticURL+"website/resources/images/Banners/HC_Logo.png",
+			headerLogo : "https://dl.dropboxusercontent.com/u/8287719/resources/images/Banners/HC_Logo.png",
 
 
 			};
@@ -36,7 +36,7 @@ happy_cup.factory('content_factory', function($http){
 								{qty: '2lbs', price: 24.99},
 								{qty: '5lbs', price: 49.99}
 							],
-							img_src : staticURL+"website/resources/images/Products/the_buzz.png"
+							img_src : "https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/the_buzz.png"
 						},
 						{
 							id : 2,
@@ -50,7 +50,7 @@ happy_cup.factory('content_factory', function($http){
 								{qty: '2lbs', price: 24.99},
 								{qty: '5lbs', price: 49.99}
 							],
-							img_src : staticURL+"website/resources/images/Products/boomboom.png"
+							img_src : "https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/boomboom.png"
 						},
 						{
 							id : 3,
@@ -64,7 +64,7 @@ happy_cup.factory('content_factory', function($http){
 								{qty: '2lbs', price: 24.99},
 								{qty: '5lbs', price: 49.99}
 							],
-							img_src : staticURL+"website/resources/images/Products/morning_madness.png"
+							img_src : "https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/morning_madness.png"
 						},
 						{
 							id : 4,
@@ -78,7 +78,7 @@ happy_cup.factory('content_factory', function($http){
 								{qty: '2lbs', price: 24.99},
 								{qty: '5lbs', price: 49.99}
 							],
-							img_src : staticURL+"website/resources/images/Products/decaf.png"
+							img_src : "https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/decaf.png"
 						},
 						{
 							id : 5,
@@ -92,7 +92,7 @@ happy_cup.factory('content_factory', function($http){
 								{qty: '2lbs', price: 24.99},
 								{qty: '5lbs', price: 49.99}
 							],
-							img_src : staticURL+"website/resources/images/Products/happy_heart.png"
+							img_src : "https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/happy_heart.png"
 						},
 						{
 							id : 6,
@@ -106,7 +106,7 @@ happy_cup.factory('content_factory', function($http){
 								{qty: '2lbs', price: 24.99},
 								{qty: '5lbs', price: 49.99}
 							],
-							img_src : staticURL+"website/resources/images/Products/pondok_baru.png"
+							img_src : "https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/pondok_baru.png"
 						},
 					],
 
@@ -117,7 +117,7 @@ happy_cup.factory('content_factory', function($http){
 							name: 'Six Month Subscription',
 							description: 'Happy Cup sent directly to your door for six months! A six month subscription gives you a chance to try one bag each of our current coffee lineup!',
 							pricing : 105.00,
-							img_src: staticURL+"website/resources/images/Products/6mo_sub.png" 
+							img_src: "https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/6mo_sub.png" 
 						},
 						{
 							id: 8,
@@ -125,7 +125,7 @@ happy_cup.factory('content_factory', function($http){
 							name: 'Twelve Month Subscription',
 							description: 'Happy Cup sent directly to your door for an entire year! Choose your favorite roast, or switch things up every month with the roasters choice option.',
 							pricing : 200.00,
-							img_src: staticURL+"website/resources/images/Products/12mo_sub.png"
+							img_src: "https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/12mo_sub.png"
 						},
 					],
 					merchandise: [
@@ -136,7 +136,7 @@ happy_cup.factory('content_factory', function($http){
 							hasCoffee: 1,
 							description: 'The perfect cup! The gift mug set includes one 18 oz. mug, a 12 oz. bag of any coffee variety, and a handwritten thank you card from our Happy Cup crew. A quick simple way to get your artisan coffee fix!',
 							pricing: 16.75,
-							img_src: staticURL+'website/resources/images/Products/gift_mug.png'
+							img_src: 'https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/gift_mug.png'
 						},
 						{
 							id: 10,
@@ -146,7 +146,7 @@ happy_cup.factory('content_factory', function($http){
 							description: 'A great gift for the coffee lover. Each gift box includes a mug, T-Shirt, and a bag of your favorite coffee. Each box is packaged and prepared by our all star people with potential, so with every purchase, you are helping to keep our amazing staff in a fulfilling job!',
 							size: [{id: 1, size: 'Small'}, {id: 2, size: 'Medium'}, {id: 3, size: 'Large'}, {id: 4, size: 'Extra-Large'}, {id: 5, size: 'XX-Large'}],
 							pricing: 27.00,
-							img_src: staticURL+'website/resources/images/Products/gift_box.png'
+							img_src: 'https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/gift_box.png'
 						},
 						{
 							id: 11,
@@ -164,7 +164,7 @@ happy_cup.factory('content_factory', function($http){
 							hasCoffee: 0,
 							description: 'Keep your cup half full with this large ceramic mug.',
 							pricing: 5.50,
-							img_src: staticURL+'website/resources/images/Products/mug.png'
+							img_src: 'https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/mug.png'
 						},
 						{
 							id: 13,
@@ -174,7 +174,7 @@ happy_cup.factory('content_factory', function($http){
 							description: 'Show your support with this 100% cotton Happy Cup T-shirt.',
 							size: [{id: 1, size: 'Small'}, {id: 2, size: 'Medium'}, {id: 3, size: 'Large'}, {id: 4, size: 'Extra-Large'}, {id: 5, size: 'XX-Large'}],
 							pricing: 15.00,
-							img_src: staticURL+'website/resources/images/Products/happy_t.png'
+							img_src: 'https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/happy_t.png'
 						}
 					],
 				}

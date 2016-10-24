@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.generic import View
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.db import connection
 
 
@@ -10,13 +10,17 @@ from django.db import connection
 
 import serialize
 from querysets import QuerySet
+from shopping_cart import ShoppingCart
 
 
 import json
 
 # Create your views here.
+
+
 class Index(View):
 
+	@method_decorator(ensure_csrf_cookie)
 	def get(self, request):
 
 		return render(request, 'website/index.html')
@@ -34,3 +38,30 @@ class ProvideContent(View):
 			self.coffee_json = self.json_serializer.serialize_coffee(self.query_set.coffee)
 
 		return JsonResponse(self.coffee_json, safe=False)
+
+
+
+class SyncShoppingCart(View):
+
+	def get(self, request):
+
+		# request.session.clear()
+
+		if 'shoppingCart' not in request.session:
+			shoppingCart = ShoppingCart()
+			request.session['shoppingCart'] = shoppingCart.to_dictionary()
+			return JsonResponse({'new': True})
+
+
+		return JsonResponse(request.session['shoppingCart'])
+
+	def post(self, request):
+		cart = json.loads(request.body)
+
+		request.session['shoppingCart'] = cart
+
+		return JsonResponse({'status': True})
+
+
+
+
