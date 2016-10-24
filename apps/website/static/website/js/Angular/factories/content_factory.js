@@ -7,7 +7,7 @@ happy_cup.factory('content_factory', function($http){
 	factory.getContent = function(callback){
 
 			$http.get('content/').then(function(response){
-				console.log(JSON.parse(response.data))
+				console.log(response.data)
 			});
 
 			content.global = {
@@ -155,7 +155,7 @@ happy_cup.factory('content_factory', function($http){
 							hasCoffee: 3,
 							description: "A gift box for the coffee lover! Each box contains 3 bags of coffee of your choosing, as well as a hand written letter of appreciation from our amazing staff. Great for those who can't make up their mind, or to spread the happiness to a new Happy Cup drinker!",
 							pricing: 36.00,
-							img_src: staticURL+'website/resources/images/Products/3_coffee_gift_box.png'
+							img_src: 'https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/3_coffee_gift_box.png'
 						},
 						{
 							id: 12,

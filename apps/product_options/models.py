@@ -47,3 +47,31 @@ class CoffeeVolume(Timestamp):
 
 	class Meta:
 		ordering = ['-unit', 'qty']
+
+class ShirtSize(Timestamp):
+
+	XSMALL = 'XS'
+	SMALL = 'S'
+	MEDIUM = 'M'
+	LARGE = 'L'
+	XLARGE = 'XL'
+	XXLARGE = '2XL'
+	XXXLARGE = '3XL'
+
+	SIZE_CHOICES = (
+		(XSMALL, 'X-Small'),
+		(SMALL, 'Small'),
+		(MEDIUM, 'Medium'),
+		(LARGE, 'Large'),
+		(XLARGE, 'X-Large'),
+		(XXLARGE, '2X-Large'),
+		(XXXLARGE, '3X-Large')
+	)
+
+	size = models.CharField(max_length=3, choices=SIZE_CHOICES, unique=True)
+
+	def __str__(self):
+		return self.size
+
+
+

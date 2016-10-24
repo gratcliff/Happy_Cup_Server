@@ -31,13 +31,34 @@ class ProvideContent(View):
 	query_set = QuerySet()
 	json_serializer = serialize.JsonSerializer()
 	coffee_json = json_serializer.serialize_coffee(query_set.coffee)
+	merchandise_json = json_serializer.serialize_merch(query_set.merchandise)
+	variety_pack_json = json_serializer.serialize_variety(query_set.variety_pack)
+
+	# concatenate merchadise and variety pack lists
+	merchandise_json.extend(variety_pack_json)
+
 
 	def get(self,request):
 		if serialize.db_modified:
 			self.query_set = QuerySet() # redefine to wipe cached data
 			self.coffee_json = self.json_serializer.serialize_coffee(self.query_set.coffee)
+			self.merchandise_json = json_serializer.serialize_merch(self.query_set.merchandise)
+			self.variety_pack_json = json_serializer.serialize_variety(self.query_set.variety_pack)
+			
+			# concatenate merchadise and variety pack lists
+			self.merchandise_json.extend(self.variety_pack_json)
 
-		return JsonResponse(self.coffee_json, safe=False)
+		context = {
+			'home' : {
+
+				'products' : {
+					'coffee' : self.coffee_json,
+					'merchandise' : self.merchandise_json,
+				},
+			},
+		}
+
+		return JsonResponse(context, safe=False)
 
 
 
