@@ -21,6 +21,7 @@ class Timestamp(models.Model):
 
 		serialize.db_modified = True
 
+
 		super(Timestamp, self).save(*args, **kwargs)
 
 	def delete(self, *args, **kwargs):
@@ -29,7 +30,7 @@ class Timestamp(models.Model):
 		# must be refreshed so that updated data is sent to the front end
 
 		serialize.db_modified = True
-		print serialize.db_modified
+
 
 		super(Timestamp, self).delete(*args, **kwargs)
 

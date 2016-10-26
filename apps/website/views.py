@@ -8,8 +8,10 @@ from django.db import connection
 
 
 
+
 import serialize
 from querysets import QuerySet
+from contentprovider import ContentProvider
 from shopping_cart import ShoppingCart
 
 
@@ -28,37 +30,34 @@ class Index(View):
 
 class ProvideContent(View):
 
-	query_set = QuerySet()
-	json_serializer = serialize.JsonSerializer()
-	coffee_json = json_serializer.serialize_coffee(query_set.coffee)
-	merchandise_json = json_serializer.serialize_merch(query_set.merchandise)
-	variety_pack_json = json_serializer.serialize_variety(query_set.variety_pack)
+	content = ContentProvider()
 
-	# concatenate merchadise and variety pack lists
-	merchandise_json.extend(variety_pack_json)
+	content.populate_products()
 
 
 	def get(self,request):
-		if serialize.db_modified:
-			self.query_set = QuerySet() # redefine to wipe cached data
-			self.coffee_json = self.json_serializer.serialize_coffee(self.query_set.coffee)
-			self.merchandise_json = json_serializer.serialize_merch(self.query_set.merchandise)
-			self.variety_pack_json = json_serializer.serialize_variety(self.query_set.variety_pack)
-			
-			# concatenate merchadise and variety pack lists
-			self.merchandise_json.extend(self.variety_pack_json)
+		self.content.query_set = QuerySet()
+		
+		self.content.expired_promotion_check()
 
-		context = {
+		if serialize.db_modified:
+			print 'refreshing data'
+			self.content.populate_products()
+
+		print len(connection.queries)
+
+		self.context = {
 			'home' : {
 
 				'products' : {
-					'coffee' : self.coffee_json,
-					'merchandise' : self.merchandise_json,
+					'featured' : self.content.featured_products,
+					'coffee' : self.content.coffee_json,
+					'merchandise' : self.content.merchandise_json,
 				},
 			},
 		}
 
-		return JsonResponse(context, safe=False)
+		return JsonResponse(self.context, safe=False)
 
 
 

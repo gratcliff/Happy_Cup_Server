@@ -7,7 +7,7 @@ happy_cup.factory('content_factory', function($http){
 	factory.getContent = function(callback){
 
 			$http.get('content/').then(function(response){
-				console.log(response.data)
+				console.log(response.data.home.products)
 			});
 
 			content.global = {

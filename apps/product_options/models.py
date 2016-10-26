@@ -39,7 +39,7 @@ class CoffeeVolume(Timestamp):
 
 	unit = models.CharField('Unit of Measurment', max_length=3, choices=UNIT_CHOICES, default=OUNCES)
 	qty = models.PositiveSmallIntegerField('Number of units')
-	base_price = models.DecimalField('Base price (in dollars) for any coffee at this weight', max_digits=5, decimal_places=2)
+	base_price = models.DecimalField('Base price (dollars) for any coffee at this weight', max_digits=5, decimal_places=2)
 
 
 	def __str__(self):
