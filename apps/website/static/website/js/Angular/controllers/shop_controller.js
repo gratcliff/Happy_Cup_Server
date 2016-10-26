@@ -1,11 +1,13 @@
 happy_cup.controller('shop_controller', function ($scope, $timeout, content_factory, shop_factory){
 
+
 	content_factory.getPageContent('home', function(content){
 		$scope.products = content.products;
-		
+
 	});
 
-// console.log($scope.products);
+
+
 
 	$scope.productDisplay = {
 		"showCoffee" : true,
@@ -48,13 +50,12 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 	}
 
 	$scope.$on('sendToCart', function(event, product, order, idx) {
-		// console.log(product.id);
-		var productType = product.type.type
+		var productType = product.type
 		if (productType === 'coffee') {
 			$scope.addCoffeeToCart(product, order, idx);
 		} else if (productType === 'subscription'){
 			$scope.addSubscriptionsToCart(product, order, idx);
-		} else if (productType === 'merchandise') {
+		} else if (productType === 'merchandise' || productType === 'variety') {
 			$scope.addMerchToCart(product, order, idx);
 		}
 
@@ -67,9 +68,9 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 			qty: 1,
 			name: coffee.name,
 			roast: coffee.roast,
-			size: order.qty,
+			size: order.size,
 			grind: order.grind,
-			subtotal: order.qty.price
+			subtotal: order.size.base_price
 		};
 			
 		shop_factory.addCoffeeToCart(data, function(newCart) {
@@ -93,10 +94,10 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 			name: sub.name,
 			roast: order.roast,
 			grind: order.grind,
-			price: sub.pricing,
-			subtotal: sub.pricing
+			price: sub.price,
+			subtotal: sub.price
 		};
-		// console.log(data);
+
 		shop_factory.addSubscriptionsToCart(data, function (newCart){
 
 			$timeout(function(){
@@ -113,12 +114,12 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 			id: merch.id,
 			qty: 1,
 			name: merch.name,
-			price: merch.pricing,
-			subtotal: merch.pricing
+			price: merch.price,
+			subtotal: merch.price
 		};
 		//Can be length 1 or 3
-		if (order.roast){
-			data.roast = order.roast;
+		if (order.coffee){
+			data.coffee = order.coffee;
 		}
 		if (order.grind){
 			data.grind = order.grind;
@@ -127,7 +128,7 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 			data.size = order.size;
 		}
 
-		// console.log(data);
+
 		shop_factory.addMerchandiseToCart(data, function (newCart){
 
 			$timeout(function(){

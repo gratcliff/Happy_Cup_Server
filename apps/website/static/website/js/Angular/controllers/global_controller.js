@@ -15,6 +15,7 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 			$scope.globalContent = content.global;
 			$scope.forms = {};
 			$scope.pageLoading = false;
+
 	});
 
 	user_factory.getCurrentUser(function(currentUser){
@@ -24,11 +25,8 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 	shop_factory.getShoppingCart(function(cart){
 		$scope.shoppingCart = cart;
 		
-		
 	});
 
-
-	
 	$scope.registerUser = function() {
 		if ($scope.forms.userRegForm.$valid) {
 			
@@ -122,6 +120,12 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 
 	//event listeners
 
+	// $scope.$on('isContentAvailable', function(event, callback){
+	// 	if ($scope.shoppingCart) {
+	// 		callback()
+	// 	}
+	// });
+
 	$scope.$on('getShoppingCart', function (event, callback){
 		callback($scope.shoppingCart);
 	});
@@ -129,7 +133,7 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 	$scope.$on('openCoffeeModal', function (event, coffee) {
 		$scope.coffeeModal = coffee;
 		$scope.coffeeOrder = {};
-		$scope.coffeeOrder.qty = coffee.pricing[0];
+		$scope.coffeeOrder.size = coffee.sizes[0];
 		$scope.coffeeOrder.grind = coffee.grinds[0];
 		$scope.mobileModal('#coffee_modal');
 	
@@ -141,8 +145,8 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 
 		$scope.subscriptionModal = sub;
 		$scope.modalOrder = {};
-		$scope.modalOrder.roast = sub.roasts[0];
-		$scope.modalOrder.grind = sub.roasts[0].grinds[0];
+		$scope.modalOrder.coffee = sub.coffees[0];
+		$scope.modalOrder.grind = sub.coffees[0].grinds[0];
 		$scope.mobileModal('#subscription_modal');
 		
 	})
@@ -150,24 +154,34 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 	$scope.$on('openMerchandiseModal', function (event, merch){
 		$scope.merchandiseModal = merch;
 		$scope.modalOrder = {};
-		if(merch.roasts){
-			if (merch.hasCoffee > 1) {
-				$scope.modalOrder.roast = [];
-				$scope.merchandiseModal.roasts = angular.copy(merch.roasts);
+
+		if (merch.sizes) {
+			$scope.modalOrder.size = merch.sizes[0];
+		}
+
+		if(merch.coffees){
+			if (merch.coffee_qty > 1) {
+				$scope.modalOrder.coffee = [];
+				$scope.merchandiseModal.coffees = angular.copy(merch.coffees);
 				// reset qty to 0 for each option
-				angular.forEach($scope.merchandiseModal.roasts, function(roast, key){
-					roast.qty = 0;
+				angular.forEach($scope.merchandiseModal.coffees, function(coffee, key){
+					coffee.qty = 0;
 
 
 				});
 			} else {
-				$scope.modalOrder.roast = merch.roasts[0];
-				$scope.modalOrder.grind = merch.roasts[0].grinds[0];
+				$scope.modalOrder.coffee = merch.coffees[0];
+				$scope.modalOrder.grind = merch.coffees[0].grinds[0];
 			}
 		}
-		if (merch.size){
-			$scope.modalOrder.size = merch.size[0];
-		}
+		angular.forEach(merch.merchandise, function(item, idx){
+			if (item.sizes) {
+				$scope.modalOrder.size = item.sizes[0];
+				$scope.merchandiseModal.sizes = item.sizes;
+			}
+		});
+			
+		
 		$scope.mobileModal('#merch_modal')
 	})
 
@@ -177,9 +191,9 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 			return
 		}
 
-		if (product.hasCoffee > 1) {
+		if (product.coffee_qty > 1) {
 
-			if (order.roast.length !== product.hasCoffee) {
+			if (order.coffee.length !== product.coffee_qty) {
 				$scope.giftBoxError = true;
 				return
 			}
@@ -235,8 +249,8 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 				}
 			}
 		}
-		$scope.modalOrder.roast = newChoices;
-		if ($scope.modalOrder.roast.length) {
+		$scope.modalOrder.coffee = newChoices;
+		if ($scope.modalOrder.coffee.length) {
 			$scope.modalOrder.grind = newChoices[0].grinds[0];
 		}
 

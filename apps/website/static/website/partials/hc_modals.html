@@ -151,7 +151,7 @@
 				<div class = 'container-fluid'>
 					<div class = 'row'>
 						<div class="col-xs-8 col-md-5 col-xs-offset-2 col-sm-offset-2 col-md-offset-0 text-center">
-							<img ng-src="[[coffeeModal.img_src]]" alt="[[coffeeModal.name]]">
+							<img ng-src="[[coffeeModal.image_url]]" alt="[[coffeeModal.name]]">
 						</div>
 						<div class = 'col-xs-12 col-md-7'>
 							<h3>[[coffeeModal.name]]</h3>
@@ -160,14 +160,14 @@
 								<div class = 'form-group has-feedback'>
 									<label for = 'grind' class = 'col-sm-2 control-label'>Grind:</label>
 									<div class = 'col-sm-8'>
-										<select class="form-control" ng-options="grind.type for grind in coffeeModal.grinds track by grind.id" ng-model="coffeeOrder.grind" >
+										<select class="form-control" ng-options="grind.name for grind in coffeeModal.grinds track by grind.id" ng-model="coffeeOrder.grind" >
 										</select>
 									</div>
 								</div>
 								<div class = 'form-group has-feedback'>
 									<label for ='size' class = 'col-sm-2 control-label'> Size:</label>
 									<div class = 'col-sm-4'> 
-									 	<select class="form-control" ng-options="value.qty for value in coffeeModal.pricing track by value.qty" ng-model="coffeeOrder.qty">
+									 	<select class="form-control" ng-options="size.qty for size in coffeeModal.sizes track by size.id" ng-model="coffeeOrder.size">
 										</select>
 									</div>
 								</div>
@@ -196,7 +196,7 @@
 					<div class = 'container-fluid'>
 						<div class = 'row'>
 							<div class="col-xs-8 col-md-5 col-xs-offset-2 col-sm-offset-2 col-md-offset-0 text-center">
-								<img ng-src="[[subscriptionModal.img_src]]" alt="[[subscriptionModal.name]]">
+								<img ng-src="[[subscriptionModal.image_url]]" alt="[[subscriptionModal.name]]">
 							</div>
 							<div class = 'col-xs-12 col-md-7'>
 								<h3>[[subscriptionModal.name]]</h3>
@@ -205,13 +205,13 @@
 									<div class = 'form-group has-feedback'>
 										<label for ='size' class = 'col-sm-2 control-label'> Coffee:</label>
 										<div class = 'col-sm-8'> 
-										 	<select class = 'form-control' ng-options = 'roast.name for roast in subscriptionModal.roasts track by roast.id' ng-model = 'modalOrder.roast'></select>
+										 	<select class = 'form-control' ng-options = 'coffee.name for coffee in subscriptionModal.roasts track by coffee.id' ng-model = 'modalOrder.coffee'></select>
 										</div>
 									</div>
 									<div class = 'form-group has-feedback'>
 										<label for = 'grind' class = 'col-sm-2 control-label'>Grind:</label>
 										<div class = 'col-sm-8'>  
-											<select class = 'form-control' ng-options = 'grind.type for grind in modalOrder.roast.grinds track by grind.id' ng-model = 'modalOrder.grind'></select>
+											<select class = 'form-control' ng-options = 'grind.name for grind in modalOrder.coffee.grinds track by grind.id' ng-model = 'modalOrder.grind'></select>
 										</div>
 									</div>
 									<div class="form-group text-center">
@@ -240,49 +240,49 @@
 					<div class = 'container-fluid'>
 						<div class = 'row'>
 							<div class="col-xs-8 col-md-5 col-xs-offset-2 col-sm-offset-2 col-md-offset-0 text-center">
-								<img ng-src="[[merchandiseModal.img_src]]" alt="[[merchandiseModal.name]]">
+								<img ng-src="[[merchandiseModal.image_url]]" alt="[[merchandiseModal.name]]">
 							</div>
 							<div class = 'col-xs-12 col-md-7'>
 								<h3>[[merchandiseModal.name]]</h3>
 								<p>[[merchandiseModal.description]]</p>
 								<form class = 'form-horizontal' role = 'form'>
-									<div ng-if = 'merchandiseModal.roasts' class = 'form-group has-feedback'>
+									<div ng-if = 'merchandiseModal.coffees' class = 'form-group has-feedback'>
 										<label for ='size' class = 'col-sm-3 control-label'>Coffee:</label>
-										<div ng-if = 'merchandiseModal.hasCoffee === 1' class = 'col-sm-8'> 
-										 	<select class = 'form-control' ng-options = 'roast.name for roast in merchandiseModal.roasts track by roast.id' ng-model = 'modalOrder.roast'></select>
+										<div ng-if = 'merchandiseModal.coffee_qty === 1' class = 'col-sm-8'> 
+										 	<select class = 'form-control' ng-options = 'coffee.name for coffee in merchandiseModal.coffees track by coffee.id' ng-model = 'modalOrder.coffee'></select>
 										</div>
-										<div ng-if = 'merchandiseModal.hasCoffee > 1' class = 'col-sm-8'> 
+										<div ng-if = 'merchandiseModal.coffee_qty > 1' class = 'col-sm-8'> 
 										 	<div class = 'dropdown has-feedback' ng-class="{'has-error': giftBoxError}"> 
-										 		<button id="three_coffee_select_btn" class="form-control dropdown-toggle text-left " data-toggle="dropdown" ng-click="stopDefaultAction('#three_cup_gift_options')">&nbsp;&nbsp;[[modalOrder.roast.length]] Selected <span class="text-danger" ng-if="giftBoxError">* Must choose 3</span>
+										 		<button id="three_coffee_select_btn" class="form-control dropdown-toggle text-left " data-toggle="dropdown" ng-click="stopDefaultAction('#three_cup_gift_options')">&nbsp;&nbsp;[[modalOrder.coffee.length]] Selected <span class="text-danger" ng-if="giftBoxError">* Must choose 3</span>
 										 		</button>
 
 										 		<ul id="three_cup_gift_options" class="dropdown-menu col-xs-12">
 										 			
-												 	<li class="three_cup_gift_table" ng-repeat="roast in merchandiseModal.roasts track by $index" ng-show="roast.name !== 'Roaster\'s Choice'">
-														<input type="number" min="0" ng-model="roast.qty" ng-change="updateVarietyBox(merchandiseModal.roasts, merchandiseModal.hasCoffee)">
-														[[roast.name]]
+												 	<li class="three_cup_gift_table" ng-repeat="coffee in merchandiseModal.coffees track by $index" ng-show="coffee.name !== 'Roaster\'s Choice'">
+														<input type="number" min="0" ng-model="coffee.qty" ng-change="updateVarietyBox(merchandiseModal.coffees, merchandiseModal.coffee_qty)">
+														[[coffee.name]]
 												 	</li>
 
 												</ul>
 										 	</div>
 										</div>
 									</div>
-									<div ng-if = 'merchandiseModal.hasCoffee > 1' class = 'form-group has-feedback'>
+									<div ng-if = 'merchandiseModal.coffee_qty > 1' class = 'form-group has-feedback'>
 										<label for = 'grind' class = 'col-sm-3 control-label'>Grind:</label>
 										<div class = 'col-sm-8'>  
-											<select class = 'form-control' ng-options = 'grind.type for grind in modalOrder.roast[0].grinds track by grind.id' ng-model = 'modalOrder.grind'></select>
+											<select class = 'form-control' ng-options = 'grind.name for grind in modalOrder.coffee[0].grinds track by grind.id' ng-model = 'modalOrder.grind'></select>
 										</div>
 									</div>
-									<div ng-if = 'merchandiseModal.hasCoffee === 1' class = 'form-group has-feedback'>
+									<div ng-if = 'merchandiseModal.coffee_qty === 1' class = 'form-group has-feedback'>
 										<label for = 'grind' class = 'col-sm-3 control-label'>Grind:</label>
 										<div class = 'col-sm-8'>  
-											<select class = 'form-control' ng-options = 'grind.type for grind in modalOrder.roast.grinds track by grind.id' ng-model = 'modalOrder.grind'></select>
+											<select class = 'form-control' ng-options = 'grind.name for grind in modalOrder.coffee.grinds track by grind.id' ng-model = 'modalOrder.grind'></select>
 										</div>
 									</div>
-									<div ng-if = 'merchandiseModal.size' class = 'form-group has-feedback'>
+									<div ng-if = 'merchandiseModal.sizes' class = 'form-group has-feedback'>
 										<label for = 'size' class = 'col-sm-3 control-label'>Shirt Size:</label>
 										<div class = 'col-sm-8'>  
-											<select class = 'form-control' ng-options = 'size.size for size in merchandiseModal.size track by size.id' ng-model = 'modalOrder.size'></select>
+											<select class = 'form-control' ng-options = 'size.size for size in merchandiseModal.sizes track by size.id' ng-model = 'modalOrder.size'></select>
 										</div>
 									</div>
 									<div class="form-group text-center">

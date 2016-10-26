@@ -1,4 +1,4 @@
-from django.utils import timezone
+from django.db import connection
 
 db_modified = False
 
@@ -15,11 +15,13 @@ class JsonSerializer:
 		global db_modified
 
 		for promotion in expired_promotions:
-			promotion.coffee_set = []
-			promotion.merchandise_set = []
-			promotion.varietypack_set = []
-			promotion.expired = True
-			promotion.save()
+			
+			if not promotion.expired:
+				promotion.coffee_set = []
+				promotion.merchandise_set = []
+				promotion.varietypack_set = []
+				promotion.expired = True
+				promotion.save()
 
 
 	def serialize_coffee(self, coffees):

@@ -36,6 +36,7 @@ class ProvideContent(View):
 
 
 	def get(self,request):
+
 		self.content.query_set = QuerySet()
 		
 		self.content.expired_promotion_check()
@@ -72,12 +73,13 @@ class SyncShoppingCart(View):
 			request.session['shoppingCart'] = shoppingCart.to_dictionary()
 			return JsonResponse({'new': True})
 
-
 		return JsonResponse(request.session['shoppingCart'])
 
 	def post(self, request):
 		cart = json.loads(request.body)
 
+		
+		cart['unsavedChanges'] = False
 		request.session['shoppingCart'] = cart
 
 		return JsonResponse({'status': True})

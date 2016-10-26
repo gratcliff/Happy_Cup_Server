@@ -95,7 +95,7 @@ happy_cup.factory('shop_factory', function($http){
 
 			if (shoppingCart.subscriptions[idx].id === order.id &&
 			shoppingCart.subscriptions[idx].grind.id === order.grind.id &&
-			shoppingCart.subscriptions[idx].roast.id === order.roast.id) {
+			shoppingCart.subscriptions[idx].coffee.id === order.coffee.id) {
 
 				shoppingCart.subscriptions[idx].qty += order.qty;
 				shoppingCart.subscriptions[idx].subtotal += order.subtotal;
@@ -177,7 +177,7 @@ happy_cup.factory('shop_factory', function($http){
 
 		var nonZeroQtyCheck = [];
 		for (idx in cart.coffee) {
-			if (cart.coffee[idx].qty !== 0) {
+			if (cart.coffee[idx].qty > 0) {
 				nonZeroQtyCheck.push(cart.coffee[idx]);
 			}
 		}
@@ -185,7 +185,7 @@ happy_cup.factory('shop_factory', function($http){
 		shoppingCart.coffee = nonZeroQtyCheck;
 		nonZeroQtyCheck = [];
 		for (idx in cart.subscriptions){
-			if (cart.subscriptions[idx].qty !== 0){
+			if (cart.subscriptions[idx].qty > 0){
 				nonZeroQtyCheck.push(cart.subscriptions[idx]);
 			}
 		}
@@ -193,7 +193,7 @@ happy_cup.factory('shop_factory', function($http){
 
 		nonZeroQtyCheck = [];
 		for (idx in cart.merch) {
-			if (cart.merch[idx].qty !== 0) {
+			if (cart.merch[idx].qty > 0) {
 				nonZeroQtyCheck.push(cart.merch[idx]);
 			}
 		}

@@ -11,7 +11,6 @@ happy_cup.controller('checkout_controller', function ($scope, $location, $timeou
 			$scope.forms.checkoutForm = {}
 			$scope.billingInfo = {}
 			$scope.shippingInfo = {}
-			console.log(cart);
 		}
 		
 
@@ -31,7 +30,6 @@ happy_cup.controller('checkout_controller', function ($scope, $location, $timeou
 				$scope.shippingInfo = $scope.billingInfo;
 			}
 			shop_factory.submitBillingInfo($scope.billingInfo, $scope.shippingInfo, function(){
-				console.log($scope.currentCart);
 				$location.url('/cart/payment');
 			});
 		}

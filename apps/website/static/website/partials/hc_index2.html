@@ -80,11 +80,11 @@
 								<td ng-if="!mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' data-toggle = 'modal' data-target ="#coffee_modal" ng-click="openCoffeeModal(coffee, $index)">+</a></td>
 								<td ng-if="mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' ng-click="openCoffeeModal(coffee, $index)">+</a></td>
 								<td>[[coffee.name]]</td>
-								<td>[[coffee.roast]]</td>
-								<td class="hidden-xs">[[order.qty.price | currency : symbol : fractionSize]]</td>
-								<td class="hidden-xs"><select class="form-control" ng-init="order.qty=coffee.pricing[0]" ng-model="order.qty" ng-options="value.qty for value in coffee.pricing track by value.qty"></select>
+								<td>[[coffee.roast.name]]</td>
+								<td class="hidden-xs">[[order.qty.base_price | currency : symbol : fractionSize]]</td>
+								<td class="hidden-xs"><select class="form-control" ng-init="order.size=coffee.sizes[0]" ng-model="order.size" ng-options="size.qty for size in coffee.sizes track by size.id"></select>
 									</td>
-								<td class="hidden-xs"><select class="form-control" ng-init="order.grind=coffee.grinds[0]" ng-options="grind.type for grind in coffee.grinds track by grind.id" ng-model="order.grind"></select>
+								<td class="hidden-xs"><select class="form-control" ng-init="order.grind=coffee.grinds[0]" ng-options="grind.name for grind in coffee.grinds track by grind.id" ng-model="order.grind"></select>
 									</td>
 								<td class="hidden-xs">
 								<button class = 'margin-clear btn btn-brown' ng-click="addCoffeeToCart(coffee, order, $index)" ng-disabled="coffee.addingProduct"><span ng-if="!coffee.addingProduct">Add To Cart</span><span ng-if="coffee.addingProduct">Item Added</span> </button>
@@ -129,10 +129,10 @@
 							<td class = 'visible-xs'>[[subscription.name]]</td>
 
 							<td class = 'hidden-xs'><select class = 'form-control' ng-init = 'order.roast=subscription.roasts[0]'
-							ng-model = 'order.roast' ng-options = 'roast.name for roast in subscription.roasts track by roast.id' ></select>
+							ng-model = 'order.roast' ng-options = 'roast.name for roast in subscription.roasts track by $index' ></select>
 							</td>
 
-							<td class="hidden-xs"><select class = 'form-control' ng-init="order.grind=order.roast.grinds[0]" ng-model = 'order.grind' ng-options = 'grind.type for grind in order.roast.grinds track by grind.id' ></select>
+							<td class="hidden-xs"><select class = 'form-control' ng-init="order.grind=order.roast.grinds[0]" ng-model = 'order.grind' ng-options = 'grind.type for grind in order.roast.grinds track by $index' ></select>
 							</td>
 
 							<td>[[subscription.pricing | currency : symbol : fractionSize]]</td>
@@ -160,12 +160,12 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat = 'merch in products.merchandise track by merch.id'>
+						<tr ng-repeat = 'merch in products.merchandise track by $index'>
 							<td ng-if="!mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' data-toggle = 'modal' data-target = '#merch_modal' ng-click = 'openMerchandiseModal(merch, $index)'>+</a></td>
 							<td ng-if="mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' ng-click = 'openMerchandiseModal(merch, $index)'>+</a></td>
-							<td class="hidden-xs"><img class = 'table_image' ng-src = '[[merch.img_src]]'></td>
+							<td class="hidden-xs"><img class = 'table_image' ng-src = '[[merch.image_url]]'></td>
 							<td>[[merch.name]]</td>
-							<td>[[merch.pricing | currency : symbol : fractionSize]]</td>
+							<td>[[merch.price | currency : symbol : fractionSize]]</td>
 						</tr>
 					</tbody>
 				</table>
