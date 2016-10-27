@@ -1,4 +1,4 @@
-happy_cup.factory('content_factory', function($http){
+happy_cup.factory('content_factory', function($http, $interval){
 
 	var factory = {};
 	var content = {};
@@ -364,7 +364,16 @@ happy_cup.factory('content_factory', function($http){
 	}
 
 	factory.getPageContent = function(page, callback) {
-		callback(content[page])
+
+		waitForContent = $interval(function(){
+			if (content[page] !== undefined) {
+				$interval.cancel(waitForContent);
+				callback(content[page]);
+			} 
+
+		},10)
+
+		
 	}
 
 

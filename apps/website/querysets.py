@@ -12,4 +12,4 @@ class QuerySet(object):
 		self.subscriptions = Subscription.objects.all().prefetch_related('coffees')
 		self.merchandise = Merchandise.objects.all().select_related('featured').prefetch_related('sizes')
 		self.variety_pack = VarietyPack.objects.all().select_related('featured').prefetch_related('coffees', 'merchandise', 'merchandise__sizes', 'coffees__grinds', 'coffees__sizes', 'coffees__roast')
-		self.expired_promotions = ProductPromotion.objects.filter(expiration_date__lt=timezone.now())
+		self.expired_promotions = ProductPromotion.objects.filter(expiration_date__lt=timezone.now(), expired=False)

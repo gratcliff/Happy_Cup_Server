@@ -81,7 +81,7 @@
 								<td ng-if="mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' ng-click="openCoffeeModal(coffee, $index)">+</a></td>
 								<td>[[coffee.name]]</td>
 								<td>[[coffee.roast.name]]</td>
-								<td class="hidden-xs">[[order.qty.base_price | currency : symbol : fractionSize]]</td>
+								<td class="hidden-xs">[[order.size.base_price | currency : symbol : fractionSize]]</td>
 								<td class="hidden-xs"><select class="form-control" ng-init="order.size=coffee.sizes[0]" ng-model="order.size" ng-options="size.qty for size in coffee.sizes track by size.id"></select>
 									</td>
 								<td class="hidden-xs"><select class="form-control" ng-init="order.grind=coffee.grinds[0]" ng-options="grind.name for grind in coffee.grinds track by grind.id" ng-model="order.grind"></select>
@@ -181,4 +181,5 @@
 </div>
 <script type="text/javascript">
 	$.getScript(staticURL+'website/js/template.js');
+
 </script>

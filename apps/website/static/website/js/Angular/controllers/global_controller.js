@@ -120,12 +120,6 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 
 	//event listeners
 
-	// $scope.$on('isContentAvailable', function(event, callback){
-	// 	if ($scope.shoppingCart) {
-	// 		callback()
-	// 	}
-	// });
-
 	$scope.$on('getShoppingCart', function (event, callback){
 		callback($scope.shoppingCart);
 	});

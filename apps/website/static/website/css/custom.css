@@ -485,6 +485,7 @@ fieldset legend {
 
 #social-links-overlay-container {
 	overflow: visible;
+	opacity: 1;
 }
 
 #social-links-overlay {
