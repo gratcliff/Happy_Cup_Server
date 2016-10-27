@@ -166,13 +166,17 @@
 								</div>
 								<div class = 'form-group has-feedback'>
 									<label for ='size' class = 'col-sm-2 control-label'> Size:</label>
-									<div class = 'col-sm-4'> 
+									<div class = 'col-sm-3'> 
 									 	<select class="form-control" ng-options="size.qty for size in coffeeModal.sizes track by size.id" ng-model="coffeeOrder.size">
 										</select>
 									</div>
+									<label for="qty" class="control-label col-sm-2 modal-qty-input">Qty:</label>
+									<div class="col-sm-3">
+										<input type="number" ng-model="coffeeOrder.qty" min="1" class="form-control" style="padding-right: 12px;">
+									</div>
 								</div>
 								<div class="form-group text-center">
-										<button type="submit" class="btn btn-group btn-default btn-animated" ng-click="broadcastToCart(coffeeModal, coffeeOrder, coffeeModal.idx)"><span ng-if="!addingProduct">Add To Cart</span><span ng-if="addingProduct">Item Added</span><i class="fa fa-shopping-cart"></i></button>
+										<button type="submit" class="btn btn-group btn-default btn-animated" ng-click="broadcastToCart(coffeeModal, coffeeOrder, coffeeModal.idx)" ng-show="coffeeOrder.qty > 0"><span ng-if="!addingProduct">Add To Cart</span><span ng-if="addingProduct">Item Added</span><i class="fa fa-shopping-cart"></i></button>
 										<button type="button" class="btn btn-group btn-dark" data-dismiss="modal">Cancel</button>
 								</div>
 							</form>

@@ -129,6 +129,7 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 		$scope.coffeeOrder = {};
 		$scope.coffeeOrder.size = coffee.sizes[0];
 		$scope.coffeeOrder.grind = coffee.grinds[0];
+		$scope.coffeeOrder.qty = 1
 		$scope.mobileModal('#coffee_modal');
 	
 		

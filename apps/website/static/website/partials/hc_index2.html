@@ -73,6 +73,7 @@
 								<td class="hidden-xs">Price</td>
 								<td class="hidden-xs">Size</td>
 								<td class="hidden-xs">Grind</td>
+								<td class="hidden-xs">Qty</td>
 							</tr>
 						</thead>
 						<tbody>
@@ -85,9 +86,12 @@
 								<td class="hidden-xs"><select class="form-control" ng-init="order.size=coffee.sizes[0]" ng-model="order.size" ng-options="size.qty for size in coffee.sizes track by size.id"></select>
 									</td>
 								<td class="hidden-xs"><select class="form-control" ng-init="order.grind=coffee.grinds[0]" ng-options="grind.name for grind in coffee.grinds track by grind.id" ng-model="order.grind"></select>
-									</td>
+								</td>
+								<td class="hidden-xs quantity">
+									<input type="number" class="form-control" ng-init="order.qty = 1" ng-model="order.qty" style="width: 60px; padding-right: 12px;" min="1">
+								</td>
 								<td class="hidden-xs">
-								<button class = 'margin-clear btn btn-brown' ng-click="addCoffeeToCart(coffee, order, $index)" ng-disabled="coffee.addingProduct"><span ng-if="!coffee.addingProduct">Add To Cart</span><span ng-if="coffee.addingProduct">Item Added</span> </button>
+								<button class = 'margin-clear btn btn-brown' ng-click="addCoffeeToCart(coffee, order, $index)" ng-disabled="coffee.addingProduct || order.qty <= 0"><span ng-if="!coffee.addingProduct">Add To Cart</span><span ng-if="coffee.addingProduct">Item Added</span> </button>
 								</td>
 							</tr>
 						</tbody>

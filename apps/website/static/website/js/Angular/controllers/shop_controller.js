@@ -57,15 +57,20 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 	});
 
 	$scope.addCoffeeToCart = function(coffee, order, idx) {
+
+		if (order.qty <= 0 || isNaN(order.qty)) {
+			return
+		}
+
 		$scope.products.coffee[idx].addingProduct = true;
 		var data = {
 			id: coffee.id,
-			qty: 1,
 			name: coffee.name,
 			roast: coffee.roast,
 			size: order.size,
 			grind: order.grind,
-			subtotal: order.size.base_price
+			qty: order.qty,
+			subtotal: order.size.base_price * order.qty
 		};
 			
 		shop_factory.addCoffeeToCart(data, function(newCart) {

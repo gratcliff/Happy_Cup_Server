@@ -365,7 +365,7 @@ happy_cup.factory('content_factory', function($http, $interval){
 
 	factory.getPageContent = function(page, callback) {
 
-		waitForContent = $interval(function(){
+		var waitForContent = $interval(function(){
 			if (content[page] !== undefined) {
 				$interval.cancel(waitForContent);
 				callback(content[page]);
