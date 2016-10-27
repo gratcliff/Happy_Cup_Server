@@ -10,35 +10,41 @@
 
 	<section class="full-width-section">
 			<div class="full-image-container light-gray-bg">
-				<img class="to-right-block" src="/static/website/resources/images/Banners/HC_bean_circulation.jpg" alt="Coffee Beans Circulating">
+				<img class="to-right-block" ng-src="[[fullWidthSections[0].image_url]]">
 				<div class="full-image-overlay text-center">
 					<h1 style = "color:white;" class = 'textResizeLarge'>Roasted By People With Potential</h1>
 				</div>
 			</div>
 			<div class="full-text-container light-gray-bg border-bottom-clear">
-				<h2>Our Company</h2>
+				<h2>[[fullWidthSections[0].header]]</h2>
 				<div class="separator-2 visible-lg"></div>
-				<p style = 'font-size:115%;'>We offer employment, a competitive wage and a full life to adults with disabilities in our local community – our People with Potential. Our company helps create a better future for the disabled by donating a percentage of our profits to vocational and recreational programming to them. We strive to do all of this while continuing to deliver a responsible, great-tasting cup of coffee!</p>
+				<p style = 'font-size:115%;'>[[fullWidthSections[0].first_paragraph]]</p>
+				<div ng-if = 'fullWidthSections[0].second_paragraph'>
+					<br>
+					<p style = 'font-size:115%;'>[[fullWidthSections[0].second_paragraph]]</p>
+				</div>
 				<div class="separator-3 visible-lg"></div>
 			</div>
 	</section>
 
 	<section class="full-width-section">
 		<div class="full-image-container light-gray-bg visible-xs">
-			<img src="/static/website/resources/images/Banners/HC_packaging.jpg" alt="Employees packaging beans">
+			<img ng-src="[[fullWidthSections[1].image_url]]">
 			<div class="full-image-overlay text-center">
 				<h1 style = "color:white;" class = 'textResizeSmall'>Creating a better future for the folks 6 blocks away, and 6,000 miles away.</h1>
 			</div>
 		</div>
 		<div class="full-text-container left light-gray-bg border-bottom-clear text-right">
-			<h2>Our Mission</h2>
+			<h2>[[fullWidthSections[1].header]]</h2>
 			<div class="separator-3 visible-lg"></div>
-			<p style = 'font-size:115%;'> Our mission goes beyond the borders of our community. We also promote a better future for farmers and for our planet by making every effort to source the best, ethicially traded coffee, using some of the best beans grown anywhere on the planet.
-			<br>
-			<br> Happy Cup Coffee is ethically farmed and traded from coffee growing regions throughout the world. It is batch roasted 18 lbs at a time, to ensure the highest quality flavor, and a well-balanced cup.</p>
+			<p style = 'font-size:115%;'>[[fullWidthSections[1].first_paragraph]]</p>
+			<div ng-if = 'fullWidthSections[1].second_paragraph'>
+					<br>
+					<p style = 'font-size:115%;'>[[fullWidthSections[1].second_paragraph]]</p>
+			</div>
 		</div>
 		<div class="full-image-container light-gray-bg hidden-xs">
-			<img src="/static/website/resources/images/Banners/HC_packaging.jpg" alt="Employees packaging beans">
+			<img ng-src="[[fullWidthSections[1].image_url]]">
 			<div class="full-image-overlay text-center">
 				<h1 style = "color:white;" class = 'textResizeSmall'>Creating a better future for the folks 6 blocks away, and 6,000 miles away.</h1>
 			</div>
@@ -47,18 +53,19 @@
 
 	<section class="full-width-section">
 		<div class="full-image-container light-gray-bg">
-			<img class="to-right-block" src="/static/website/resources/images/packaging_people.jpg" alt="Coffee Beans Circulating">
+			<img class="to-right-block" ng-src="[[fullWidthSections[2].image_url]]">
 			<div class="full-image-overlay text-center">
 				<h1 style = "color:white;" class = 'textResizeMid'>Our Goal is to pair great coffee with a great cause.</h1>
 			</div>
 		</div>
 		<div class="full-text-container light-gray-bg border-bottom-clear">
-			<h2>Our Story</h2>
+			<h2>[[fullWidthSections[2].header]]</h2>
 			<div class="separator-2 visible-lg"></div>
-			<p style = 'font-size:115%;'>As a social enterprise, Happy Cup provides a pathway for individuals who have aged out of special education programming. Through sustainable employment opportunities, Happy Cup offers real life skill building with a level of cultural relevance that is sorely lacking in most employment programs for special needs adults.  
-			<br>
-			<br>
-			Our “People with Potential” have a hand in every aspect of our business. Bagging, labeling, weighing coffee, and developing the creative blend names are all part of a Happy Cupper’s daily duties. With every pound of coffee you buy, you commit to reversing the inequities those with disabilities face in the world of employment. <strong> We are People with Potential.</strong></p>
+			<p style = 'font-size:115%;'>[[fullWidthSections[2].first_paragraph]]</p>
+			<div ng-if = 'fullWidthSections[2].second_paragraph'>
+					<br>
+					<p style = 'font-size:115%;'>[[fullWidthSections[2].second_paragraph]]</p>
+			</div>
 		</div>
 	</section>
 <!-- section end -->
@@ -72,13 +79,13 @@
 			<div class="image-box team-member style-3-b" ng-repeat="person in staff">
 				<div class="row">
 					<div class="col-sm-6 col-md-4 col-lg-3">
-						<img ng-src="[[person.img_url]]" alt="[[person.first_name]] [[person.last_name]]">
+						<img ng-src="[[person.image_url]]" alt="[[person.name]]">
 					</div>
 					<div class="col-sm-6 col-md-8 col-lg-9">
 						<div class="body">
-							<h3 class="title margin-clear">[[person.first_name]] [[person.last_name]] <small>([[person.position]])</small></h3>
+							<h3 class="title margin-clear">[[person.name]] <small>([[person.position]])</small></h3>
 							<br>
-							<p>[[person.description]]</p>
+							<p>[[person.member_story]]</p>
 						</div>
 					</div>
 				</div>

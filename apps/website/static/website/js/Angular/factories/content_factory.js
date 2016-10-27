@@ -1,4 +1,4 @@
-happy_cup.factory('content_factory', function($http){
+happy_cup.factory('content_factory', function($http, $interval){
 
 	var factory = {};
 	var content = {};
@@ -7,8 +7,11 @@ happy_cup.factory('content_factory', function($http){
 	factory.getContent = function(callback){
 
 			$http.get('content/').then(function(response){
-				console.log(response.data.home.products)
-			});
+				// console.log(response.data.home.products)
+				// console.log(response.data.about);
+				content.about = response.data.about;
+
+			
 
 			content.global = {
 			headerLogo : "https://dl.dropboxusercontent.com/u/8287719/resources/images/Banners/HC_Logo.png",
@@ -182,76 +185,7 @@ happy_cup.factory('content_factory', function($http){
 				
 
 			};
-			content.about = {
-				staff : [
-					{
-						id: 1,
-						first_name: 'First',
-						last_name: 'Last',
-						position: 'Position',
-						description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque ipsam nihialal. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam laudantium, provident culpa saepe.',
-						img_url: staticURL+'website/resources/images/team_member1.jpg',
-
-					},
-					{
-						id: 2,
-						first_name: 'First',
-						last_name: 'Last',
-						position: 'Position',
-						description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque ipsam nihialal. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam laudantium, provident culpa saepe.',
-						img_url: staticURL+'website/resources/images/team_member2.jpg',
-						
-					},
-					{
-						id: 3,
-						first_name: 'First',
-						last_name: 'Last',
-						position: 'Position',
-						description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque ipsam nihialal. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam laudantium, provident culpa saepe.',
-						img_url: staticURL+'website/resources/images/team_member3.jpg',
-						
-					},
-										{
-						id: 4,
-						first_name: 'First',
-						last_name: 'Last',
-						position: 'Position',
-						description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque ipsam nihialal. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam laudantium, provident culpa saepe.',
-						img_url: staticURL+'website/resources/images/team_member4.jpg',
-						
-					},
-										{
-						id: 5,
-						first_name: 'First',
-						last_name: 'Last',
-						position: 'Position',
-						description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque ipsam nihialal. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam laudantium, provident culpa saepe.',
-						img_url: staticURL+'website/resources/images/team_member5.jpg',
-						
-					},
-										{
-						id: 6,
-						first_name: 'First',
-						last_name: 'Last',
-						position: 'Position',
-						description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque ipsam nihialal. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam laudantium, provident culpa saepe.',
-						img_url: staticURL+'website/resources/images/team_member6.jpg',
-						
-					},
-										{
-						id: 7,
-						first_name: 'First',
-						last_name: 'Last',
-						position: 'Position',
-						description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque ipsam nihialal. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam laudantium, provident culpa saepe.',
-						img_url: staticURL+'website/resources/images/team_member7.jpg',
-						
-					},
-
-				]
-
-				
-			};			
+		
 			content.blog = [
 				{
 					id: 1,
@@ -368,11 +302,18 @@ happy_cup.factory('content_factory', function($http){
 			});
 
 			callback(content);
+		});
 		
 	}
 
 	factory.getPageContent = function(page, callback) {
-		callback(content[page])
+		var waitForContent = $interval(function(){
+			if (content[page] !== undefined) {
+				$interval.cancel(waitForContent);
+				callback(content[page]);
+			} 
+
+		},10)
 	}
 
 

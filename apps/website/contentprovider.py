@@ -10,6 +10,8 @@ class ContentProvider(object):
 		self.coffee_json = []
 		self.merchandise_json = []
 		self.variety_pack_json = []
+		self.about_fullWidthSection = []
+		self.about_staffMemberEntry = []
 
 
 	def populate_products(self):
@@ -30,9 +32,16 @@ class ContentProvider(object):
 		self.featured_products.extend(self.featured_merchandise)
 		self.featured_products.extend(self.featured_variety)
 
+	def populate_aboutPage(self):
+
+		self.about_fullWidthSection = self.json_serializer.serialize_fullWidthSections(self.query_set.fullWidthSection)
+		self.about_staffMemberEntry = self.json_serializer.serialize_staffMemberEntry(self.query_set.staffMemberEntry)
+
 	def expired_promotion_check(self):
 
 		self.json_serializer.featured_product_expiration(self.query_set.expired_promotions)
+
+
 
 
 

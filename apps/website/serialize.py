@@ -190,6 +190,39 @@ class JsonSerializer:
 		db_modified = False
 		return (data, featured)
 
+	def serialize_fullWidthSections(self, sections):
+		global db_modified
+		data = []
+
+		for section in sections:
+			obj = {
+				'id': section.id,
+				'image_url': section.image_url,
+				'header': section.header,
+				'first_paragraph': section.first_paragraph,
+				'second_paragraph': section.second_paragraph
+			}
+			data.append(obj)
+
+		db_modified = False
+		return data if len(data) > 0 else None
+
+	def serialize_staffMemberEntry(self, staves):
+		global db_modified
+		data = []
+
+		for staff in staves:
+			obj = {
+				'id': staff.id,
+				'image_url': staff.image_url,
+				'name': staff.name,
+				'position': staff.position,
+				'member_story': staff.member_story
+			}
+			data.append(obj)
+
+		db_modified = False
+		return data if len(data) > 0 else None
 		
 
 

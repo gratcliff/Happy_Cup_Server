@@ -17,11 +17,11 @@ class FullWidthSectionForm(ModelForm):
 
 		tot_length = first_paragraph_length + second_paragraph_length
 
-		if second_paragraph_length == 0 and tot_length > 500:
+		if second_paragraph_length == 0 and tot_length > 700:
 			self.add_error('first_paragraph', 'Length of entry is too long for the provided space. Maximum 500 characters.')
 
 
-		elif tot_length > 450:
+		elif tot_length > 700:
 			self.add_error('second_paragraph', 'Length of entry is too long for the provided space. Maximum 450 characters.')
 
 class StaffMemberEntryForm(ModelForm):

@@ -26,4 +26,4 @@ class StaffMemberEntry(Timestamp):
 	member_story = models.TextField()
 
 	def __str__(self):
-		return (self.name, self.position)
+		return '%s %s' % (self.name, self.position)
