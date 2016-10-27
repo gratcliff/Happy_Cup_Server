@@ -7,249 +7,14 @@ happy_cup.factory('content_factory', function($http, $interval){
 	factory.getContent = function(callback){
 
 			$http.get('content/').then(function(response){
-				console.log(response.data.home.products)
 				content.home = response.data.home
-			
-
+				content.about = response.data.about;
+		
 				content.global = {
 				headerLogo : "https://dl.dropboxusercontent.com/u/8287719/resources/images/Banners/HC_Logo.png",
 
 
 				};
-			// content.home = {
-			// 	products : {
-			// 		coffee : [
-			// 			{
-			// 				id : 0,
-			// 				type: {id: 1, type: 'coffee'},
-			// 				name : 'Roaster\'s Choice',
-			// 				grinds : [{id : 1, type: 'Whole Bean'}, {id : 2, type:'Espresso'}, {id : 3, type:'Cone Drip Filter'}, {id : 4, type:'Flat Bottom Drip Filter'}, {id : 5, type:'Chemex'}, {id : 6, type:'French Press'}]			
-			// 			},
-			// 			{
-			// 				id : 1,
-			// 				type: {id: 1, type: 'coffee'},
-			// 				name : 'The Buzz',
-			// 				roast : 'Medium Roast',
-			// 				description : 'A sweet coffee with notes of ripe blueberries and rich dark chocolate. Pleasantly complex with a smooth silky body and a clean brisk finish.',
-			// 				grinds : [{id : 1, type: 'Whole Bean'}, {id : 2, type:'Espresso'}, {id : 3, type:'Cone Drip Filter'}, {id : 4, type:'Flat Bottom Drip Filter'}, {id : 5, type:'Chemex'}, {id : 6, type:'French Press'}],
-			// 				pricing : [
-			// 					{qty: '12oz', price: 12.99},
-			// 					{qty: '2lbs', price: 24.99},
-			// 					{qty: '5lbs', price: 49.99}
-			// 				],
-			// 				img_src : "https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/the_buzz.png"
-			// 			},
-			// 			{
-			// 				id : 2,
-			// 				type: {id: 1, type: 'coffee'},
-			// 				name : 'Boom! Boom!',
-			// 				roast : 'Dark Roast',
-			// 				description : 'The rich, nutty, smoky, bold flavors of our Dark Roast are a classic blend for the dark coffee enthusiast.',
-			// 				grinds : [{id : 1, type: 'Whole Bean'}, {id : 2, type:'Espresso'}, {id : 3, type:'Cone Drip Filter'}, {id : 4, type:'Flat Bottom Drip Filter'}, {id : 5, type:'Chemex'}, {id : 6, type:'French Press'}],
-			// 				pricing : [
-			// 					{qty: '12oz', price: 12.99},
-			// 					{qty: '2lbs', price: 24.99},
-			// 					{qty: '5lbs', price: 49.99}
-			// 				],
-			// 				img_src : "https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/boomboom.png"
-			// 			},
-			// 			{
-			// 				id : 3,
-			// 				type: {id: 1, type: 'coffee'},
-			// 				name : 'Morning Madness',
-			// 				roast : 'Espresso Roast',
-			// 				description : 'A blend of Organic, Rainforest Alliance and Direct Trade coffees that combine to produce a smooth and luxurious coffee. Rich chocolate and a hint of roasted nuts lead by a touch of clean citrus.',
-			// 				grinds : [{id : 1, type: 'Whole Bean'}, {id : 2, type:'Espresso'}, {id : 3, type:'Cone Drip Filter'}, {id : 4, type:'Flat Bottom Drip Filter'}, {id : 5, type:'Chemex'}, {id : 6, type:'French Press'}],
-			// 				pricing : [
-			// 					{qty: '12oz', price: 12.99},
-			// 					{qty: '2lbs', price: 24.99},
-			// 					{qty: '5lbs', price: 49.99}
-			// 				],
-			// 				img_src : "https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/morning_madness.png"
-			// 			},
-			// 			{
-			// 				id : 4,
-			// 				type: {id: 1, type: 'coffee'},
-			// 				name : 'Decaffeination',
-			// 				roast : 'Decaf',
-			// 				description : 'Crisp and sweet with hints of bakers chocolate and roasted nuts. A well balanced taste, not your typical decaf.',
-			// 				grinds : [{id : 1, type: 'Whole Bean'}, {id : 2, type:'Espresso'}, {id : 3, type:'Cone Drip Filter'}, {id : 4, type:'Flat Bottom Drip Filter'}, {id : 5, type:'Chemex'}, {id : 6, type:'French Press'}],
-			// 				pricing : [
-			// 					{qty: '12oz', price: 12.99},
-			// 					{qty: '2lbs', price: 24.99},
-			// 					{qty: '5lbs', price: 49.99}
-			// 				],
-			// 				img_src : "https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/decaf.png"
-			// 			},
-			// 			{
-			// 				id : 5,
-			// 				type: {id: 1, type: 'coffee'},
-			// 				name : 'Happy Heart',
-			// 				roast : 'Single Origin - Ethiopia',
-			// 				description : 'Kossa Geshe is a vibrant Ethiopian natural from a single farm in the Limmu Kossa District near the Kebena Forest. A fruit-forward, creamy, full-bodied coffee. Honey-sweetness and juicy berries give way to a floral, tea-like finish.',
-			// 				grinds : [{id : 1, type: 'Whole Bean'}, {id : 2, type:'Espresso'}, {id : 3, type:'Cone Drip Filter'}, {id : 4, type:'Flat Bottom Drip Filter'}, {id : 5, type:'Chemex'}, {id : 6, type:'French Press'}],
-			// 				pricing : [
-			// 					{qty: '12oz', price: 12.99},
-			// 					{qty: '2lbs', price: 24.99},
-			// 					{qty: '5lbs', price: 49.99}
-			// 				],
-			// 				img_src : "https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/happy_heart.png"
-			// 			},
-			// 			{
-			// 				id : 6,
-			// 				type: {id: 1, type: 'coffee'},
-			// 				name : 'Pondok Baru',
-			// 				roast : 'Single Origin - Sumatra',
-			// 				description : 'Produced in the Aceh district of northern Sumatra by a group of 80 farming families. Full bodied with a syrupy mouthfeel. Strong, rich, and earthy, with a hint of bakers chocolate.',
-			// 				grinds : [{id : 1, type: 'Whole Bean'}, {id : 2, type:'Espresso'}, {id : 3, type:'Cone Drip Filter'}, {id : 4, type:'Flat Bottom Drip Filter'}, {id : 5, type:'Chemex'}, {id : 6, type:'French Press'}],
-			// 				pricing : [
-			// 					{qty: '12oz', price: 12.99},
-			// 					{qty: '2lbs', price: 24.99},
-			// 					{qty: '5lbs', price: 49.99}
-			// 				],
-			// 				img_src : "https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/pondok_baru.png"
-			// 			},
-			// 		],
-
-			// 		subscriptions: [
-			// 			{
-			// 				id: 7,
-			// 				type: {id: 2, type: 'subscription'},
-			// 				name: 'Six Month Subscription',
-			// 				description: 'Happy Cup sent directly to your door for six months! A six month subscription gives you a chance to try one bag each of our current coffee lineup!',
-			// 				pricing : 105.00,
-			// 				img_src: "https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/6mo_sub.png" 
-			// 			},
-			// 			{
-			// 				id: 8,
-			// 				type: {id: 2, type: 'subscription'},
-			// 				name: 'Twelve Month Subscription',
-			// 				description: 'Happy Cup sent directly to your door for an entire year! Choose your favorite roast, or switch things up every month with the roasters choice option.',
-			// 				pricing : 200.00,
-			// 				img_src: "https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/12mo_sub.png"
-			// 			},
-			// 		],
-			// 		merchandise: [
-			// 			{
-			// 				id: 9,
-			// 				type: {id: 3, type: 'merchandise'},
-			// 				name: 'Mug Gift Box',
-			// 				hasCoffee: 1,
-			// 				description: 'The perfect cup! The gift mug set includes one 18 oz. mug, a 12 oz. bag of any coffee variety, and a handwritten thank you card from our Happy Cup crew. A quick simple way to get your artisan coffee fix!',
-			// 				pricing: 16.75,
-			// 				img_src: 'https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/gift_mug.png'
-			// 			},
-			// 			{
-			// 				id: 10,
-			// 				type: {id: 3, type: 'merchandise'},
-			// 				name: 'Gift Box',
-			// 				hasCoffee: 1,
-			// 				description: 'A great gift for the coffee lover. Each gift box includes a mug, T-Shirt, and a bag of your favorite coffee. Each box is packaged and prepared by our all star people with potential, so with every purchase, you are helping to keep our amazing staff in a fulfilling job!',
-			// 				size: [{id: 1, size: 'Small'}, {id: 2, size: 'Medium'}, {id: 3, size: 'Large'}, {id: 4, size: 'Extra-Large'}, {id: 5, size: 'XX-Large'}],
-			// 				pricing: 27.00,
-			// 				img_src: 'https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/gift_box.png'
-			// 			},
-			// 			{
-			// 				id: 11,
-			// 				type: {id: 3, type: 'merchandise'},
-			// 				name: 'Three Coffee Variety',
-			// 				hasCoffee: 3,
-			// 				description: "A gift box for the coffee lover! Each box contains 3 bags of coffee of your choosing, as well as a hand written letter of appreciation from our amazing staff. Great for those who can't make up their mind, or to spread the happiness to a new Happy Cup drinker!",
-			// 				pricing: 36.00,
-			// 				img_src: 'https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/3_coffee_gift_box.png'
-			// 			},
-			// 			{
-			// 				id: 12,
-			// 				type: {id: 3, type: 'merchandise'},
-			// 				name: 'Happy Cup Mug',
-			// 				hasCoffee: 0,
-			// 				description: 'Keep your cup half full with this large ceramic mug.',
-			// 				pricing: 5.50,
-			// 				img_src: 'https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/mug.png'
-			// 			},
-			// 			{
-			// 				id: 13,
-			// 				type: {id: 3, type: 'merchandise'},
-			// 				name: 'Happy Tee',
-			// 				hasCoffee: 0,
-			// 				description: 'Show your support with this 100% cotton Happy Cup T-shirt.',
-			// 				size: [{id: 1, size: 'Small'}, {id: 2, size: 'Medium'}, {id: 3, size: 'Large'}, {id: 4, size: 'Extra-Large'}, {id: 5, size: 'XX-Large'}],
-			// 				pricing: 15.00,
-			// 				img_src: 'https://dl.dropboxusercontent.com/u/8287719/resources/images/Products/happy_t.png'
-			// 			}
-			// 		],
-			// 	}
-
-				
-
-			// };
-				content.about = {
-					staff : [
-						{
-							id: 1,
-							first_name: 'First',
-							last_name: 'Last',
-							position: 'Position',
-							description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque ipsam nihialal. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam laudantium, provident culpa saepe.',
-							img_url: staticURL+'website/resources/images/team_member1.jpg',
-
-						},
-						{
-							id: 2,
-							first_name: 'First',
-							last_name: 'Last',
-							position: 'Position',
-							description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque ipsam nihialal. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam laudantium, provident culpa saepe.',
-							img_url: staticURL+'website/resources/images/team_member2.jpg',
-							
-						},
-						{
-							id: 3,
-							first_name: 'First',
-							last_name: 'Last',
-							position: 'Position',
-							description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque ipsam nihialal. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam laudantium, provident culpa saepe.',
-							img_url: staticURL+'website/resources/images/team_member3.jpg',
-							
-						},
-											{
-							id: 4,
-							first_name: 'First',
-							last_name: 'Last',
-							position: 'Position',
-							description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque ipsam nihialal. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam laudantium, provident culpa saepe.',
-							img_url: staticURL+'website/resources/images/team_member4.jpg',
-							
-						},
-											{
-							id: 5,
-							first_name: 'First',
-							last_name: 'Last',
-							position: 'Position',
-							description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque ipsam nihialal. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam laudantium, provident culpa saepe.',
-							img_url: staticURL+'website/resources/images/team_member5.jpg',
-							
-						},
-											{
-							id: 6,
-							first_name: 'First',
-							last_name: 'Last',
-							position: 'Position',
-							description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque ipsam nihialal. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam laudantium, provident culpa saepe.',
-							img_url: staticURL+'website/resources/images/team_member6.jpg',
-							
-						},
-											{
-							id: 7,
-							first_name: 'First',
-							last_name: 'Last',
-							position: 'Position',
-							description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam atque ipsam nihialal. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nam laudantium, provident culpa saepe.',
-							img_url: staticURL+'website/resources/images/team_member7.jpg',
-							
-						},
-
-					]
 
 					
 				};			
@@ -350,16 +115,20 @@ happy_cup.factory('content_factory', function($http, $interval){
 					}, 
 
 				];
-				content.contact = {
 
-				};
-				content.cafe = {
+			content.contact = {
 
-				};
+			};
+		
+
+			content.cafe = {
+
+			};
 
 				callback(content);
 
 			});
+
 		
 	}
 
@@ -373,7 +142,6 @@ happy_cup.factory('content_factory', function($http, $interval){
 
 		},10)
 
-		
 	}
 
 

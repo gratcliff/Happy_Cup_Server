@@ -1,5 +1,6 @@
 from ..product_options.models import CoffeeVolume, CoffeeGrind, CoffeeRoast
 from ..products.models import Coffee, Subscription, Merchandise, VarietyPack, ProductPromotion
+from ..about_page.models import FullWidthSection, StaffMemberEntry
 
 from django.utils import timezone
 
@@ -13,3 +14,6 @@ class QuerySet(object):
 		self.merchandise = Merchandise.objects.all().select_related('featured').prefetch_related('sizes')
 		self.variety_pack = VarietyPack.objects.all().select_related('featured').prefetch_related('coffees', 'merchandise', 'merchandise__sizes', 'coffees__grinds', 'coffees__sizes', 'coffees__roast')
 		self.expired_promotions = ProductPromotion.objects.filter(expiration_date__lt=timezone.now(), expired=False)
+		self.fullWidthSection = FullWidthSection.objects.all()
+		self.staffMemberEntry = StaffMemberEntry.objects.all()
+

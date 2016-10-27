@@ -33,6 +33,7 @@ class ProvideContent(View):
 	content = ContentProvider()
 
 	content.populate_products()
+	content.populate_aboutPage()
 
 
 	def get(self,request):
@@ -44,6 +45,7 @@ class ProvideContent(View):
 		if serialize.db_modified:
 			print 'refreshing data'
 			self.content.populate_products()
+			self.content.populate_aboutPage()
 
 		print len(connection.queries)
 
@@ -56,6 +58,10 @@ class ProvideContent(View):
 					'merchandise' : self.content.merchandise_json,
 				},
 			},
+			'about' : {
+				'fullWidthSection' : self.content.about_fullWidthSection,
+				'staffMemberEntry' : self.content.about_staffMemberEntry
+			}
 		}
 
 		return JsonResponse(self.context, safe=False)
