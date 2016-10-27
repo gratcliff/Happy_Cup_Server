@@ -15,9 +15,7 @@ happy_cup.factory('content_factory', function($http, $interval){
 
 
 				};
-
-					
-				};			
+		
 				content.blog = [
 					{
 						id: 1,
