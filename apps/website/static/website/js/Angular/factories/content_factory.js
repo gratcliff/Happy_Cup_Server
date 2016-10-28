@@ -7,8 +7,9 @@ happy_cup.factory('content_factory', function($http, $interval){
 	factory.getContent = function(callback){
 
 			$http.get('content/').then(function(response){
-				content.home = response.data.home
+				content.home = response.data.home;
 				content.about = response.data.about;
+				content.locations = response.data.locations;
 		
 				content.global = {
 				headerLogo : "https://dl.dropboxusercontent.com/u/8287719/resources/images/Banners/HC_Logo.png",

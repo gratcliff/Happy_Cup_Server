@@ -225,7 +225,25 @@ class JsonSerializer:
 
 		db_modified = False
 		return data if len(data) > 0 else None
-		
+
+	def serialize_locations(self, locations):
+		global db_modified
+		data = []
+		for location in locations:
+			obj = {
+				'id': location.id,
+				'name': location.name,
+				'type': location.type,
+				'address': location.address,
+				'number': location.number,
+				'url': location.url,
+				'lat': location.lat,
+				'lng': location.lng
+			}
+			data.append(obj)
+
+		db_modified = False
+		return data if len(data) > 0 else None
 
 
 

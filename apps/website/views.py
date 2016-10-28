@@ -34,6 +34,7 @@ class ProvideContent(View):
 
 	content.populate_products()
 	content.populate_aboutPage()
+	content.populate_locations()
 
 
 	def get(self,request):
@@ -46,6 +47,7 @@ class ProvideContent(View):
 			print 'refreshing data'
 			self.content.populate_products()
 			self.content.populate_aboutPage()
+			self.content.populate_locations()
 
 		print len(connection.queries)
 
@@ -61,7 +63,8 @@ class ProvideContent(View):
 			'about' : {
 				'fullWidthSection' : self.content.about_fullWidthSection,
 				'staffMemberEntry' : self.content.about_staffMemberEntry
-			}
+			},
+			'locations': self.content.locations
 		}
 
 		return JsonResponse(self.context, safe=False)
