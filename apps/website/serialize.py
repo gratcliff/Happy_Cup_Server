@@ -245,6 +245,25 @@ class JsonSerializer:
 		db_modified = False
 		return data if len(data) > 0 else None
 
+	def serialize_blogPosts(self, posts):
+		global db_modified
+		data = []
+
+		for post in posts:
+			obj = {
+			'id': post.id,
+			'title': post.title,
+			'link_title': post.link_title,
+			'description': post.description,
+			'text': post.text,
+			'url': post.url,
+			'image_url': post.image_url
+			}
+			data.append(obj)
+
+		db_modified = False
+		return data if len(data) > 0 else None
+
 
 
 		

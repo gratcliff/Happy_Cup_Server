@@ -2,6 +2,7 @@ from ..product_options.models import CoffeeVolume, CoffeeGrind, CoffeeRoast
 from ..products.models import Coffee, Subscription, Merchandise, VarietyPack, ProductPromotion
 from ..about_page.models import FullWidthSection, StaffMemberEntry
 from ..locations.models import Location
+from ..news.models import BlogPost
 
 from django.utils import timezone
 
@@ -18,5 +19,6 @@ class QuerySet(object):
 		self.fullWidthSection = FullWidthSection.objects.all()
 		self.staffMemberEntry = StaffMemberEntry.objects.all()
 		self.location = Location.objects.all()
+		self.blogPost = BlogPost.objects.all()
 
 

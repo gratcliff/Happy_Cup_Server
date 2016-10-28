@@ -13,6 +13,7 @@ class ContentProvider(object):
 		self.about_fullWidthSection = []
 		self.about_staffMemberEntry = []
 		self.locations = []
+		self.blogPosts = []
 
 
 	def populate_products(self):
@@ -41,6 +42,9 @@ class ContentProvider(object):
 	def populate_locations(self):
 
 		self.locations = self.json_serializer.serialize_locations(self.query_set.location)
+
+	def populate_news(self):
+		self.blogPosts = self.json_serializer.serialize_blogPosts(self.query_set.blogPost)
 
 	def expired_promotion_check(self):
 

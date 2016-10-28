@@ -32,9 +32,10 @@ class ProvideContent(View):
 
 	content = ContentProvider()
 
-	content.populate_products()
-	content.populate_aboutPage()
-	content.populate_locations()
+	# content.populate_products()
+	# content.populate_aboutPage()
+	# content.populate_locations()
+	# content.populate_news()
 
 
 	def get(self,request):
@@ -48,6 +49,7 @@ class ProvideContent(View):
 			self.content.populate_products()
 			self.content.populate_aboutPage()
 			self.content.populate_locations()
+			content.populate_news()
 
 		print len(connection.queries)
 
@@ -64,7 +66,8 @@ class ProvideContent(View):
 				'fullWidthSection' : self.content.about_fullWidthSection,
 				'staffMemberEntry' : self.content.about_staffMemberEntry
 			},
-			'locations': self.content.locations
+			'locations': self.content.locations,
+			'blogPosts': self.content.blogPosts
 		}
 
 		return JsonResponse(self.context, safe=False)
