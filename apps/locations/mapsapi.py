@@ -1,10 +1,18 @@
 import googlemaps
 import os
 
-gmaps = googlemaps.Client(os.environ.get('MAPSAPI_KEY'))
+
+try:
+	gmaps = googlemaps.Client(os.environ.get('MAPSAPI_KEY'))
+	gmaps_error = None
+except Exception as e:
+	gmaps_error = e
+
 
 
 def geocode_data(cleaned_data):
+
+	data = None
 
 	try:
 			data = gmaps.geocode(cleaned_data.get('address'))
@@ -17,10 +25,13 @@ def geocode_data(cleaned_data):
 			cleaned_data['address'] = address
 			return cleaned_data
 	except Exception as e:
+		if gmaps_error:
+			return {'error': 'api', 'message': 'There is a problem with the Google Maps API.  Contact application support. Error : '+str(gmaps_error) }
+
 		if not data:
 			return {'error': 'no result', 'message': 'Google Maps returned no results for this address.  Please double check for accuracy.'	}
 		else:
-			return {'error': 'other', 'message': 'Something went wrong. Please double check the address. Error message: '+str(e)}
+			return {'error': 'other', 'message': 'Something went wrong. Please double check the address or contact application support. Error message: '+str(e)}
 		
 
 
