@@ -235,7 +235,7 @@ class JsonSerializer:
 				'name': location.name,
 				'type': location.type.type,
 				'address': location.address,
-				'number': location.number,
+				'phone_number': location.phone_number,
 				'url': location.url,
 				'lat': location.lat,
 				'lng': location.lng
@@ -253,8 +253,6 @@ class JsonSerializer:
 			obj = {
 			'id': post.id,
 			'title': post.title,
-			'link_title': post.link_title,
-			'description': post.description,
 			'text': post.text,
 			'url': post.url,
 			'image_url': post.image_url,
