@@ -12,13 +12,8 @@
 # 	def clean(self):
 # 		cleaned_data = super(BlogPostForm, self).clean()
 
-# 		title_length = len(cleaned_data.get("title"))
 # 		link_title_length = len(cleaned_data.get("link_title"))
 
 
-# 		if title_length  > 100:
-# 			self.add_error('title', 'Title length is too long, max 100 characters.')
-
-
-# 		if link_title_length > 100:
-# 			self.add_error('link_title', 'Title length is too long, max 100 characters.')
+# 		if link_title_length > 300:
+# 			self.add_error('link_title', 'Title length is too long, max 300 characters.')

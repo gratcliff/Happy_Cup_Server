@@ -8,11 +8,9 @@ from ..website.models import Timestamp
 
 class BlogPost(Timestamp, models.Model):
 	title = models.CharField(max_length=150)
-	link_title = models.TextField()
-	description = models.TextField()
 	text = models.TextField()
-	url = models.URLField()
-	image_url = models.URLField()
+	url = models.URLField(blank = True, help_text = 'Add an optional off-site URL.')
+	image_url = models.URLField(help_text = 'Link the image that you would like at the head of the post from Amazon S3.')
 	
 
 	def __str__(self):

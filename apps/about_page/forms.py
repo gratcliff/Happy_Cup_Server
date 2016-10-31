@@ -12,10 +12,14 @@ class FullWidthSectionForm(ModelForm):
 	def clean(self):
 		cleaned_data = super(FullWidthSectionForm, self).clean()
 
+		header_length = len(cleaned_data.get('header'))
 		first_paragraph_length = len(cleaned_data.get("first_paragraph"))
 		second_paragraph_length = len(cleaned_data.get("second_paragraph"))
 
 		tot_length = first_paragraph_length + second_paragraph_length
+
+		if header_length < 3:
+			self.add_error('header', 'Please enter header text.')
 
 		if second_paragraph_length == 0 and tot_length > 700:
 			self.add_error('first_paragraph', 'Length of entry is too long for the provided space. Maximum 500 characters.')

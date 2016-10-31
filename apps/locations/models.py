@@ -14,9 +14,9 @@ class StoreType(Timestamp):
 
 class Location(Timestamp):
 	name = models.CharField(max_length=36)
-	type = models.ForeignKey(StoreType)
+	type = models.ForeignKey(StoreType, help_text = 'Choose the type of store associated with the location.')
 	address = models.TextField()
-	number = models.IntegerField()
+	phone_number = models.IntegerField(default = '', help_text='Format should be Area Code + Phone Number')
 	url = models.URLField()
 	lng = models.FloatField(verbose_name='Longitude', help_text='Leave this field blank.  Data will be aquired automatically from Google Maps', blank=True, null=True)
 	lat = models.FloatField(verbose_name='Latitude', help_text='Leave this field blank.  Data will be aquired automatically from Google Maps', blank=True, null=True)
