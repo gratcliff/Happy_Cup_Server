@@ -254,7 +254,7 @@ class JsonSerializer:
 			'id': post.id,
 			'title': post.title,
 			'link_title': post.link_title,
-			'desciprtion': post.desciprtion,
+			'description': post.description,
 			'text': post.text,
 			'url': post.url,
 			'image_url': post.image_url
