@@ -35,19 +35,16 @@ class ContentProvider(object):
 		self.featured_products.extend(self.featured_variety)
 
 	def populate_aboutPage(self):
-
 		self.about_fullWidthSection = self.json_serializer.serialize_fullWidthSections(self.query_set.fullWidthSection)
 		self.about_staffMemberEntry = self.json_serializer.serialize_staffMemberEntry(self.query_set.staffMemberEntry)
 
 	def populate_locations(self):
-
 		self.locations = self.json_serializer.serialize_locations(self.query_set.location)
 
 	def populate_news(self):
 		self.blogPosts = self.json_serializer.serialize_blogPosts(self.query_set.blogPost)
 
 	def expired_promotion_check(self):
-
 		self.json_serializer.featured_product_expiration(self.query_set.expired_promotions)
 
 

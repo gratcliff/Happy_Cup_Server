@@ -6,9 +6,9 @@ from ..website.models import Timestamp
 
 # Create your models here.
 
-class BlogPost(Timestamp):
+class BlogPost(Timestamp, models.Model):
 	title = models.CharField(max_length=150)
-	link_title = models.CharField(max_length=150)
+	link_title = models.TextField()
 	desciprtion = models.TextField()
 	text = models.TextField()
 	url = models.URLField()
@@ -17,3 +17,6 @@ class BlogPost(Timestamp):
 
 	def __str__(self):
 		return (self.title)
+
+	class Meta:
+		verbose_name = "Blog Post"

@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'apps.product_options',
     'apps.about_page',
     'apps.locations',
-    'apps.news'
+    'apps.news',
+    'tinymce',
 ]
 
 MIDDLEWARE = [
