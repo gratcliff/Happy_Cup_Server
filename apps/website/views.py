@@ -49,7 +49,7 @@ class ProvideContent(View):
 			self.content.populate_products()
 			self.content.populate_aboutPage()
 			self.content.populate_locations()
-			content.populate_news()
+			self.content.populate_news()
 
 		print len(connection.queries)
 
