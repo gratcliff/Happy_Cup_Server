@@ -5,8 +5,6 @@ from .mapsapi import geocode_data
 
 class LocationForm(forms.ModelForm):
 
-	# number = forms.IntegerField(widget=forms.NumberInput(attrs={'style': 'width:85px'}))
-
 	class Meta:
 		model = Location
 		fields = '__all__'

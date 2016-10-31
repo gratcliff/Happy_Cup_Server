@@ -28,17 +28,17 @@
 							</div>
 						</header>
 						<div class="blogpost-content">
-							<img ng-src="[[post[0].img_url]]" alt="" id="blog_post_img">
+							<img ng-src="[[post[0].image_url]]" alt="" id="blog_post_img">
 							<br>
-							<div ng-bind-html="[[post[0].text]]"></div>
+							<div ng-bind-html="trustHtml(post[0].text)"></div>
 
 						</div>
 						<footer class="clearfix">
 							<div class="link pull-right">
 								<ul class="social-links circle small colored clearfix margin-clear text-right animated-effect-1">
 									<li class="twitter"><a class="twitter" href="https://twitter.com/intent/tweet?text=[[post[0].title]]&amp;hashtags=happycupcoffee&amp;via=HappyCupCoffee&amp;url=[[post[0].url]]"><i class="fa fa-twitter"></i></a></li>
-									<li class="facebook"><a href='' ng-click="fbShare([[post[0].url]], [[post[0].title]], [[post[0].description]], [[post[0].img_url]], 520, 350)"><i class="fa fa-facebook"></i></a></li>
-									<li class="linkedin"><a href="" ng-click="lkShare([[post[0].url]], [[post[0].title]], [[post[0].description]], [[post[0].img_url]], 520, 350)" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+									<li class="facebook"><a href='' ng-click="fbShare([[post[0].url]], [[post[0].title]], [[post[0].description]], [[post[0].image_url]], 520, 350)"><i class="fa fa-facebook"></i></a></li>
+									<li class="linkedin"><a href="" ng-click="lkShare([[post[0].url]], [[post[0].title]], [[post[0].description]], [[post[0].image_url]], 520, 350)" target="_blank"><i class="fa fa-linkedin"></i></a></li>
 								</ul>
 							</div>
 						</footer>
@@ -65,7 +65,7 @@
 						<div class="media margin-clear" ng-repeat = "post in other_posts | limitTo: 5">
 							<div class="media-left">
 								<div class="overlay-container">
-									<img class="media-object" ng-src="[[post.img_url]]" alt="blog-thumb">
+									<img class="media-object" ng-src="[[post.image_url]]" alt="blog-thumb">
 									<a ng-href="#/blog/[[post.id]]" class="overlay-link small"><i class="fa fa-link"></i></a>
 								</div>
 							</div>

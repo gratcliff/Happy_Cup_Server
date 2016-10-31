@@ -257,7 +257,8 @@ class JsonSerializer:
 			'description': post.description,
 			'text': post.text,
 			'url': post.url,
-			'image_url': post.image_url
+			'image_url': post.image_url,
+			'created_at': post.old_created_at if not None else post.created_at
 			}
 			data.append(obj)
 

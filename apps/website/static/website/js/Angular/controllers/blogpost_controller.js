@@ -1,4 +1,4 @@
-happy_cup.controller('blogpost_controller', function($scope, $http, $location, $routeParams, content_factory){
+happy_cup.controller('blogpost_controller', function($scope, $http, $location, $sce, $routeParams, content_factory){
 
 	$scope.other_posts = [];
 	$scope.post = [];
@@ -14,6 +14,10 @@ happy_cup.controller('blogpost_controller', function($scope, $http, $location, $
 		}	
 		$scope.$emit('changePageTitle', $scope.post[0].title);
 	});
+
+	$scope.trustHtml = function(string) {
+		return $sce.trustAsHtml(string)
+	};
 
 	$scope.fbShare = function(url, title, descr, image, winWidth, winHeight) {
         var winTop = (screen.height / 2) - (winHeight / 2);

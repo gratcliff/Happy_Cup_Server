@@ -9,7 +9,7 @@ from django.forms import NumberInput
 
 class LocationAdmin(admin.ModelAdmin):
 	form = LocationForm
-	list_display = ('__str__', 'address', 'updated_at')
+	list_display = ('__str__', 'address')
 
 	formfield_overrides = {
 		models.PositiveIntegerField: {'widget': NumberInput()}

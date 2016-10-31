@@ -11,7 +11,7 @@
 		<div class="row blog_banner">
 				<div class="banner_post">
 					<div class="overlay-container">		
-						<a ng-href="#/blog/[[first_post[0].id]]"><img class="banner_img" ng-src="[[first_post[0].img_url]]" ></a>
+						<a ng-href="#/blog/[[first_post[0].id]]"><img class="banner_img" ng-src="[[first_post[0].image_url]]" ></a>
 					</div>
 				</div>
 				<div class="carousel-title">
@@ -29,7 +29,7 @@
 					<header class="col-lg-12 col-xs-12" ng-if="post[0]">
 						<div class = "blog_images_first_container">
 							
-							<a ng-href="#/blog/[[post[0].id]]"><img class="blog_images" ng-src="[[post[0].img_url]]" alt=""></a>
+							<a ng-href="#/blog/[[post[0].id]]"><img class="blog_images" ng-src="[[post[0].image_url]]" alt=""></a>
 						</div>
 						<div class="blog_titles">
 							<h2><a ng-href="#/blog/[[post[0].id]]"><b>[[post[0].title]]</b></a></h2>
@@ -38,7 +38,7 @@
 					<header class="col-lg-6 col-xs-6" ng-if="post[1]">
 						<div class = "blog_images_container">
 							<div class="inner">
-							<a ng-href="#/blog/[[post[1].id]]"><img class="blog_images" ng-src="[[post[1].img_url]]" alt=""></a>
+							<a ng-href="#/blog/[[post[1].id]]"><img class="blog_images" ng-src="[[post[1].image_url]]" alt=""></a>
 							</div>
 						</div>
 						<div class="blog_titles">
@@ -48,7 +48,7 @@
 					<header class="col-lg-6 col-xs-6" ng-if="post[2]">
 						<div class = "blog_images_container">
 							<div class="inner">
-							<a ng-href="#/blog/[[post[2].id]]"><img class="blog_images" ng-src="[[post[2].img_url]]" alt=""></a>
+							<a ng-href="#/blog/[[post[2].id]]"><img class="blog_images" ng-src="[[post[2].image_url]]" alt=""></a>
 							</div>
 						</div>
 						<div class="blog_titles">
@@ -57,7 +57,7 @@
 					</header>
 <!-- 					<header class="col-lg-12 col-xs-6">
 						<div class = "blog_images_container">
-							<a href="#/blog/[[post.id]]"><img class="blog_images" ng-src="[[post.img_url]]" alt=""></a>
+							<a href="#/blog/[[post.id]]"><img class="blog_images" ng-src="[[post.image_url]]" alt=""></a>
 						</div>
 						<div class="blog_titles">
 							<h2><a href="#/blog/[[post.id]]"><b>[[post.title]]</b></a></h2>
@@ -110,7 +110,7 @@
 						<div class="media margin-clear" ng-repeat = "post in posts | limitTo: 5">
 							<div class="media-left">
 								<div class="overlay-container">
-									<img class="media-object" ng-src="[[post.img_url]]" alt="blog-thumb">
+									<img class="media-object" ng-src="[[post.image_url]]" alt="blog-thumb">
 									<a ng-href="#/blog/[[post.id]]" class="overlay-link small" ng-click="newPost()"><i class="fa fa-link"></i></a>
 								</div>
 							</div>
