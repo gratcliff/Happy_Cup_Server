@@ -63,3 +63,14 @@ happy_cup.directive('moveToTop', function(){
 		}
 	}
 });
+
+happy_cup.directive('scrollToElement', function(){
+	return {
+		restrict: 'A',
+		link: function(scope, $elm, attributes) {
+			$elm.on('click', function(){
+				$("body").animate({scrollTop: $(attributes.scrollToElement).offset().top}, "slow");
+			});
+		}
+	}
+});

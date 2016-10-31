@@ -233,7 +233,7 @@ class JsonSerializer:
 			obj = {
 				'id': location.id,
 				'name': location.name,
-				'type': location.type,
+				'type': location.type.type,
 				'address': location.address,
 				'number': location.number,
 				'url': location.url,

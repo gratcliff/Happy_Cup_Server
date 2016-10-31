@@ -18,7 +18,7 @@ class QuerySet(object):
 		self.expired_promotions = ProductPromotion.objects.filter(expiration_date__lt=timezone.now(), expired=False)
 		self.fullWidthSection = FullWidthSection.objects.all()
 		self.staffMemberEntry = StaffMemberEntry.objects.all()
-		self.location = Location.objects.all()
+		self.location = Location.objects.all().select_related('type')
 		self.blogPost = BlogPost.objects.all()
 
 

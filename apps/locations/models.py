@@ -6,14 +6,20 @@ from ..website.models import Timestamp
 
 # Create your models here.
 
+class StoreType(Timestamp):
+	type = models.CharField(max_length=36, unique=True)
+
+	def __str__(self):
+		return self.type
+
 class Location(Timestamp):
 	name = models.CharField(max_length=36)
-	type = models.CharField(max_length=36)
+	type = models.ForeignKey(StoreType)
 	address = models.TextField()
 	number = models.IntegerField()
 	url = models.URLField()
-	lat = models.FloatField()
-	lng = models.FloatField()
+	lng = models.FloatField(verbose_name='Longitude', help_text='Leave this field blank.  Data will be aquired automatically from Google Maps', blank=True, null=True)
+	lat = models.FloatField(verbose_name='Latitude', help_text='Leave this field blank.  Data will be aquired automatically from Google Maps', blank=True, null=True)
 
 	def __str__(self):
-		return (self.name)
+		return ('%s: %s') % (self.name, self.type)

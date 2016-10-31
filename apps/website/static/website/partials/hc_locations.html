@@ -40,7 +40,7 @@
 											<v-pane-content>
 												<div class = "row" ng-repeat = "x in location">
 													
-													<p class="col-lg-9 col-md-9 col-xs-7 col-sm-9 scrollToMap" ng-click="updateMap(x)"><a role = "button" class="text-dark"><i class="fa fa-coffee pr-10"></i><b>[[x.name]]</b><br>[[x.address]]</a></p>
+													<p class="col-lg-9 col-md-9 col-xs-7 col-sm-9" ng-click="updateMap(x)" scroll-to-element="#map-canvas"><a role = "button" class="text-dark"><i class="fa fa-coffee pr-10"></i><b>[[x.name]]</b><br>[[x.address]]</a></p>
 													<p class="col-lg-3 col-md-3 col-xs-5 col-sm-3"><a href="tel:[[x.number]]" role = "button" class="text-dark"><i class="fa fa-phone pr-10"></i>[[x.number | tel]]</a></p>
 												</div>
 											</v-pane-content>

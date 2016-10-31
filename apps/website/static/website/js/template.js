@@ -1424,6 +1424,7 @@
 		//-----------------------------------------------
 
 		$(".scrollToMap").click(function() {
+			console.log('template.js')
 			// $("body,html").animate({scrollTop:0},800);
 			// $(window).scrollTop($('#map-canvas').offset().top);
 			// if (window.innerWidth <= 980) {
