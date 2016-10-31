@@ -16,7 +16,7 @@ class Location(Timestamp):
 	name = models.CharField(max_length=36)
 	type = models.ForeignKey(StoreType)
 	address = models.TextField()
-	number = models.PositiveIntegerField()
+	number = models.PositiveIntegerField(help_text="Numbers only")
 	url = models.URLField()
 	lng = models.FloatField(verbose_name='Longitude', help_text='Leave this field blank.  Data will be aquired automatically from Google Maps', blank=True, null=True)
 	lat = models.FloatField(verbose_name='Latitude', help_text='Leave this field blank.  Data will be aquired automatically from Google Maps', blank=True, null=True)
