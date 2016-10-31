@@ -8,7 +8,7 @@ from django.db import connection
 
 class LocationAdmin(admin.ModelAdmin):
 	form = LocationForm
-	list_display = ('__str__', 'address')
+	list_display = ('__str__', 'address', 'updated_at')
 
 admin.site.register(Location, LocationAdmin)
 admin.site.register(StoreType)

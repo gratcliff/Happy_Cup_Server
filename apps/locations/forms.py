@@ -1,7 +1,7 @@
 from django.forms import ModelForm
 
 from .models import Location
-from .mapsapi import gmaps
+from .mapsapi import geocode_data
 
 class LocationForm(ModelForm):
 
@@ -13,20 +13,12 @@ class LocationForm(ModelForm):
 
 		cleaned_data = super(LocationForm, self).clean()
 
-		try:
-			data = gmaps.geocode(cleaned_data.get('address'))
-			geometry = data[0].get('geometry')
-			location = geometry.get('location')
-			address =  data[0].get('formatted_address')
-			(lat, lng) = (location.get('lat'), location.get('lng'))
-			cleaned_data['lat'] = lat
-			cleaned_data['lng'] = lng
-			cleaned_data['address'] = address
-		except Exception as e:
-			if not data:
-				self.add_error('address', 'Google Maps returned no results for this address.  Please double check for accuracy.')	
-			else:
-				self.add_error('address', 'Something went wrong. Please double check the address. Error message: '+str(e))
+		data = geocode_data(cleaned_data)
+
+		if data.get('error') == 'no result':
+			self.add_error('address', data.get('message'))	
+		elif data.get('error') == 'other':
+			self.add_error('address', data.get('message'))
 		
 
 

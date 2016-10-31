@@ -43,6 +43,7 @@ class ProvideContent(View):
 		self.content.query_set = QuerySet()
 		
 		self.content.expired_promotion_check()
+		self.content.refresh_geocodes()
 
 		if serialize.db_modified:
 			print 'refreshing data'

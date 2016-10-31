@@ -5,6 +5,7 @@ from ..locations.models import Location
 from ..news.models import BlogPost
 
 from django.utils import timezone
+from datetime import datetime, timedelta
 
 
 class QuerySet(object):
@@ -20,5 +21,7 @@ class QuerySet(object):
 		self.staffMemberEntry = StaffMemberEntry.objects.all()
 		self.location = Location.objects.all().select_related('type')
 		self.blogPost = BlogPost.objects.all()
+
+		self.refresh_geocodes = Location.objects.filter(updated_at__lte=timezone.now()-timedelta(days=30)).first()
 
 

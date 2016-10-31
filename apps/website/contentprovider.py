@@ -1,5 +1,10 @@
 from querysets import QuerySet
+from ..locations.mapsapi import geocode_data
+
+from django.utils import timezone
+
 import serialize
+
 
 
 class ContentProvider(object):
@@ -47,6 +52,29 @@ class ContentProvider(object):
 	def expired_promotion_check(self):
 		self.json_serializer.featured_product_expiration(self.query_set.expired_promotions)
 
+	def refresh_geocodes(self):
+		location = self.query_set.refresh_geocodes
+
+		if location:
+
+			cleaned_data = {
+				'address' : location.address,
+				'lat' : location.lat,
+				'lng' : location.lng
+			}
+
+			new_data = geocode_data(cleaned_data)
+			if 'error' not in new_data:
+				if new_data['address'] == cleaned_data['address'] and new_data['lat'] == cleaned_data['lat'] and new_data['lng'] == cleaned_data['lng']:
+					location.updated_at = timezone.now()
+					location.save()
+					serialize.db_modified = False
+				else:
+					location.lat = new_data['lat']
+					location.lng = new_data['lng']
+					location.address = new_data['address']
+					location.updated_at = timezone.now()
+					location.save()
 
 
 
