@@ -30,12 +30,12 @@ class Index(View):
 
 class ProvideContent(View):
 
-	# content = ContentProvider()
+	content = ContentProvider()
 
-	# content.populate_products()
-	# content.populate_aboutPage()
-	# content.populate_locations()
-	# content.populate_news()
+	content.populate_products()
+	content.populate_aboutPage()
+	content.populate_locations()
+	content.populate_news()
 
 
 	def get(self,request):
