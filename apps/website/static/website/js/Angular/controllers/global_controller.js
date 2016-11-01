@@ -16,15 +16,14 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 			$scope.forms = {};
 			$scope.pageLoading = false;
 
+			shop_factory.getShoppingCart(function(cart){
+				$scope.shoppingCart = cart;
+			});
+
 	});
 
 	user_factory.getCurrentUser(function(currentUser){
 		$scope.currentUser = currentUser
-	});
-
-	shop_factory.getShoppingCart(function(cart){
-		$scope.shoppingCart = cart;
-		
 	});
 
 	$scope.registerUser = function() {

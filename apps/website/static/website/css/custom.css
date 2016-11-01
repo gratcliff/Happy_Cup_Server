@@ -8,8 +8,6 @@ License URI:http://support.wrapbootstrap.com/
 File Description: Place here your custom CSS styles
 */
 
-
-
 #full-width-header {
 	width: 100%;
 }
@@ -209,6 +207,33 @@ fieldset legend {
 	right: 0%;
 
 }
+
+#carousel-featured-products .carousel-indicators li {
+	/*background-color: #914E38;*/
+	border-color: #914E38
+}
+
+#carousel-featured-products .carousel-indicators li.active {
+	background-color: #914E38;
+/*	border-color: #914E38*/
+}
+
+#carousel-featured-products .carousel-control {
+	background-image: none;
+	color:#69321f;
+	opacity: 1;
+}
+
+
+#carousel-featured-products .carousel-inner .item.featured-item img {
+	display: inline-block;
+}
+
+.featured-product-font {
+	color: red;
+	font-weight: 700;
+}
+
 
 #coffee-products-table {
 	border-bottom: 0px;

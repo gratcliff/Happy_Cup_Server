@@ -1,3 +1,7 @@
+from ..products.models import Coffee, Merchandise, Subscription, VarietyPack, ProductPromotion
+
+from django.db import connection
+
 class ShoppingCart(object):
 
 	def __init__(self):
@@ -41,4 +45,7 @@ class ShoppingCart(object):
 		self.totalPrice = data['totalPrice']
 
 		return self
+
+					
+
 

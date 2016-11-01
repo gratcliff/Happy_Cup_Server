@@ -5,6 +5,8 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.db import connection
 
+from django.contrib.sessions.models import Session
+
 
 
 
@@ -51,6 +53,12 @@ class ProvideContent(View):
 			self.content.populate_aboutPage()
 			self.content.populate_locations()
 			self.content.populate_news()
+			for obj in Session.objects.all():
+				decode = obj.get_decoded()
+				if 'shoppingCart' in decode:
+					decode.delete()
+					
+				# clear cart in case of product price changes
 
 		print len(connection.queries)
 
@@ -71,6 +79,10 @@ class ProvideContent(View):
 			'blogPosts': self.content.blogPosts
 		}
 
+		# request.session.clear()
+
+		print 'get view'
+
 		return JsonResponse(self.context, safe=False)
 
 
@@ -79,12 +91,11 @@ class SyncShoppingCart(View):
 
 	def get(self, request):
 
-		# request.session.clear()
+		print 'sync view'
 
 		if 'shoppingCart' not in request.session:
 			shoppingCart = ShoppingCart()
 			request.session['shoppingCart'] = shoppingCart.to_dictionary()
-			return JsonResponse({'new': True})
 
 		return JsonResponse(request.session['shoppingCart'])
 

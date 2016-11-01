@@ -123,7 +123,7 @@ happy_cup.factory('shop_factory', function($http){
 
 			for (key in order) {
 
-				if (key == 'qty' || key == 'subtotal') {
+				if (key == 'qty' || key == 'subtotal' || key == 'featured' || key == 'price') {
 					continue;
 				}
 				if (!shoppingCart.merch[idx][key]) {

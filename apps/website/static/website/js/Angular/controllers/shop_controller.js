@@ -2,6 +2,10 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 
 	content_factory.getPageContent('home', function(content){
 			$scope.products = content.products;
+			if ($scope.products.featured) {
+				$('#carousel-featured-products').carousel();
+			}
+			
 	});
 
 	$scope.productDisplay = {
@@ -44,6 +48,53 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 		$scope.$emit('openMerchandiseModal', merch);
 	}
 
+	$scope.openFeaturedProductModal = function(product, mobileCheck) {
+
+		if (product.type == 'coffee') {
+
+			angular.forEach($scope.products.coffee, function(coffee, idx){
+				if (product.id === coffee.id) {
+					product.idx = idx;
+					return
+				}
+			});
+
+			emit_message = 'openCoffeeModal';
+			modal = '#coffee_modal'
+			console.log(product.idx, 'coffee');
+		}
+		else if (product.type == 'merchandise' || product.type == 'variety') {
+
+			angular.forEach($scope.products.merchandise, function(merch, idx){
+				console.log(product);
+				if (product.id === merch.id) {
+
+					product.idx = idx;
+					return
+				}
+			});
+			emit_message = 'openMerchandiseModal';
+			modal = '#merch_modal'
+			console.log(product.idx, 'merch');
+
+		}
+		else if (product.type == 'subscription') {
+			angular.forEach($scope.products.subscriptions, function(sub, idx){
+				if (product.id === sub.id) {
+					product.idx = idx;
+					return
+				}
+			});
+			emit_message = 'openSubscriptionModal';
+			modal = '#subscription_modal'
+		}
+
+		$scope.$emit(emit_message, product)
+		$(modal).modal('show')
+
+
+	}
+
 	$scope.$on('sendToCart', function(event, product, order, idx) {
 		var productType = product.type
 		if (productType === 'coffee') {
@@ -63,10 +114,12 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 		}
 
 		$scope.products.coffee[idx].addingProduct = true;
+		console.log(coffee.featured)
 		var data = {
 			id: coffee.id,
 			name: coffee.name,
 			roast: coffee.roast,
+			featured: coffee.featured,
 			size: order.size,
 			grind: order.grind,
 			qty: order.qty,
@@ -115,7 +168,9 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 			qty: 1,
 			name: merch.name,
 			price: merch.price,
-			subtotal: merch.price
+			subtotal: merch.price,
+			featured: merch.featured,
+
 		};
 		//Can be length 1 or 3
 		if (order.coffee){
@@ -127,6 +182,8 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 		if (order.size){
 			data.size = order.size;
 		}
+
+		console.log(data)
 
 
 		shop_factory.addMerchandiseToCart(data, function (newCart){

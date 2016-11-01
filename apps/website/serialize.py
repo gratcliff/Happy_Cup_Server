@@ -84,13 +84,13 @@ class JsonSerializer:
 		data = []
 
 		featured_discount = 0 if coffee.featured is None else coffee.featured.discount
-		price_factor = (100 + float(coffee.price_factor) - featured_discount) / 100
+		featured_price_factor = (100 + float(coffee.price_factor) - featured_discount) / 100
 
 		for size in sizes:
 			obj = {
 				'id' : size.id,
 				'qty' : str(size),
-				'base_price' : float("{0:.2f}".format(float(size.base_price) * price_factor))
+				'base_price' : float("{0:.2f}".format(float(size.base_price) * featured_price_factor)),
 			}
 
 			data.append(obj)
