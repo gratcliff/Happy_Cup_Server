@@ -13,9 +13,12 @@ class DiscountRate(models.Model):
 	created_at = models.DateTimeField(auto_now=True)
 	updated_at = models.DateTimeField(auto_now_add=True)
 
+	def __str__(self):
+		return self.discount_percentage
+
 class Customer(models.Model):
 	user = models.OneToOneField(User, blank = True, null = True)
-	discount_rate = models.ForeignKey(DiscountRate, blank = True, null = True, on_delete = models.SET_NULL)
+	discount_rate = models.ForeignKey(DiscountRate, blank = True, null = True, on_delete = models.SET_NULL, help_text="Leave blank for no discount")
 	phone_number = models.CharField(max_length = 24)
 	address_1 = models.TextField()
 	address_2 = models.TextField(blank=True)
@@ -25,6 +28,5 @@ class Customer(models.Model):
 	created_at = models.DateTimeField(auto_now=True)
 	updated_at = models.DateTimeField(auto_now_add=True)
 
-
 	def __str__(self):
-		return(self.address_1)
+		return '%s, Discount: %s' % (self.user, self.discount_rate)
