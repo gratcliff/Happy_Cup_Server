@@ -55,9 +55,9 @@ def empty_all_carts():
 	query = Session.objects.all()
 	
 	for session in query:
-		data = SessionStore(session_key=session.session_key)
-		
-		if 'shoppingCart' in data:
+		decode = session.get_decoded()
+		if decode.get('shoppingCart') is not None:
+			data = SessionStore(session_key=session.session_key)
 			data['shoppingCart'] = None
 			data.save()
 

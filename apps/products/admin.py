@@ -45,7 +45,6 @@ class ProductPromotionAdmin(admin.ModelAdmin):
 					promotion.varietypack_set = []
 					promotion.save()
 
-		print len(connection.queries)
 		return promotions
 
 
@@ -60,8 +59,6 @@ class ProductPromotionAdmin(admin.ModelAdmin):
 					obj.save()
 				
 				return ('description', 'discount', 'expiration_date', 'expired')
-
-		print len(connection.queries)
 		
 		return ('expired',)
 

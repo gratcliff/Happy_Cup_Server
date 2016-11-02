@@ -53,12 +53,6 @@ class ProvideContent(View):
 				serialize.db_price_change = False
 				empty_all_carts()
 
-
-					
-				# clear cart in case of product price changes
-
-		print len(connection.queries)
-
 		self.context = {
 			'home' : {
 
@@ -76,9 +70,7 @@ class ProvideContent(View):
 			'blogPosts': self.content.blogPosts
 		}
 
-		# request.session.clear()
-
-		print 'get view'
+		print len(connection.queries)
 
 		return JsonResponse(self.context, safe=False)
 
@@ -87,6 +79,8 @@ class ProvideContent(View):
 class SyncShoppingCart(View):
 
 	def get(self, request):
+
+		# request.session.clear()
 
 		cart_exists = request.session.get('shoppingCart', None)
 
