@@ -10,16 +10,21 @@ from django.contrib.auth.models import User
 # Create your models here.
 class DiscountRate(models.Model):
 	discount_percentage = models.PositiveSmallIntegerField(help_text = 'Percentage discount customer will receive on all coffee orders.')
+	created_at = models.DateTimeField(auto_now=True)
+	updated_at = models.DateTimeField(auto_now_add=True)
 
 class Customer(models.Model):
 	user = models.OneToOneField(User, blank = True, null = True)
+	discount_rate = models.ForeignKey(DiscountRate, blank = True, null = True, on_delete = models.SET_NULL)
 	phone_number = models.CharField(max_length = 24)
 	address_1 = models.TextField()
 	address_2 = models.TextField(blank=True)
 	city = models.CharField(max_length = 32)
-	state = models.CharField(max_length = 24)
-	zip_code = models.CharField(max_length = 5)
-	discount_rate = models.ForeignKey(DiscountRate, blank = True, null = True, on_delete = models.SET_NULL)
+	state = models.CharField(max_length = 32)
+	zip_code = models.CharField(max_length = 10)
+	created_at = models.DateTimeField(auto_now=True)
+	updated_at = models.DateTimeField(auto_now_add=True)
+
 
 	def __str__(self):
 		return(self.address_1)
