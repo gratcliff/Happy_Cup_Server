@@ -12,6 +12,13 @@ from django.db import connection
 
 class FullWidthSectionAdmin(admin.ModelAdmin):
 	form = FullWidthSectionForm
+	
+	def has_add_permission (self, request):
+		num_objects = self.model.objects.count()
+		if num_objects >= 3:
+			return False
+		else: 
+			return True
 
 class StaffMemberEntryAdmin(admin.ModelAdmin):
 	form = StaffMemberEntryForm

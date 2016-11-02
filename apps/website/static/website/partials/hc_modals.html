@@ -54,7 +54,7 @@
 					<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.userRegForm.$submitted || forms.userRegForm.password.$touched) && forms.userRegForm.password.$invalid}">
 						<label for="inputPassword" class="col-sm-3 control-label">Password <span class="text-danger small">*</span></label>
 						<div class="col-sm-8">
-							<input type="password" class="form-control" name="password" id="inputPassword" placeholder="Password" ng-model="userReg.password" required>
+							<input type="password" class="form-control" name="password" id="inputPassword" placeholder="Password" ng-model="userReg.password1" required>
 							<i class="fa fa-lock form-control-feedback"></i>
 							<div ng-messages="forms.userRegForm.password.$error" class="text-danger" role="alert" ng-if="forms.userRegForm.password.$touched || forms.userRegForm.$submitted">
 								<span ng-message="required">Please enter a value for this field.</span>
@@ -64,7 +64,7 @@
 					<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.userRegForm.$submitted || forms.userRegForm.confirmPassword.$touched) && forms.userRegForm.confirmPassword.$invalid}">
 						<label for="confirmPassword" class="col-sm-3 control-label">Confirm PW <span class="text-danger small">*</span></label>
 						<div class="col-sm-8">
-							<input type="password" class="form-control" name="confirmPassword" id="inputConfirmPassword" placeholder="Confirm Password" ng-model="userReg.confirmPassword" required pattern="[[userReg.password]]">
+							<input type="password" class="form-control" name="confirmPassword" id="inputConfirmPassword" placeholder="Confirm Password" ng-model="userReg.password2" required pattern="[[userReg.password1]]">
 							<i class="fa fa-lock form-control-feedback"></i>
 							<div ng-messages="forms.userRegForm.confirmPassword.$error" class="text-danger" role="alert" ng-if="forms.userRegForm.confirmPassword.$touched || forms.userRegForm.$submitted">
 								<span ng-message="required">Please enter a value for this field.</span>
