@@ -5,16 +5,11 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.db import connection
 
-from django.contrib.sessions.models import Session
-
-
-
-
 
 import serialize
 from querysets import QuerySet
 from contentprovider import ContentProvider
-from shopping_cart import ShoppingCart
+from shopping_cart import ShoppingCart, empty_all_carts
 
 
 import json
@@ -45,7 +40,7 @@ class ProvideContent(View):
 		self.content.query_set = QuerySet()
 		
 		self.content.expired_promotion_check()
-		self.content.refresh_geocodes()
+		self.content.refresh_geocodes()			
 
 		if serialize.db_modified:
 			print 'refreshing data'
@@ -53,10 +48,12 @@ class ProvideContent(View):
 			self.content.populate_aboutPage()
 			self.content.populate_locations()
 			self.content.populate_news()
-			for obj in Session.objects.all():
-				decode = obj.get_decoded()
-				if 'shoppingCart' in decode:
-					decode.delete()
+			if serialize.db_price_change:
+				# if database data that could alter product pricing is modified, all user shopping carts get emptied
+				serialize.db_price_change = False
+				empty_all_carts()
+
+
 					
 				# clear cart in case of product price changes
 
@@ -91,11 +88,11 @@ class SyncShoppingCart(View):
 
 	def get(self, request):
 
-		print 'sync view'
+		cart_exists = request.session.get('shoppingCart', None)
 
-		if 'shoppingCart' not in request.session:
+		if not cart_exists:
 			shoppingCart = ShoppingCart()
-			request.session['shoppingCart'] = shoppingCart.to_dictionary()
+			request.session['shoppingCart'] = shoppingCart.to_dictionary() 
 
 		return JsonResponse(request.session['shoppingCart'])
 

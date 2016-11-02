@@ -2,6 +2,9 @@ from ..products.models import Coffee, Merchandise, Subscription, VarietyPack, Pr
 
 from django.db import connection
 
+from django.contrib.sessions.models import Session
+from django.contrib.sessions.backends.db import SessionStore
+
 class ShoppingCart(object):
 
 	def __init__(self):
@@ -45,6 +48,18 @@ class ShoppingCart(object):
 		self.totalPrice = data['totalPrice']
 
 		return self
+
+
+
+def empty_all_carts():
+	query = Session.objects.all()
+	
+	for session in query:
+		data = SessionStore(session_key=session.session_key)
+		
+		if 'shoppingCart' in data:
+			data['shoppingCart'] = None
+			data.save()
 
 					
 

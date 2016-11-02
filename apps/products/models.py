@@ -4,7 +4,7 @@ from django.db import models
 
 
 from ..product_options.models import CoffeeVolume, CoffeeGrind, CoffeeRoast, ShirtSize
-from ..website.models import Timestamp
+from ..website.models import PriceTimestamp
 
 from django.utils import timezone
 
@@ -13,7 +13,7 @@ from django.utils import timezone
 
 
 
-class Coffee(Timestamp):
+class Coffee(PriceTimestamp):
 
 	name = models.CharField(max_length=24)
 	roast = models.ForeignKey(CoffeeRoast)
@@ -27,7 +27,7 @@ class Coffee(Timestamp):
 	def __str__(self):
 		return '%s %s' % (self.name, self.roast)
 
-class Subscription(Timestamp):
+class Subscription(PriceTimestamp):
 
 	frequency = models.PositiveSmallIntegerField('Number of weeks between each shipment')
 	coffees = models.ManyToManyField(Coffee)
@@ -36,7 +36,7 @@ class Subscription(Timestamp):
 	def __str__(self):
 		return '%s Week Subscription' % (self.frequency,)
 
-class Merchandise(Timestamp):
+class Merchandise(PriceTimestamp):
 
 	name = models.CharField(max_length=24)
 	description = models.TextField()
@@ -51,7 +51,7 @@ class Merchandise(Timestamp):
 	class Meta:
 		verbose_name_plural = "Merchandise"
 
-class VarietyPack(Timestamp):
+class VarietyPack(PriceTimestamp):
 	name = models.CharField(max_length=24)
 	description = models.TextField()
 	image_url = models.URLField()
@@ -64,7 +64,7 @@ class VarietyPack(Timestamp):
 	def __str__(self):
 		return self.name
 
-class ProductPromotion(Timestamp):
+class ProductPromotion(PriceTimestamp):
 
 	description = models.CharField(max_length=64)
 	discount = models.PositiveSmallIntegerField('Percent discount', default=15, help_text='Positive, whole numbers only')

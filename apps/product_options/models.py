@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-from ..website.models import Timestamp
+from ..website.models import Timestamp, PriceTimestamp
 
 # Create your models here.
 
@@ -27,7 +27,7 @@ class CoffeeGrind(Timestamp):
 	def __str__(self):
 		return self.name
 
-class CoffeeVolume(Timestamp):
+class CoffeeVolume(PriceTimestamp):
 
 	POUNDS = 'lbs'
 	OUNCES = 'oz'

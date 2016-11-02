@@ -34,3 +34,37 @@ class Timestamp(models.Model):
 
 		super(Timestamp, self).delete(*args, **kwargs)
 
+
+class PriceTimestamp(models.Model):
+
+	""" Similar to Timestamp class, except it will be inherited by models that affect product pricing """
+
+	created_at = models.DateTimeField(auto_now=True)
+	updated_at = models.DateTimeField(auto_now_add=True)
+
+	class Meta:
+		abstract = True
+
+	def save(self, *args, **kwargs):
+
+		# modifies save() in order to tell the server that query_sets
+		# must be refreshed so that updated data is sent to the front end
+
+		serialize.db_modified = True
+		serialize.db_price_change = True
+
+
+		super(PriceTimestamp, self).save(*args, **kwargs)
+
+	def delete(self, *args, **kwargs):
+
+		# modifies delete() in order to tell the server that query_sets
+		# must be refreshed so that updated data is sent to the front end
+
+		serialize.db_modified = True
+		serialize.db_price_change = True
+
+
+		super(PriceTimestamp, self).delete(*args, **kwargs)
+
+

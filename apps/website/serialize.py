@@ -1,6 +1,7 @@
 from django.db import connection
 
 db_modified = False
+db_price_change = False
 
 class JsonSerializer:
 
