@@ -12,6 +12,7 @@ happy_cup.factory('user_factory',function($http){
 	factory.registerUser = function(userData, callback){
 
 		$http.post('customers/register/', userData).then(function(response){
+			console.log(response)
 			currentUser = userData
 			callback(currentUser)
 		});

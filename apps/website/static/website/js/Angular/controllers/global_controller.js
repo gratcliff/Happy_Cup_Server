@@ -28,6 +28,7 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 	});
 
 	$scope.registerUser = function() {
+		// console.log($scope.forms.userRegForm)
 		if ($scope.forms.userRegForm.$valid) {
 			
 			user_factory.registerUser($scope.userReg, function(userData){
