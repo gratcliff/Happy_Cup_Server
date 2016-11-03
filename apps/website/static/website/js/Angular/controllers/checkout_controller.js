@@ -11,6 +11,7 @@ happy_cup.controller('checkout_controller', function ($scope, $location, $timeou
 			$scope.forms.checkoutForm = {}
 			$scope.billingInfo = {}
 			$scope.shippingInfo = {}
+			$scope.shippingInfo.sameAsBilling = true;
 		}
 		
 
@@ -28,10 +29,11 @@ happy_cup.controller('checkout_controller', function ($scope, $location, $timeou
 		} else {
 			if ($scope.shippingInfo.sameAsBilling) {
 				$scope.shippingInfo = $scope.billingInfo;
+				$scope.shippingInfo.sameAsBilling = true;
 			}
-			shop_factory.submitBillingInfo($scope.billingInfo, $scope.shippingInfo, function(){
-				$location.url('/cart/payment');
-			});
+			// shop_factory.submitBillingInfo($scope.billingInfo, $scope.shippingInfo, function(){
+				// $location.url('/cart/payment');
+			// });
 		}
 		
 	};

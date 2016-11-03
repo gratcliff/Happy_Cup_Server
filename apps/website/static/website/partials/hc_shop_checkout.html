@@ -228,7 +228,7 @@
 								<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.checkoutForm.$submitted ||  forms.checkoutForm.billing_zip.$touched) && forms.checkoutForm.billing_zip.$invalid}">
 									<label for="billing_zip" class="col-md-2 control-label">Zip Code<small class="text-default">*</small></label>
 									<div class="col-md-10">
-										<input type="text" name=billing_zip class="form-control" id="billingPostalCode" placeholder="Postal Code" required ng-model="billingInfo.zip">
+										<input type="text" name='billing_zip' class="form-control" id="billingPostalCode" placeholder="Postal Code" required ng-model="billingInfo.zipcode">
 										<div ng-messages="forms.checkoutForm.billing_zip.$error" class="text-danger" role="alert" ng-if="forms.checkoutForm.billing_zip.$touched || forms.checkoutForm.$submitted">
 											<span ng-message="required">Please enter a value for this field.</span>
 										</div>
@@ -265,25 +265,25 @@
 									<div class="form-group">
 										<label for="shippingFirstName" class="col-md-2 control-label">First Name<small class="text-default">*</small></label>
 										<div class="col-md-10">
-											<input type="text" class="form-control" id="shippingFirstName" placeholder="First Name">
+											<input type="text" class="form-control" id="shippingFirstName" placeholder="First Name" ng-model="shippingInfo.first_name">
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="shippingLastName" class="col-md-2 control-label">Last Name<small class="text-default">*</small></label>
 										<div class="col-md-10">
-											<input type="text" class="form-control" id="shippingLastName" placeholder="Last Name">
+											<input type="text" class="form-control" id="shippingLastName" placeholder="Last Name" ng-model="shippingInfo.last_name">
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="shippingTel" class="col-md-2 control-label">Telephone<small class="text-default">*</small></label>
 										<div class="col-md-10">
-											<input type="text" class="form-control" id="shippingTel" placeholder="Telephone">
+											<input type="text" class="form-control" id="shippingTel" placeholder="Telephone" ng-model="shippingInfo.phone_number">
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="shippingemail" class="col-md-2 control-label">Email<small class="text-default">*</small></label>
 										<div class="col-md-10">
-											<input type="email" class="form-control" id="shippingemail" placeholder="Email">
+											<input type="email" class="form-control" id="shippingemail" placeholder="Email" ng-model="shippingInfo.email">
 										</div>
 									</div>
 								</div>
@@ -297,25 +297,25 @@
 									<div class="form-group">
 										<label for="shippingAddress1" class="col-md-2 control-label">Address 1<small class="text-default">*</small></label>
 										<div class="col-md-10">
-											<input type="text" class="form-control" id="shippingAddress1" placeholder="Address 1">
+											<input type="text" class="form-control" id="shippingAddress1" placeholder="Address 1" ng-model="shippingInfo.address">
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="shippingAddress2" class="col-md-2 control-label">Address 2</label>
 										<div class="col-md-10">
-											<input type="text" class="form-control" id="shippingAddress2" placeholder="Address 2">
+											<input type="text" class="form-control" id="shippingAddress2" placeholder="Address 2" ng-model="shippingInfo.address2">
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="shippingCity" class="col-md-2 control-label">City<small class="text-default">*</small></label>
 										<div class="col-md-10">
-											<input type="text" class="form-control" id="shippingCity" placeholder="City">
+											<input type="text" class="form-control" id="shippingCity" placeholder="City" ng-model="shippingInfo.city">
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-md-2 control-label">State<small class="text-default">*</small></label>
 										<div class="col-md-10">
-											<select class="form-control">
+											<select class="form-control" ng-model="shippingInfo.state">
 											<option value="">Select State</option>
 											<option value="AA">Armed Forces America</option>
 											<option value="AE">Armed Forces Europe</option>
@@ -386,7 +386,7 @@
 									<div class="form-group">
 										<label for="shippingPostalCode" class="col-md-2 control-label">Zip Code<small class="text-default">*</small></label>
 										<div class="col-md-10">
-											<input type="text" class="form-control" id="shippingPostalCode" placeholder="Postal Code">
+											<input type="text" class="form-control" id="shippingPostalCode" placeholder="Postal Code" ng-model="shippingInfo.zipcode">
 										</div>
 									</div>
 								</div>
@@ -394,7 +394,7 @@
 						</div>
 						<div class="checkbox padding-top-clear">
 							<label>
-								<input type="checkbox" name="same-as-billing" id="shipping-info-check" ng-init="shippingInfo.sameAsBilling = true" ng-model="shippingInfo.sameAsBilling"> My Shipping information is the same as my Billing information. [[shippingInfo.sameAsBilling]]
+								<input type="checkbox" name="same-as-billing" id="shipping-info-check" ng-model="shippingInfo.sameAsBilling"> My Shipping information is the same as my Billing information.
 							</label>
 						</div>
 					</form>
