@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'apps.about_page',
     'apps.locations',
     'apps.news',
+    'apps.orders',
     'tinymce',
 ]
 

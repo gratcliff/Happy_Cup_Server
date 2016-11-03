@@ -3,7 +3,7 @@ from django.contrib import admin
 from ..products.forms import VarietyPackForm
 
 from ..product_options.models import CoffeeVolume, CoffeeGrind, CoffeeRoast, ShirtSize
-from ..products.models import Coffee, Subscription, Merchandise, VarietyPack, ProductPromotion
+from ..products.models import Coffee, Subscription, Merchandise, VarietyPack, ProductPromotion, Coupon
 
 from django.db import connection
 
@@ -85,3 +85,4 @@ admin.site.register(Subscription, SubscriptionAdmin)
 admin.site.register(Merchandise, MerchandiseAdmin)
 admin.site.register(VarietyPack, VarietyPackAdmin)
 admin.site.register(ProductPromotion, ProductPromotionAdmin)
+admin.site.register(Coupon)

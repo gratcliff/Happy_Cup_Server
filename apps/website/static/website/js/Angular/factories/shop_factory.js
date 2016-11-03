@@ -233,6 +233,13 @@ happy_cup.factory('shop_factory', function($http){
 		});
 	};
 
+	factory.submitBillingInfo = function (addressInfo, callback){
+		$http.post('orders/address/', addressInfo).then(function(response){
+			// callback()
+			console.log(response.data);
+		})
+	}
+
 
 
 	return factory;

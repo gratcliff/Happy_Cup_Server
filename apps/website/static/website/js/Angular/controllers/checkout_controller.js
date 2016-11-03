@@ -31,7 +31,7 @@ happy_cup.controller('checkout_controller', function ($scope, $location, $timeou
 				$scope.shippingInfo = $scope.billingInfo;
 				$scope.shippingInfo.sameAsBilling = true;
 			}
-			shop_factory.submitBillingInfo($scope.billingInfo, $scope.shippingInfo, function(){
+			shop_factory.submitBillingInfo({'billingInfo': $scope.billingInfo, 'shippingInfo': $scope.shippingInfo}, function(){
 				$location.url('/cart/payment');
 			});
 		}
