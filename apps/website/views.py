@@ -13,6 +13,7 @@ from shopping_cart import ShoppingCart, empty_all_carts
 
 
 import json
+import os
 
 # Create your views here.
 
@@ -22,18 +23,29 @@ class Index(View):
 	@method_decorator(ensure_csrf_cookie)
 	def get(self, request):
 
-		return render(request, 'website/index.html')
+		self.context = {
+
+			'MAPSAPI_KEY' : os.environ.get('MAPSAPI_KEY','')
+
+		}
+
+		return render(request, 'website/index.html', self.context)
 
 
 class ProvideContent(View):
 
 	content = ContentProvider()
 
-	content.populate_products()
-	content.populate_aboutPage()
-	content.populate_locations()
-	content.populate_news()
+	try:
+		content.populate_products()
+		content.populate_aboutPage()
+		content.populate_locations()
+		content.populate_news()
 
+	except Exception as e:
+		print e
+
+	
 
 	def get(self,request):
 
