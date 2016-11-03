@@ -41,7 +41,7 @@ class CustomerShippingForm(forms.ModelForm):
 	def clean(self):
 		cleaned_data = super(CustomerShippingForm, self).clean()
 
-		final_address = "%s %s, %s %s, %s" % (cleaned_data["shippingAddress1"], cleaned_data["shippingAddress2"], cleaned_data["city"], cleaned_data["state"], cleaned_data["zip_code"])
+		final_address = "%s %s, %s %s, %s" % (cleaned_data["address"], cleaned_data["address2"], cleaned_data["city"], cleaned_data["state"], cleaned_data["zipcode"])
 
 		data = validate_address(final_address)
 		cleaned_data['verify_address'] = data
