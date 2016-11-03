@@ -1,5 +1,10 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django import forms
+from .models import Customer
+from ..locations.mapsapi import validate_address
+
+
 
 
 class UserRegisterForm(UserCreationForm):
@@ -24,3 +29,21 @@ class UserRegisterForm(UserCreationForm):
 		if commit:
 			user.save()
 			return user
+
+
+class CustomerShippingForm(forms.ModelForm):
+
+	class Meta:
+
+		model = Customer
+		fields = "__all__"
+
+	def clean(self):
+		cleaned_data = super(CustomerShippingForm, self).clean()
+
+		final_address = "%s %s, %s %s, %s" % (cleaned_data["shippingAddress1"], cleaned_data["shippingAddress2"], cleaned_data["city"], cleaned_data["state"], cleaned_data["zip_code"])
+
+		data = validate_address(final_address)
+		cleaned_data['verify_address'] = data
+
+
