@@ -1340,9 +1340,9 @@
 		if($(".video-background").length>0) {
 			if (Modernizr.touch) {
 				$(".video-background").vide({
-					mp4: staticURL+"website/resources/videos/background-video.mp4",
-					webm: staticURL+"website/resources/videos/background-video.webm",
-					poster: staticURL+"website/resources/videos/video-banner-poster_orig.jpg"
+					mp4: "https://s3-us-west-2.amazonaws.com/happycupwebsitefiles/resources/videos/background-video-banner.mp4",
+					webm: "https://s3-us-west-2.amazonaws.com/happycupwebsitefiles/resources/videos/background-video-banner.webm",
+					poster: "https://s3-us-west-2.amazonaws.com/happycupwebsitefiles/resources/videos/video-banner-poster_orig.jpg"
 				}, {
 					volume: 1,
 					playbackRate: 1,
@@ -1355,9 +1355,9 @@
 				});
 			} else {
 				$(".video-background").vide({
-					mp4: staticURL+"website/resources/videos/background-video.mp4",
-					webm: staticURL+"website/resources/videos/background-video.webm",
-					poster: staticURL+"website/resources/videos/video-banner-poster_orig.jpg"
+					mp4: "https://s3-us-west-2.amazonaws.com/happycupwebsitefiles/resources/videos/background-video-banner.mp4",
+					webm: "https://s3-us-west-2.amazonaws.com/happycupwebsitefiles/resources/videos/background-video-banner.webm",
+					poster: "https://s3-us-west-2.amazonaws.com/happycupwebsitefiles/resources/videos/video-banner-poster_orig.jpg"
 				}, {
 					volume: 1,
 					playbackRate: 1,
@@ -1374,9 +1374,9 @@
 		if($(".video-background-banner").length>0) {
 			if (Modernizr.touch) {
 				$(".video-background-banner").vide({
-					mp4: staticURL+"website/resources/videos/background-video-banner.mp4",
-					webm: staticURL+"website/resources/videos/background-video-banner.webm",
-					poster: staticURL+"website/resources/videos/video-banner-poster_orig.jpg"
+					mp4: "https://s3-us-west-2.amazonaws.com/happycupwebsitefiles/resources/videos/background-video-banner.mp4",
+					webm: "https://s3-us-west-2.amazonaws.com/happycupwebsitefiles/resources/videos/background-video-banner.webm",
+					poster: "https://s3-us-west-2.amazonaws.com/happycupwebsitefiles/resources/videos/video-banner-poster_orig.jpg"
 				}, {
 					volume: 1,
 					playbackRate: 0.75,
@@ -1389,9 +1389,9 @@
 				});
 			} else {
 				$(".video-background-banner").vide({
-					mp4: staticURL+"website/resources/videos/background-video-banner.mp4",
-					webm: staticURL+"website/resources/videos/background-video-banner.webm",
-					poster: staticURL+"website/resources/videos/video-banner-poster_orig.jpg"
+					mp4: "https://s3-us-west-2.amazonaws.com/happycupwebsitefiles/resources/videos/background-video-banner.mp4",
+					webm: "https://s3-us-west-2.amazonaws.com/happycupwebsitefiles/resources/videos/background-video-banner.webm",
+					poster: "https://s3-us-west-2.amazonaws.com/happycupwebsitefiles/resources/videos/video-banner-poster_orig.jpg"
 				}, {
 					volume: 1,
 					playbackRate: 0.75,
