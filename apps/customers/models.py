@@ -19,7 +19,7 @@ class DiscountRate(models.Model):
 class Customer(models.Model):
 	user = models.OneToOneField(User, blank = True, null = True)
 	discount_rate = models.ForeignKey(DiscountRate, blank = True, null = True, on_delete = models.SET_NULL, help_text="Leave blank for no discount")
-	phone_number = models.CharField(max_length = 24)
+	phone_number = models.CharField(max_length = 24, blank=True)
 	address = models.TextField()
 	address2 = models.TextField(blank=True)
 	city = models.CharField(max_length = 32)

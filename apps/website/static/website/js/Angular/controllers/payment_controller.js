@@ -4,13 +4,12 @@ happy_cup.controller('payment_controller', function ($scope, $location, $timeout
 
 	$scope.$emit('getShoppingCart', function(cart){
 		if (cart.unsavedChanges || !cart.totalItems || !cart.checkoutStatus.payment) {
+			console.log(cart.checkoutStatus.payment)
 			$location.url('/cart');
 		} else {
 			$scope.currentCart = cart
 			$scope.userAllowedInView = true;
 		}
-		
-
 
 	});
 

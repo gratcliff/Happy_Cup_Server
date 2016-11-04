@@ -43,7 +43,11 @@ class CustomerShippingForm(forms.ModelForm):
 
 		final_address = "%s %s, %s %s, %s" % (cleaned_data["address"], cleaned_data["address2"], cleaned_data["city"], cleaned_data["state"], cleaned_data["zipcode"])
 
-		data = validate_address(final_address)
-		cleaned_data['verify_address'] = data
+		(address, components) = validate_address(final_address)
+
+		if 'error' in address:
+			self.add_error('address', address['message'])
+		else:	
+			cleaned_data['verify_address'] = components
 
 

@@ -14,11 +14,19 @@ def checkShippingAddress(request):
 
 	if form.is_valid():
 		shoppingCart = request.session["shoppingCart"]
+
+
 		shoppingCart["billing"] = loadJson["billingInfo"]
+
 		shoppingCart["shipping"] = loadJson["shippingInfo"]
 
+		shoppingCart['shipping']['address'] = "%s %s" % (form.cleaned_data['verify_address'][0], form.cleaned_data['verify_address'][1])
+		shoppingCart['shipping']['city'] = form.cleaned_data['verify_address'][2]
+		shoppingCart['shipping']['state'] = form.cleaned_data['verify_address'][3]
+		shoppingCart['shipping']['zipcode'] = form.cleaned_data['verify_address'][4]
+
 		request.session["shoppingCart"] = shoppingCart
-		print shoppingCart["shipping"]
+		
 
 		return JsonResponse({"status": True, 'shoppingCart': request.session["shoppingCart"]})
 	else:

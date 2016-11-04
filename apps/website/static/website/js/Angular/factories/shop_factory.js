@@ -235,8 +235,19 @@ happy_cup.factory('shop_factory', function($http){
 
 	factory.submitBillingInfo = function (addressInfo, callback){
 		$http.post('orders/address/', addressInfo).then(function(response){
-			// callback()
 			console.log(response.data);
+			
+			if (response.data.status === true) {
+				shoppingCart.billing = response.data.shoppingCart.billing
+				shoppingCart.shipping = response.data.shoppingCart.shipping
+				shoppingCart.checkoutStatus.payment = true
+				callback()
+			} else {
+				console.log('bad')
+			}
+			
+			
+
 		})
 	}
 
