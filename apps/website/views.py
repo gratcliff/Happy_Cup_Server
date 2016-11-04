@@ -107,7 +107,13 @@ class SyncShoppingCart(View):
 
 		
 		cart['unsavedChanges'] = False
-		request.session['shoppingCart'] = cart
+
+		if cart['totalItems'] == 0:
+			shoppingCart = ShoppingCart()
+			request.session['shoppingCart'] = shoppingCart.to_dictionary()
+			return JsonResponse({'shoppingCart': request.session['shoppingCart']}) 
+		else:
+			request.session['shoppingCart'] = cart
 
 		return JsonResponse({'status': True})
 

@@ -1,4 +1,4 @@
-happy_cup.controller('global_controller', function ($window, $scope, $location, $timeout, $anchorScroll, content_factory, user_factory, shop_factory){
+happy_cup.controller('global_controller', function ($window, $scope, $location, $timeout, $interval, $anchorScroll, content_factory, user_factory, shop_factory){
 
 	$scope.mobileAndTabletCheck = mobileAndTabletCheck();
 	$scope.currentView = getCurrentView()
@@ -129,7 +129,13 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 	//event listeners
 
 	$scope.$on('getShoppingCart', function (event, callback){
-		callback($scope.shoppingCart);
+		var waitForContent = $interval(function(){
+			if ($scope.shoppingCart !== undefined) {
+				$interval.cancel(waitForContent)
+				callback($scope.shoppingCart);
+			}
+		},10)
+		
 	});
 
 	$scope.$on('openCoffeeModal', function (event, coffee) {

@@ -54,14 +54,14 @@ def validate_address(final_address):
 			elif 'postal_code' in key['types']:
 				zipcode = key['short_name']
 
-		address_components = (number, street, city, state, zipcode)
+		address_components = {'number':number, 'street':street, 'city':city, 'state':state, 'zipcode':zipcode}
 
 		address = data[0].get('formatted_address')
 
 		return (address, address_components)
 	except Exception as e:
-		# if gmaps_error:
-		# 	return {'error': 'api', 'message': 'There is a problem with the Google Maps API.  Contact application support. Error : '+str(gmaps_error) }
+		if gmaps_error:
+			return {'error': 'api', 'message': 'There is a problem with the Google Maps API.  Contact application support. Error : '+str(gmaps_error) }
 
 		return ({'error': 'no result', 'message': 'Google Maps returned no results for this address.  Please double check your entry.'	},False)
 

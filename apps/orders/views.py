@@ -10,25 +10,28 @@ import json
 def checkShippingAddress(request):
 
 	loadJson = json.loads(request.body)
-	form = CustomerShippingForm(loadJson["shippingInfo"])
+	form = CustomerShippingForm(loadJson)
 
 	if form.is_valid():
 		shoppingCart = request.session["shoppingCart"]
 
+		shoppingCart["shipping"] = loadJson
 
-		shoppingCart["billing"] = loadJson["billingInfo"]
+		try:
+			shoppingCart['shipping']['address'] = "%s %s" % (form.cleaned_data['verify_address']['number'], form.cleaned_data['verify_address']['street'])
+			shoppingCart['shipping']['city'] = form.cleaned_data['verify_address']['city']
+			shoppingCart['shipping']['state'] = form.cleaned_data['verify_address']['state']
+			shoppingCart['shipping']['zipcode'] = form.cleaned_data['verify_address']['zipcode']
+		except Exception as e:
+			shoppingCart['api_error'] = form.cleaned_data['api_error']
 
-		shoppingCart["shipping"] = loadJson["shippingInfo"]
 
-		shoppingCart['shipping']['address'] = "%s %s" % (form.cleaned_data['verify_address'][0], form.cleaned_data['verify_address'][1])
-		shoppingCart['shipping']['city'] = form.cleaned_data['verify_address'][2]
-		shoppingCart['shipping']['state'] = form.cleaned_data['verify_address'][3]
-		shoppingCart['shipping']['zipcode'] = form.cleaned_data['verify_address'][4]
-
+		shoppingCart['checkoutStatus']['payment'] = True
 		request.session["shoppingCart"] = shoppingCart
 		
 
 		return JsonResponse({"status": True, 'shoppingCart': request.session["shoppingCart"]})
+
 	else:
 		return JsonResponse({"status": False, "errors": form.errors.as_json()})
 

@@ -12,12 +12,30 @@
 
 				<!-- page-title start -->
 				<!-- ================ -->
-				<h1 class="page-title">Checkout Payment</h1>
+				<h1 class="page-title">Payment</h1>
 				<div class="separator-2"></div>
 				<!-- page-title end -->
+
+				<fieldset>
+					<legend>Shipping Information</legend>
+					<div class="row space-bottom">
+						<div class="col-xs-12">
+							<p ng-if="!currentCart.api_error">Your shipping address has been validated.  Please double check it for accuracy.</p>
+							<p>[[currentCart.shipping.address]] [[currentCart.shipping.address2]]</p>
+							<p>[[currentCart.shipping.city]], [[currentCart.shipping.state]] [[currentCart.shipping.zipcode]]</p>
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" name="same-as-billing" id="shipping-info-check" ng-model="currentCart.sameAsBilling" ng-change="toggleBillingInfo()"> My Shipping information is the same as my Billing information.
+								</label>
+							</div>
+							<a href="#/cart/checkout" class="btn btn-default">My address is not correct</a>
+						</div>
+
+					</div>
+				</fieldset>
 				
 				<fieldset>
-					<legend>Payment</legend>
+					<legend>Payment Information</legend>
 					<form role="form" class="form-horizontal" id="payment-information">
 						<div class="row">
 							<div class="col-lg-3">
@@ -35,7 +53,7 @@
 									<div class="col-md-9">
 										<div class="row">
 											<div class="col-md-4">
-												<input type="text" class="form-control" id="paymentFirstName" placeholder="First Name">
+												<input type="text" class="form-control" id="paymentFirstName" placeholder="First Name" ng-model="billingInfo.first_name">
 											</div>
 										</div>
 									</div>
@@ -45,7 +63,7 @@
 									<div class="col-md-9">
 										<div class="row">
 											<div class="col-md-4">
-												<input type="text" class="form-control" id="paymentLastName" placeholder="Last Name">
+												<input type="text" class="form-control" id="paymentLastName" placeholder="Last Name" ng-model="billingInfo.last_name">
 											</div>
 										</div>
 									</div>
@@ -55,7 +73,7 @@
 									<div class="col-md-9">
 										<div class="row">
 											<div class="col-md-4">
-												<select class="form-control">
+												<select class="form-control" ng-model="billingInfo.card">
 													<option value="visa" selected="selected">VISA</option>
 													<option value="master-card">Master Card</option>
 													<option value="american-express">American Express</option>
@@ -69,17 +87,17 @@
 									<div class="col-md-9">
 										<div class="row">
 											<div class="col-xs-6 col-sm-2">
-												<input type="text" class="form-control">
+												<input type="text" class="form-control" ng-model="billingInfo.card_num1">
 											</div>
 											<div class="col-xs-6 col-sm-2">
-												<input type="text" class="form-control">
+												<input type="text" class="form-control" ng-model="billingInfo.card_num2">
 											</div>
 											<div class="clearfix space-bottom visible-xs"></div>
 											<div class="col-xs-6 col-sm-2">
-												<input type="text" class="form-control">
+												<input type="text" class="form-control" ng-model="billingInfo.card_num3">
 											</div>
 											<div class="col-xs-6 col-sm-2">
-												<input type="text" class="form-control">
+												<input type="text" class="form-control" ng-model="billingInfo.card_num4">
 											</div>
 										</div>
 									</div>
@@ -89,7 +107,7 @@
 									<div class="col-md-9">
 										<div class="row">
 											<div class="col-xs-6 col-sm-2">
-												<select class="form-control">
+												<select class="form-control" ng-model="billingInfo.expire_month">
 													<option value="01" selected="selected">01</option>
 													<option value="03">02</option>
 													<option value="03">03</option>
@@ -105,7 +123,7 @@
 												</select>
 											</div>
 											<div class="col-xs-6 col-sm-2">
-												<select class="form-control">
+												<select class="form-control" ng-model="billingInfo.expire_year">
 													<option value="2014" selected="selected">2014</option>
 													<option value="2015">2015</option>
 													<option value="2016">2016</option>
@@ -128,7 +146,7 @@
 									<div class="col-md-9">
 										<div class="row">
 											<div class="col-xs-6 col-sm-2">
-												<input type="text" class="form-control">
+												<input type="text" class="form-control" ng-model="billingInfo.cvs">
 											</div>
 										</div>
 									</div>
@@ -137,22 +155,13 @@
 						</div>
 						<div class="space"></div>
 						<div class="row">
-							<div class="col-lg-3">
-								<div class="radio">
-									<label>
-										<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-										Paypal<i class="fa fa-cc-paypal pl-10"></i>
-									</label>
-								</div>
-								<div class="space-bottom"></div>
-							</div>
-							<div class="col-lg-9">
+							<div class="col-lg-9 col-lg-offset-3">
 								<div class="form-group">
 									<label for="paymentEmail" class="col-md-3 control-label">Email<small class="text-danger">*</small></label>
 									<div class="col-md-9">
 										<div class="row">
 											<div class="col-md-8">
-												<input type="email" class="form-control" id="paymentEmail" placeholder="Email">
+												<input type="email" class="form-control" id="paymentEmail" placeholder="Email" ng-model="billingInfo.email">
 											</div>
 										</div>
 									</div>
@@ -160,20 +169,6 @@
 							</div>
 						</div>
 						<div class="space"></div>
-						<div class="row">
-							<div class="col-lg-3">
-								<div class="radio">
-									<label>
-										<input type="radio" name="optionsRadios" id="optionsRadios3" value="option3">
-										Cash On Delivery
-									</label>
-								</div>
-								<div class="space-bottom"></div>
-							</div>
-							<div class="col-lg-9">
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. At, quo, non sint nisi, corrupti fuga qui quod autem totam, molestias reiciendis ex unde. Molestias, nostrum numquam, beatae totam esse ab.</p>
-							</div>
-						</div>
 					</form>
 				</fieldset>
 				<div class="text-right">	

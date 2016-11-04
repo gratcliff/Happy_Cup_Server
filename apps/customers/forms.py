@@ -21,8 +21,6 @@ class UserRegisterForm(UserCreationForm):
 		if duplicate:
 			self.add_error('email', 'A user with that email address already exists.')
 
-
-
 	def save(self, commit=True):
 		user = super(UserRegisterForm, self).save(commit=False)
 		user.set_password(self.cleaned_data['password1'])
@@ -40,13 +38,18 @@ class CustomerShippingForm(forms.ModelForm):
 
 	def clean(self):
 		cleaned_data = super(CustomerShippingForm, self).clean()
+		if self.errors:
+			return
 
 		final_address = "%s %s, %s %s, %s" % (cleaned_data["address"], cleaned_data["address2"], cleaned_data["city"], cleaned_data["state"], cleaned_data["zipcode"])
 
 		(address, components) = validate_address(final_address)
 
 		if 'error' in address:
-			self.add_error('address', address['message'])
+			if address['error'] == 'no result':
+				self.add_error('address', address['message'])
+			else:
+				cleaned_data['api_error'] = address['message']
 		else:	
 			cleaned_data['verify_address'] = components
 

@@ -213,6 +213,12 @@ happy_cup.factory('shop_factory', function($http){
 		shoppingCart.countTotals();
 
 		$http.post('sync/', shoppingCart).then(function(response){
+			if (shoppingCart.totalItems === 0) {
+				cart = response.data.shoppingCart
+				delete shoppingCart.billing
+				delete shoppingCart.shipping
+				shoppingCart.checkoutStatus = cart.checkoutStatus
+			}
 			callback(shoppingCart);
 		});
 
@@ -233,17 +239,16 @@ happy_cup.factory('shop_factory', function($http){
 		});
 	};
 
-	factory.submitBillingInfo = function (addressInfo, callback){
+	factory.submitShippingInfo = function (addressInfo, callback){
 		$http.post('orders/address/', addressInfo).then(function(response){
-			console.log(response.data);
 			
 			if (response.data.status === true) {
-				shoppingCart.billing = response.data.shoppingCart.billing
 				shoppingCart.shipping = response.data.shoppingCart.shipping
 				shoppingCart.checkoutStatus.payment = true
-				callback()
+				callback(shoppingCart)
 			} else {
-				console.log('bad')
+				errors = JSON.parse(response.data.errors)
+				callback({errors:errors})
 			}
 			
 			

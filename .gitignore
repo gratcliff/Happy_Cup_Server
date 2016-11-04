@@ -3,6 +3,7 @@ bower_components/
 venv/
 
 *.pyc
+keys.txt
 
 db.sqlite3
 

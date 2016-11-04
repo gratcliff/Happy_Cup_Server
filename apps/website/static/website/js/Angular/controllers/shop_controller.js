@@ -114,7 +114,6 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 		}
 
 		$scope.products.coffee[idx].addingProduct = true;
-		console.log(coffee.featured)
 		var data = {
 			id: coffee.id,
 			name: coffee.name,

@@ -1976,18 +1976,20 @@
 			$(this).closest(".remove-data").remove();
 		});
 
-		// Shipping Checkbox
-		//-----------------------------------------------
-		if ($("#shipping-info-check").is(':checked')) {
-			$("#shipping-information").hide();
-		}
-		$("#shipping-info-check").change(function(){
-			if ($(this).is(':checked')) {
-				$("#shipping-information").slideToggle();
-			} else {
-				$("#shipping-information").slideToggle();
-			}
-		});
+		// // Shipping Checkbox
+		// //-----------------------------------------------
+		// if ($("#shipping-info-check").is(':checked')) {
+		// 	console.log('hide')
+		// 	$("#shipping-information").hide();
+		// }
+		// $("#shipping-info-check").change(function(){
+		// 	console.log('checked')
+		// 	if ($(this).is(':checked')) {
+		// 		$("#shipping-information").slideToggle();
+		// 	} else {
+		// 		$("#shipping-information").slideToggle();
+		// 	}
+		// });
 
 		// Full Width Image Overlay
 		//-----------------------------------------------

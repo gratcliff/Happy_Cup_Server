@@ -9,34 +9,51 @@ happy_cup.controller('checkout_controller', function ($scope, $location, $timeou
 			$scope.currentCart = cart
 			$scope.userAllowedInView = true;
 			$scope.forms.checkoutForm = {}
-			$scope.billingInfo = {}
 			$scope.shippingInfo = {}
-			$scope.shippingInfo.sameAsBilling = true;
+
+			if (cart.shipping) {
+				$scope.shippingInfo = cart.shipping
+			}
+
 		}
 		
 
 
 	});
 
-	$scope.submitBillingInfo = function() {
+	$scope.submitShippingInfo = function() {
 		$scope.forms.checkoutForm.$setSubmitted()
 		if (!$scope.forms.checkoutForm.$valid) {
-			$anchorScroll('billing-form-start');
-
-	
-
+			$anchorScroll('shipping-form-start');
 
 		} else {
-			if ($scope.shippingInfo.sameAsBilling) {
-				$scope.shippingInfo = $scope.billingInfo;
-				$scope.shippingInfo.sameAsBilling = true;
-			}
-			shop_factory.submitBillingInfo({'billingInfo': $scope.billingInfo, 'shippingInfo': $scope.shippingInfo}, function(){
-				console.log($scope.currentCart);
-				$location.url('/cart/payment');
+			shop_factory.submitShippingInfo($scope.shippingInfo, function(response){
+
+				if (response.errors){
+
+					for (field in response.errors) {
+						$scope.forms.checkoutForm[field].$error.message = response.errors[field][0].message;
+						$scope.forms.checkoutForm[field].$invalid = true;
+
+					}
+					$anchorScroll('Tel');
+				} else {
+					$location.url('/cart/payment');
+				}
+
+			
 			});
 		}
 		
 	};
+
+	$scope.clearErrors = function(field){
+		if ($scope.shippingInfo[field]) {
+
+			$scope.forms.checkoutForm[field].$invalid = false;
+			$scope.forms.checkoutForm[field].$error.message = undefined;
+
+		}
+	}
 
 });
