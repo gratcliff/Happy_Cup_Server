@@ -25,6 +25,32 @@ class JsonSerializer:
 				promotion.save()
 
 
+	def serialize_wholeSaleCoffee(self, coffees):
+		global db_modified
+
+		data = []
+
+		for coffee in coffees:
+
+			obj = {
+			'id' : coffee.id,
+			'name' : coffee.name,
+			'roast' : { 'id' : coffee.roast.id, 'name' : str(coffee.roast) },
+			'grinds' : self.serialize_grinds(coffee.grinds.all()),
+			'description' : coffee.description,
+			'price_per_pound' : coffee.price_per_pound,
+			'image_url' : coffee.image_url,
+			'type' : 'coffee'
+
+			}
+
+			data.append(obj)
+
+		db_modified = False
+
+		return data
+
+
 	def serialize_coffee(self, coffees):
 
 		global db_modified

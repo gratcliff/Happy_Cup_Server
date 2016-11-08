@@ -9,6 +9,7 @@ class ShoppingCart(object):
 
 	def __init__(self):
 		self.coffee = []
+		self.wholeSaleCoffee = []
 		self.subscriptions = []
 		self.merch = []
 		self.unsavedChanges = False
@@ -26,6 +27,7 @@ class ShoppingCart(object):
 
 		return {
 				"coffee" : self.coffee,
+				"wholeSaleCoffee" : self.wholeSaleCoffee,
 				"subscriptions" : self.subscriptions,
 				"merch" : self.merch,
 				"unsavedChanges" : self.unsavedChanges,
@@ -38,6 +40,7 @@ class ShoppingCart(object):
 	def from_dictionary(self, data):
 
 		self.coffee = data['coffee']
+		self.wholeSaleCoffee = data['wholeSaleCoffee']
 		self.subscriptions = data['subscriptions']
 		self.merch = data['merch']
 		self.unsavedChanges = data['unsavedChanges']

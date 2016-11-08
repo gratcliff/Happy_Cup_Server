@@ -71,6 +71,7 @@ class ProvideContent(View):
 				'products' : {
 					'featured' : self.content.featured_products,
 					'coffee' : self.content.coffee_json,
+					'wholeSaleCoffee' : self.content.wholeSaleCoffee_json,
 					'merchandise' : self.content.merchandise_json,
 				},
 			},

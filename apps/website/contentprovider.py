@@ -13,6 +13,7 @@ class ContentProvider(object):
 		self.query_set = QuerySet()
 		self.json_serializer = serialize.JsonSerializer()
 		self.coffee_json = []
+		self.wholeSaleCoffee_json = []
 		self.merchandise_json = []
 		self.variety_pack_json = []
 		self.about_fullWidthSection = []
@@ -24,6 +25,8 @@ class ContentProvider(object):
 	def populate_products(self):
 
 		self.featured_products = []
+
+		self.wholeSaleCoffee_json = self.json_serializer.serialize_wholeSaleCoffee(self.query_set.wholeSaleCoffee)
 
 		(self.coffee_json, self.featured_coffee) = self.json_serializer.serialize_coffee(self.query_set.coffee)
 
