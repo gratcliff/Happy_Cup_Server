@@ -40,7 +40,7 @@ happy_cup.controller('reviewOrder_controller', function($scope, $location, $time
 					return
 				}
 
-				$scope.$emit('orderSubmitted')
+				$scope.$emit('orderSubmitted', res.data.order_id);
 
 			});
 

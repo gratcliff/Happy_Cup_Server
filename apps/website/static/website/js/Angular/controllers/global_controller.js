@@ -250,10 +250,11 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 		
 	});
 
-	$scope.$on('orderSubmitted', function(event){
+	$scope.$on('orderSubmitted', function(event, data){
 		shop_factory.getShoppingCart(function(cart){
 			$scope.shoppingCart = cart;
 			$scope.orderCompleted = true;
+			$scope.order_id = data;
 			$location.url('/cart/completed');
 		});
 	})
@@ -262,7 +263,15 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 	$scope.$on('orderCompleted', function(event, callback){
 		callback($scope.orderCompleted);
 		// user can only view page once per order submission
-		$scope.orderCompleted = false;
+		$scope.orderCompleted = undefined;
+		$scope.invoiceAvailable = true;
+	});
+
+	$scope.$on('viewInvoice', function(event, callback){
+		callback({invoiceAvailable:$scope.invoiceAvailable, order_id:$scope.order_id})
+		// user can only view page once per order submission
+		$scope.invoiceAvailable = undefined;
+		$scope.order_id = undefined;
 	});
 
 	// end of event listeners

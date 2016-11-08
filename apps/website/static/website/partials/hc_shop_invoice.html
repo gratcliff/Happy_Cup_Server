@@ -2,7 +2,7 @@
 <link href="/static/website/css/print-invoice.css" rel="stylesheet" media="print">
 <!-- main-container start -->
 
-<section class="main-container">
+<section class="main-container" ng-controller="invoice_controller">
 
 	<div class="container">
 		<div class="row">
@@ -29,9 +29,18 @@
 								E-mail: <a href="mailto:adamBray@happycup.com">adamBray@happycup.com</a>
 							</address>
 						</div>
-
-						<div class="col-sm-offset-3 col-sm-3">
-							<h5 class="text-right page-title">Client</h5>
+						<div class="col-sm-3 col-xs-6">
+							<h5 class="text-left page-title">Client Billing</h5>
+							<p class="text-left small">
+								John Doe <br>
+								795 Folsom Ave, Suite 600 <br>
+								San Francisco, CA 99999 <br>
+								123-456-789 <br>
+								john.doe@gmail.com
+							</p>
+						</div>
+						<div class="col-sm-3 col-xs-6">
+							<h5 class="text-right page-title">Client Shipping</h5>
 							<p class="text-right small">
 								John Doe <br>
 								795 Folsom Ave, Suite 600 <br>

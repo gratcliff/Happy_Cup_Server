@@ -38,12 +38,26 @@ class Customer(models.Model):
 			return 'Unregistered'
 		return str(self.user)
 
-	def shipping_address(self, no_html=False):
+	def shipping_address(self, no_html=False, as_json=False):
 		if no_html:
 			if self.address2:
 				return "%s : %s %s, %s, %s %s" % (self.name, self.address, self.address2, self.city, self.state, self.zipcode)
 
 			return "%s : %s, %s, %s %s" % (self.name, self.address, self.city, self.state, self.zipcode)
+
+		if as_json:
+			return { 
+				'address': {
+					'line1': self.address,
+					'line2': self.address2,
+					'city': self.city,
+					'state': self.state,
+					'postal_code': self.zipcode
+				},
+				'name': self.name,
+				'phone': self.phone_number,
+			}
+
 
 		if self.address2:
 			return "%s<br>%s %s<br>%s, %s %s" % (self.name, self.address, self.address2, self.city, self.state, self.zipcode)

@@ -35,11 +35,25 @@ class CustomerOrder(models.Model):
 		self.totalPrice = shoppingCart['totalPrice']
 		self.totalItems = shoppingCart['totalItems']
 
-	def parse_coffee(self):
+	def parse_coffee(self, as_json=False):
 		if not self.coffee:
 			return ''
 
 		data = json.loads(self.coffee)
+
+		if as_json:
+			result = []
+
+			for coffee in data:
+				obj = {}
+				obj['qty'] = coffee['qty']
+				obj['size'] = coffee['size']['qty']
+				obj['name'] = coffee['name']
+				obj['grind'] = coffee['grind']['name']
+				result.append(json.dumps(obj))
+
+			return result
+
 		result = ''
 
 		for coffee in data:
@@ -47,11 +61,35 @@ class CustomerOrder(models.Model):
 
 		return result
 
-	def parse_merchandise(self):
+	def parse_merchandise(self, as_json=False):
 		if not self.merch:
 			return ''
 
 		data = json.loads(self.merch)
+
+		if as_json:
+			result = []
+
+			for merch in data:
+				obj = {}
+				obj['qty'] = merch['qty']
+				obj['name'] = merch['name']
+				if merch.get('size'):
+					obj['shirt_size'] = merch['size']['size']
+
+				coffees = merch.get('coffee')
+				if coffees is not None:
+					obj['coffee'] = []
+
+					if type(coffees) is list:
+						for coffee in coffees:
+							obj['coffee'].append({'name':coffee['name'], 'grind':merch['grind']['name']})
+					else:
+						obj['coffee'].append({'name':coffees['name'], 'grind':merch['grind']['name']})
+				result.append(json.dumps(obj))
+
+			return result
+
 		result = ''
 
 		for merch in data:
@@ -72,6 +110,26 @@ class CustomerOrder(models.Model):
 			result += '<br><br>'
 		
 		return result
+
+	def serialize_model(self):
+		return {
+			'coffee' : self.coffee,
+			'merch' : self.merch,
+			'subscriptions' : self.subscriptions,
+			'customer' : self.customer.shipping_address(False, True),
+			'id' : self.id,
+			'created_at' : self.created_at,
+			'coupon' : {
+				'code' : self.coupon.code,
+				'discount' : self.coupon.discount,
+			},
+			'discount_rate' : self.customer.discount_rate.discount_percentage,
+			'totalPrice' : self.totalPrice,
+			'totalItems' : self.totalItems
+
+		}
+
+
 
 
 

@@ -242,23 +242,29 @@ happy_cup.factory('shop_factory', function($http){
 		$http.post('orders/address/', addressInfo).then(function(response){
 			
 			if (response.data.status === true) {
-				shoppingCart.shipping = response.data.shoppingCart.shipping
-				shoppingCart.checkoutStatus.payment = true
-				callback(shoppingCart)
+				shoppingCart.shipping = response.data.shoppingCart.shipping;
+				shoppingCart.checkoutStatus.payment = true;
+				callback(shoppingCart);
 			} else {
-				errors = JSON.parse(response.data.errors)
-				callback({errors:errors})
+				errors = JSON.parse(response.data.errors);
+				callback({errors:errors});
 			}
 			
 			
 
-		})
-	}
+		});
+	};
 
 	factory.processPayment = function(token, callback) {
 		$http.post('orders/payment/', token).then(function(response){
 			callback(response)
-		})
+		});
+	};
+
+	factory.getInvoice = function(id, callback){
+		$http.get('orders/invoice/', id).then(function(response){
+			callback(response);
+		});
 	}
 
 
