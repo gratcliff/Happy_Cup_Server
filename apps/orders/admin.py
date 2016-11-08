@@ -10,7 +10,7 @@ import json
 
 class CustomerOrderAdmin(admin.ModelAdmin):
 	list_display = ('order_date','order_id', 'billing_info', 'customer', 'shipping_address', 'totalItems', 'items')
-	search_fields = ['id']
+	search_fields = ['id', 'customer__name']
 	list_filter = ('created_at',)
 	list_per_page = 10
 
@@ -26,7 +26,7 @@ class CustomerOrderAdmin(admin.ModelAdmin):
 		return obj.id
 
 	def billing_info(self, obj):
-		link = format_html("<a href='https://dashboard.stripe.com/test/payments/%s' target='_blank'>Billing Info</a" % (obj.charge_id,))
+		link = format_html("<a href='https://dashboard.stripe.com/test/payments/%s' target='_blank'>Billing Info</a>" % (obj.charge_id,))
 		return link
 
 	def has_add_permission (self, request):
