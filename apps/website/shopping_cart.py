@@ -17,7 +17,6 @@ class ShoppingCart(object):
 
 			'payment' : False,
 			'review' : False,
-			'complete' : False
 
 		}
 		self.totalItems = 0
@@ -60,6 +59,7 @@ def empty_all_carts():
 			data = SessionStore(session_key=session.session_key)
 			data['shoppingCart'] = None
 			data.save()
+
 
 					
 

@@ -79,7 +79,8 @@ class ProvideContent(View):
 				'staffMemberEntry' : self.content.about_staffMemberEntry
 			},
 			'locations': self.content.locations,
-			'blogPosts': self.content.blogPosts
+			'blogPosts': self.content.blogPosts,
+			'stripe_public_key' : os.environ.get('STRIPE_PUB_TEST')
 		}
 
 		print len(connection.queries)
@@ -95,7 +96,6 @@ class SyncShoppingCart(View):
 		# request.session.clear()
 
 		cart_exists = request.session.get('shoppingCart', None)
-
 		if not cart_exists:
 			shoppingCart = ShoppingCart()
 			request.session['shoppingCart'] = shoppingCart.to_dictionary() 
@@ -105,8 +105,8 @@ class SyncShoppingCart(View):
 	def post(self, request):
 		cart = json.loads(request.body)
 
-		
 		cart['unsavedChanges'] = False
+		cart['checkoutStatus']['review'] = False
 
 		if cart['totalItems'] == 0:
 			shoppingCart = ShoppingCart()

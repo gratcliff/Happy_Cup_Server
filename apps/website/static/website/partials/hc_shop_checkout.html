@@ -3,7 +3,7 @@
 <section class="main-container">
 
 	<div class="container" ng-controller="checkout_controller">
-		<div class="row" ng-if="userAllowedInView">
+		<div class="row" ng-show="userAllowedInView">
 
 			<!-- main start -->
 			<!-- ================ -->
@@ -73,7 +73,7 @@
 						</tr>
 					</tbody>
 				</table>
-				<div class="space-bottom" id="-form-start"></div>
+				<div class="space-bottom" id="shipping-form-start"></div>
 				<fieldset>
 					<legend>Shipping information</legend>
 					<form role="form" name="forms.checkoutForm" novalidate class="form-horizontal" id="shipping-information">
@@ -153,7 +153,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.checkoutForm.$submitted ||  forms.checkoutForm._state.$touched) && forms.checkoutForm._state.$invalid}">
+								<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.checkoutForm.$submitted ||  forms.checkoutForm.state.$touched) && forms.checkoutForm.state.$invalid}">
 									<label class="col-md-2 control-label">State<small class="text-default">*</small></label>
 									<div class="col-md-10">
 										<select class="form-control" name="state" required ng-model="shippingInfo.state">
@@ -255,152 +255,6 @@
 						</div>
 					</form>
 				</fieldset>
-				<!-- <fieldset>
-					<legend>Shipping information</legend>
-					<form role="form" class="form-horizontal" id="shipping-information-container">
-						<div class="checkbox space-bottom">
-							<label>
-								<input type="checkbox" name="same-as-billing" id="shipping-info-check" ng-model="shippingInfo.sameAsBilling"> My Shipping information is the same as my Billing information.
-							</label>
-						</div>
-						<div id="shipping-information" ng-show="!shippingInfo.sameAsBilling">
-							<div class="row">
-								<div class="col-lg-3">
-									<h3 class="title">Personal Info</h3>
-								</div>
-								<div class="col-lg-8 col-lg-offset-1">
-									<div class="form-group">
-										<label for="shippingFirstName" class="col-md-2 control-label">First Name<small class="text-default">*</small></label>
-										<div class="col-md-10">
-											<input type="text" class="form-control" id="shippingFirstName" placeholder="First Name" ng-model="shippingInfo.first_name">
-										</div>
-									</div>
-									<div class="form-group">
-										<label for="shippingLastName" class="col-md-2 control-label">Last Name<small class="text-default">*</small></label>
-										<div class="col-md-10">
-											<input type="text" class="form-control" id="shippingLastName" placeholder="Last Name" ng-model="shippingInfo.last_name">
-										</div>
-									</div>
-									<div class="form-group">
-										<label for="shippingTel" class="col-md-2 control-label">Telephone<small class="text-default">*</small></label>
-										<div class="col-md-10">
-											<input type="text" class="form-control" id="shippingTel" placeholder="Telephone" ng-model="shippingInfo.phone_number" maxlength="24">
-										</div>
-									</div>
-									<div class="form-group">
-										<label for="shippingemail" class="col-md-2 control-label">Email<small class="text-default">*</small></label>
-										<div class="col-md-10">
-											<input type="email" class="form-control" id="shippingemail" placeholder="Email" ng-model="shippingInfo.email" maxlength="128">
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="space"></div>
-							<div class="row">
-								<div class="col-lg-3">
-									<h3 class="title">Your Address</h3>
-								</div>
-								<div class="col-lg-8 col-lg-offset-1">
-									<div class="form-group">
-										<label for="shippingAddress1" class="col-md-2 control-label">Address 1<small class="text-default">*</small></label>
-										<div class="col-md-10">
-											<input type="text" class="form-control" id="shippingAddress1" placeholder="Address 1" ng-model="shippingInfo.address">
-										</div>
-									</div>
-									<div class="form-group">
-										<label for="shippingAddress2" class="col-md-2 control-label">Address 2</label>
-										<div class="col-md-10">
-											<input type="text" class="form-control" id="shippingAddress2" placeholder="Address 2" ng-model="shippingInfo.address2">
-										</div>
-									</div>
-									<div class="form-group">
-										<label for="shippingCity" class="col-md-2 control-label">City<small class="text-default">*</small></label>
-										<div class="col-md-10">
-											<input type="text" class="form-control" id="shippingCity" placeholder="City" ng-model="shippingInfo.city" maxlength="32">
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="col-md-2 control-label">State<small class="text-default">*</small></label>
-										<div class="col-md-10">
-											<select class="form-control" ng-model="shippingInfo.state">
-											<option value="">Select State</option>
-											<option value="AA">Armed Forces America</option>
-											<option value="AE">Armed Forces Europe</option>
-											<option value="AK">Alaska</option>
-											<option value="AL">Alabama</option>
-											<option value="AP">Armed Forces Pacific</option>
-											<option value="AR">Arkansas</option>
-											<option value="AS">American Samoa</option>
-											<option value="AZ">Arizona</option>
-											<option value="CA">California</option>
-											<option value="CO">Colorado</option>
-											<option value="CT">Connecticut</option>
-											<option value="DC">District of Columbia</option>
-											<option value="DE">Delaware</option>
-											<option value="FL">Florida</option>
-											<option value="FM">Micronesia, Federated States Of</option>
-											<option value="GA">Georgia</option>
-											<option value="GU">Guam</option>
-											<option value="HI">Hawaii</option>
-											<option value="IA">Iowa</option>
-											<option value="ID">Idaho</option>
-											<option value="IL">Illinois</option>
-											<option value="IN">Indiana</option>
-											<option value="KS">Kansas</option>
-											<option value="KY">Kentucky</option>
-											<option value="LA">Louisiana</option>
-											<option value="MA">Massachusetts</option>
-											<option value="MD">Maryland</option>
-											<option value="ME">Maine</option>
-											<option value="MH">Marshall Islands</option>
-											<option value="MI">Michigan</option>
-											<option value="MN">Minnesota</option>
-											<option value="MO">Missouri</option>
-											<option value="MP">Northern Mariana Islands</option>
-											<option value="MS">Mississippi</option>
-											<option value="MT">Montana</option>
-											<option value="NC">North Carolina</option>
-											<option value="ND">North Dakota</option>
-											<option value="NE">Nebraska</option>
-											<option value="NH">New Hampshire</option>
-											<option value="NJ">New Jersey</option>
-											<option value="NM">New Mexico</option>
-											<option value="NV">Nevada</option>
-											<option value="NY">New York</option>
-											<option value="OH">Ohio</option>
-											<option value="OK">Oklahoma</option>
-											<option value="OR">Oregon</option>
-											<option value="PA">Pennsylvania</option>
-											<option value="PR">Puerto Rico</option>
-											<option value="PW">Palau (Micronesia)</option>
-											<option value="RI">Rhode Island</option>
-											<option value="SC">South Carolina</option>
-											<option value="SD">South Dakota</option>
-											<option value="TN">Tennessee</option>
-											<option value="TX">Texas</option>
-											<option value="UM">US Minor Outlying Islands</option>
-											<option value="UT">Utah</option>
-											<option value="VA">Virginia</option>
-											<option value="VI">Virgin Islands Of The United States</option>
-											<option value="VT">Vermont</option>
-											<option value="WA">Washington</option>
-											<option value="WI">Wisconsin</option>
-											<option value="WV">West Virginia</option>
-											<option value="WY">Wyoming</option>
-											</select>
-										</div>
-									</div>
-									<div class="form-group">
-										<label for="shippingPostalCode" class="col-md-2 control-label">Zip Code<small class="text-default">*</small></label>
-										<div class="col-md-10">
-											<input type="text" class="form-control" id="shippingPostalCode" placeholder="Postal Code" ng-model="shippingInfo.zipcode" maxlength="10">
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</form>
-				</fieldset> -->
 				<div class="text-right">	
 					<a href="#/cart" class="btn btn-group btn-default"><i class="icon-left-open-big"></i> Go Back To Cart</a>
 					<a ng-click="submitShippingInfo()" class="btn btn-group btn-default">Next Step <i class="icon-right-open-big"></i></a>

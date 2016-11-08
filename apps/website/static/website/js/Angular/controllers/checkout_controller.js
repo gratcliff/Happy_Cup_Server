@@ -8,8 +8,9 @@ happy_cup.controller('checkout_controller', function ($scope, $location, $timeou
 		} else {
 			$scope.currentCart = cart
 			$scope.userAllowedInView = true;
-			$scope.forms.checkoutForm = {}
-			$scope.shippingInfo = {}
+			$scope.shippingInfo = {};
+			
+			
 
 			if (cart.shipping) {
 				$scope.shippingInfo = cart.shipping
@@ -28,7 +29,6 @@ happy_cup.controller('checkout_controller', function ($scope, $location, $timeou
 
 		} else {
 			shop_factory.submitShippingInfo($scope.shippingInfo, function(response){
-
 				if (response.errors){
 
 					for (field in response.errors) {

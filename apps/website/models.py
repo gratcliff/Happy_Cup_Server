@@ -8,8 +8,8 @@ import serialize
 
 class Timestamp(models.Model):
 
-	created_at = models.DateTimeField(auto_now=True)
-	updated_at = models.DateTimeField(auto_now_add=True)
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
 
 	class Meta:
 		abstract = True
@@ -39,8 +39,8 @@ class PriceTimestamp(models.Model):
 
 	""" Similar to Timestamp class, except it will be inherited by models that affect product pricing """
 
-	created_at = models.DateTimeField(auto_now=True)
-	updated_at = models.DateTimeField(auto_now_add=True)
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
 
 	class Meta:
 		abstract = True

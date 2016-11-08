@@ -65,4 +65,4 @@ def validate_address(final_address):
 
 		return ({'error': 'no result', 'message': 'Google Maps returned no results for this address.  Please double check your entry.'	},False)
 
-		# 	return {'error': 'other', 'message': 'Something went wrong. Please double check the address. Error message: '+str(e)}		
+		return {'error': 'other', 'message': 'Something went wrong. Please double check the address. Error message: '+str(e)}		

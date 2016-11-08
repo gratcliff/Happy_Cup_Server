@@ -4,3 +4,4 @@ requests==2.10.0
 whitenoise==3.2
 django-tinymce==2.4.0
 googlemaps==2.4.4
+stripe==1.41.1

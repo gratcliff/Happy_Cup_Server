@@ -2,9 +2,9 @@
 <!-- main-container start -->
 
 
-<section class="main-container">
+<section class="main-container" ng-controller="reviewOrder_controller">
 
-	<div class="container">
+	<div class="container" ng-show="userAllowedInView">
 		<div class="row">
 
 			<!-- main start -->
@@ -16,8 +16,65 @@
 				<h1 class="page-title">Checkout Review</h1>
 				<div class="separator-2"></div>
 				<!-- page-title end -->
-
 				<table class="table cart">
+					<thead>
+						<tr>
+							<th>Product </th>
+							<th>Price </th>
+							<th>Quantity</th>
+							<th class="amount">Total </th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-if="currentCart.coffee.length" >
+							<th colspan="5">Coffee</th>
+						</tr>
+						<tr ng-repeat="coffee in currentCart.coffee track by $index">
+							<td class="product">[[coffee.name]] ([[coffee.size.qty]]) <small>[[coffee.roast.name]] - [[coffee.grind.name]]</small></td>
+							<td class="price">[[coffee.size.base_price | currency : symbol : fractonSize]]</td>
+							<td class="quantity">[[coffee.qty]]</td>
+							<td class="amount">[[coffee.subtotal | currency : symbol : fractonSize]] </td>
+						</tr>
+						<tr ng-if="currentCart.subscriptions.length">
+							<th colspan="5">Subscriptions</th>
+						</tr>
+						<tr ng-repeat="sub in currentCart.subscriptions track by $index">
+							<td class="product">[[sub.name]] <small>[[sub.coffee.name]] - [[sub.grind.name]]</small></td>
+							<td class="price">[[sub.price | currency : symbol : fractonSize]]</td>
+							<td class="quantity">[[sub.qty]]</td>
+							<td class="amount">[[sub.subtotal | currency : symbol : fractonSize]] </td>
+						</tr>
+						<tr ng-if="currentCart.merch.length">
+							<th colspan="5">Merchandise</th>
+						</tr>
+						<tr ng-repeat="merch in currentCart.merch track by $index">
+							<td class="product">[[merch.name]]
+								<small>
+									<span ng-if = '!merch.coffee.length && merch.coffee != undefined'>Coffee: [[merch.coffee.name]] - [[merch.grind.name]]<br></span>
+									<span ng-if = 'merch.coffee.length'>Coffee: <br><span ng-repeat="coffee in merch.coffee | unique: 'id' ">&nbsp;&nbsp;[[coffee.qty]]x [[coffee.name]] - [[merch.grind.name]]<br></span></span>
+									<span ng-if = 'merch.size'>T-Shirt: [[merch.size.size]]</span>
+								</small>
+							</td>
+							<td class="price">[[merch.price | currency : symbol : fractonSize]]</td>
+							<td class="quantity">[[merch.qty]]</td>
+							<td class="amount">[[merch.subtotal | currency : symbol : fractonSize]] </td>
+						</tr>
+						<tr>
+							<td class="total-quantity" colspan="3">Subtotal</td>
+							<td class="amount">[[currentCart.totalPrice | currency : symbol : fractonSize]]</td>
+						</tr>
+						<tr ng-if="currentCart.coupon.valid">										
+							<td class="total-quantity" colspan="2">Discount Coupon</td>
+							<td class="price">[[currentCart.coupon.code]]</td>
+							<td class="amount">[[currentCart.coupon.discount * 100 | number : 0]]%</td>
+						</tr>
+						<tr>
+							<td class="total-quantity" colspan="3">Total [[currentCart.totalItems]] Item<span ng-hide="currentCart.totalItems === 1">s</span></td>
+							<td class="total-amount">[[currentCart.totalPrice * (1 - currentCart.coupon.discount) | currency : symbol : fractonSize]]</td>
+						</tr>
+					</tbody>
+				</table>
+				<!-- <table class="table cart">
 					<thead>
 						<tr>
 							<th>Product </th>
@@ -68,37 +125,7 @@
 							<td class="total-amount">$1597.00</td>
 						</tr>
 					</tbody>
-				</table>
-				<div class="space-bottom"></div>
-				<table class="table">
-					<thead>
-						<tr>
-							<th colspan="2">Billing Information </th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>Full Name</td>
-							<td class="information">John Doe </td>
-						</tr>
-						<tr>
-							<td>Email</td>
-							<td class="information">johndoe@mail.com </td>
-						</tr>
-						<tr>
-							<td>Telephone</td>
-							<td class="information">+00 123 123 1234</td>
-						</tr>
-						<tr>
-							<td>Address</td>
-							<td class="information">One infinity loop, 54100, United States</td>
-						</tr>
-						<tr>
-							<td>Additional Info</td>
-							<td class="information">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illum accusamus pariatur odit neque.</td>
-						</tr>
-					</tbody>
-				</table>
+				</table> -->
 				<div class="space-bottom"></div>
 				<table class="table">
 					<thead>
@@ -109,39 +136,65 @@
 					<tbody>
 						<tr>
 							<td>Full Name</td>
-							<td class="information">John Doe </td>
+							<td class="information">[[currentCart.shipping.first_name]] [[currentCart.shipping.last_name]]</td>
 						</tr>
 						<tr>
 							<td>Email</td>
-							<td class="information">johndoe@mail.com </td>
+							<td class="information">[[currentCart.shipping.email]]</td>
 						</tr>
 						<tr>
 							<td>Telephone</td>
-							<td class="information">+00 123 123 1234</td>
+							<td class="information">[[currentCart.shipping.phone_number]]</td>
 						</tr>
 						<tr>
 							<td>Address</td>
-							<td class="information">One infinity loop, 54100, United States</td>
+							<td class="information">[[currentCart.shipping.address]] [[currentCart.shipping.address2]]
+							<br>
+							[[currentCart.shipping.city]], [[currentCart.shipping.state]] [[currentCart.shipping.zipcode]]</td>
+						</tr>
+						<tr>
+							<td>Additional Info</td>
+							<td class="information">[[currentCart.shipping.message]]</td>
 						</tr>
 					</tbody>
 				</table>
-				<div class="space-bottom"></div>
-				<table class="table">
+				<div class="space-bottom" id="table-billing-info-start"></div>
+				<table class="table" >
 					<thead>
 						<tr>
-							<th colspan="2">Payment </th>
+							<th colspan="2">Billing Information </th>
 						</tr>
 					</thead>
 					<tbody>
+						<tr class="text-danger text-center lead" ng-if="invalidBillingForm"><td colspan="2">[[invalidBillingForm]]</td></tr>
+						<tr>
+							<td>Full Name</td>
+							<td class="information">[[stripe.card.name]]</td>
+						</tr>
+						<tr>
+							<td>Email</td>
+							<td class="information">[[billingInfo.email]]</td>
+						</tr>
+						<tr>
+							<td>Telephone</td>
+							<td class="information">[[billingInfo.phone_number]]</td>
+						</tr>
+						<tr>
+							<td>Address</td>
+							<td class="information">[[stripe.card.address_line1]] [[stripe.card.address_line2]]
+							<br>
+							[[stripe.card.address_city]], [[stripe.card.address_state]] [[stripe.card.address_zip]]
+							</td>
+						</tr>
 						<tr>
 							<td>Credit Card</td>
-							<td class="information">Visa ***917 </td>
+							<td class="information">[[stripe.card.brand]] [[stripe.card.last4]] </td>
 						</tr>
 					</tbody>
 				</table>
 				<div class="text-right">	
 					<a href="#/cart/payment" move-to-top class="btn btn-group btn-default"><i class="icon-left-open-big"></i> Go Back</a>
-					<a href="#/cart/completed" move-to-top class="btn btn-group btn-default"><i class="icon-check" ng-click = 'orderComplete()'></i> Complete Your Order</a>
+					<a href="" class="btn btn-group btn-default" ng-click = 'submitOrder()'><i class="icon-check" ng-show="!submittingOrder"></i> <i ng-show="submittingOrder" class="fa fa-spinner fa-spin"></i> <span ng-show="!submittingOrder">Complete</span><span ng-show="submittingOrder">Submitting</span> Order</a>
 				</div>
 
 			</div>

@@ -228,14 +228,42 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 
 	$scope.$on('changePageTitle', function(event, title){
 		$scope.pageTitle = title;
-	})
+	});
 
 	$scope.$on('contactController_designate', function (event){
 		$scope.contact_marker = true;
-	})
+	});
+
 	$scope.$on('show_social', function (event){
 		$scope.contact_marker = false;
+	});
+
+	$scope.$on('reviewOrder', function(event, data){
+		$scope.$apply(function(){
+			$location.url('/cart/review');
+			$scope.shoppingCart.checkoutStatus.review = true;
+			$timeout(function(){
+				$scope.$broadcast('completeOrder', data );
+			},100);
+			
+		});
+		
+	});
+
+	$scope.$on('orderSubmitted', function(event){
+		shop_factory.getShoppingCart(function(cart){
+			$scope.shoppingCart = cart;
+			$scope.orderCompleted = true;
+			$location.url('/cart/completed');
+		});
 	})
+
+
+	$scope.$on('orderCompleted', function(event, callback){
+		callback($scope.orderCompleted);
+		// user can only view page once per order submission
+		$scope.orderCompleted = false;
+	});
 
 	// end of event listeners
 

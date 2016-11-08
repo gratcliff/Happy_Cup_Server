@@ -21,133 +21,64 @@
 					<div class="row space-bottom">
 						<div class="col-xs-12">
 							<p ng-if="!currentCart.api_error">Your shipping address has been validated.  Please double check it for accuracy.</p>
-							<p>[[currentCart.shipping.address]] [[currentCart.shipping.address2]]</p>
-							<p>[[currentCart.shipping.city]], [[currentCart.shipping.state]] [[currentCart.shipping.zipcode]]</p>
+							<p ng-if="currentCart.api_error">Please verify your shipping address.</p>
+							<p class="margin-clear">[[currentCart.shipping.first_name]] [[currentCart.shipping.last_name]]</p>
+							<p class="margin-clear">[[currentCart.shipping.address]] [[currentCart.shipping.address2]]</p>
+							<p class="margin-clear">[[currentCart.shipping.city]], [[currentCart.shipping.state]] [[currentCart.shipping.zipcode]]</p>
 							<div class="checkbox">
 								<label>
-									<input type="checkbox" name="same-as-billing" id="shipping-info-check" ng-model="currentCart.sameAsBilling" ng-change="toggleBillingInfo()"> My Shipping information is the same as my Billing information.
+									<input type="checkbox" name="same-as-billing" id="shipping-info-check" ng-model="currentCart.sameAsBilling" ng-change="toggleBillingInfo()"> My shipping information is the same as my Billing information.
 								</label>
 							</div>
-							<a href="#/cart/checkout" class="btn btn-default">My address is not correct</a>
+							<a href="#/cart/checkout" class="btn btn-default">My shipping information is INCORRECT</a>
 						</div>
 
 					</div>
 				</fieldset>
-				
-				<fieldset>
-					<legend>Payment Information</legend>
-					<form role="form" class="form-horizontal" id="payment-information">
+
+				<div class="space-bottom" id="billing-form-start"></div>
+				<fieldset ng-show="!currentCart.sameAsBilling">
+					<legend>Billing information</legend>
+					<form role="form" name="forms.billingForm" novalidate class="form-horizontal" id="billing-information">
 						<div class="row">
 							<div class="col-lg-3">
-								<div class="radio">
-									<label>
-										<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-										Credit Card<i class="fa fa-cc-visa pl-10"></i><i class="fa fa-cc-amex pl-10"></i><i class="fa fa-cc-mastercard pl-10"></i>
-									</label>
-								</div>
-								<div class="space-bottom"></div>
+								<h3 class="title">Personal Info</h3>
 							</div>
-							<div class="col-lg-9">
-								<div class="form-group">
-									<label for="paymentFirstName" class="col-md-3 control-label">First Name<small class="text-danger">*</small></label>
-									<div class="col-md-9">
-										<div class="row">
-											<div class="col-md-4">
-												<input type="text" class="form-control" id="paymentFirstName" placeholder="First Name" ng-model="billingInfo.first_name">
-											</div>
+							<div class="col-lg-8 col-lg-offset-1">
+								<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.billingForm.$submitted ||  forms.billingForm.first_name.$touched) && forms.billingForm.first_name.$invalid}">
+									<label for="first_name" class="col-md-2 control-label">First Name<small class="text-default">*</small></label>
+									<div class="col-md-10">
+										<input type="text" name="first_name" class="form-control" id="FirstName" placeholder="First Name" ng-model="billingInfo.first_name" required maxlength="24">
+										<div ng-messages="forms.billingForm.first_name.$error" class="text-danger" role="alert" ng-if="forms.billingForm.first_name.$touched || forms.billingForm.$submitted">
+											<span ng-message="required">Please enter a value for this field.</span>
 										</div>
 									</div>
 								</div>
-								<div class="form-group">
-									<label for="paymentLastName" class="col-md-3 control-label">Last Name<small class="text-danger">*</small></label>
-									<div class="col-md-9">
-										<div class="row">
-											<div class="col-md-4">
-												<input type="text" class="form-control" id="paymentLastName" placeholder="Last Name" ng-model="billingInfo.last_name">
-											</div>
+								<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.billingForm.$submitted ||  forms.billingForm.last_name.$touched) && forms.billingForm.last_name.$invalid}">
+									<label for="last_name" class="col-md-2 control-label">Last Name<small class="text-default">*</small></label>
+									<div class="col-md-10">
+										<input type="text" name="last_name" class="form-control" id="LastName" placeholder="Last Name" ng-model="billingInfo.last_name" required maxlength="48">
+										<div ng-messages="forms.billingForm.last_name.$error" class="text-danger" role="alert" ng-if="forms.billingForm.last_name.$touched || forms.billingForm.$submitted">
+											<span ng-message="required">Please enter a value for this field.</span>
 										</div>
 									</div>
 								</div>
-								<div class="form-group">
-									<label class="col-md-3 control-label">Credit Card<small class="text-danger">*</small></label>
-									<div class="col-md-9">
-										<div class="row">
-											<div class="col-md-4">
-												<select class="form-control" ng-model="billingInfo.card">
-													<option value="visa" selected="selected">VISA</option>
-													<option value="master-card">Master Card</option>
-													<option value="american-express">American Express</option>
-												</select>															
-											</div>
+								<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.billingForm.$submitted ||  forms.billingForm.phone_number.$touched) && forms.billingForm.phone_number.$invalid}">
+									<label for="Tel" class="col-md-2 control-label">Telephone<small class="text-default">*</small></label>
+									<div class="col-md-10">
+										<input type="text" name="phone_number" class="form-control" id="Tel" placeholder="Telephone" required ng-model="billingInfo.phone_number" maxlength="24">
+										<div ng-messages="forms.billingForm.phone_number.$error" class="text-danger" role="alert" ng-if="forms.billingForm.phone_number.$touched || forms.billingForm.$submitted">
+											<span ng-message="required">Please enter a value for this field.</span>
 										</div>
 									</div>
 								</div>
-								<div class="form-group">
-									<label class="col-md-3 control-label">Card Number<small class="text-danger">*</small></label>
-									<div class="col-md-9">
-										<div class="row">
-											<div class="col-xs-6 col-sm-2">
-												<input type="text" class="form-control" ng-model="billingInfo.card_num1">
-											</div>
-											<div class="col-xs-6 col-sm-2">
-												<input type="text" class="form-control" ng-model="billingInfo.card_num2">
-											</div>
-											<div class="clearfix space-bottom visible-xs"></div>
-											<div class="col-xs-6 col-sm-2">
-												<input type="text" class="form-control" ng-model="billingInfo.card_num3">
-											</div>
-											<div class="col-xs-6 col-sm-2">
-												<input type="text" class="form-control" ng-model="billingInfo.card_num4">
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-md-3 control-label">Expiration Date<small class="text-danger">*</small></label>
-									<div class="col-md-9">
-										<div class="row">
-											<div class="col-xs-6 col-sm-2">
-												<select class="form-control" ng-model="billingInfo.expire_month">
-													<option value="01" selected="selected">01</option>
-													<option value="03">02</option>
-													<option value="03">03</option>
-													<option value="04">04</option>
-													<option value="05">05</option>
-													<option value="06">06</option>
-													<option value="07">07</option>
-													<option value="08">08</option>
-													<option value="09">09</option>
-													<option value="10">10</option>
-													<option value="11">11</option>
-													<option value="12">12</option>
-												</select>
-											</div>
-											<div class="col-xs-6 col-sm-2">
-												<select class="form-control" ng-model="billingInfo.expire_year">
-													<option value="2014" selected="selected">2014</option>
-													<option value="2015">2015</option>
-													<option value="2016">2016</option>
-													<option value="2017">2017</option>
-													<option value="2018">2018</option>
-													<option value="2019">2019</option>
-													<option value="2020">2020</option>
-													<option value="2021">2021</option>
-													<option value="2022">2022</option>
-													<option value="2023">2023</option>
-													<option value="2024">2024</option>
-													<option value="2025">2025</option>
-												</select>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-md-3 control-label">CVS<small class="text-danger">*</small></label>
-									<div class="col-md-9">
-										<div class="row">
-											<div class="col-xs-6 col-sm-2">
-												<input type="text" class="form-control" ng-model="billingInfo.cvs">
-											</div>
+								<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.billingForm.$submitted ||  forms.billingForm.email.$touched) && forms.billingForm.email.$invalid}">
+									<label for="email" class="col-md-2 control-label">Email<small class="text-default">*</small></label>
+									<div class="col-md-10">
+										<input type="email" name="email" class="form-control" id="email" placeholder="Email" required ng-model="billingInfo.email" maxlength="128">
+										<div ng-messages="forms.billingForm.email.$error" class="text-danger" role="alert" ng-if="forms.billingForm.email.$touched || forms.billingForm.$submitted">
+											<span ng-message="required">Please enter a value for this field.</span>
+											<span ng-message="email">Please enter a valid email address.</span>
 										</div>
 									</div>
 								</div>
@@ -155,14 +86,115 @@
 						</div>
 						<div class="space"></div>
 						<div class="row">
-							<div class="col-lg-9 col-lg-offset-3">
+							<div class="col-lg-3">
+								<h3 class="title">Your Address</h3>
+							</div>
+							<div class="col-lg-8 col-lg-offset-1">
+								<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.billingForm.$submitted ||  forms.billingForm.address.$touched) && forms.billingForm.address.$invalid}">
+									<label for="address" class="col-md-2 control-label">Address 1<small class="text-default">*</small></label>
+									<div class="col-md-10">
+										<input type="text" name="address" class="form-control" id="Address1" placeholder="Address 1" required ng-model="billingInfo.address" ng-change="clearErrors('address')">
+										
+										<div ng-messages="forms.billingForm.address.$error" class="text-danger" role="alert" ng-if="forms.billingForm.address.$touched || forms.billingForm.$submitted">
+											<span ng-message="required">Please enter a value for this field.</span>
+										</div>
+									</div>
+								</div>
 								<div class="form-group">
-									<label for="paymentEmail" class="col-md-3 control-label">Email<small class="text-danger">*</small></label>
-									<div class="col-md-9">
-										<div class="row">
-											<div class="col-md-8">
-												<input type="email" class="form-control" id="paymentEmail" placeholder="Email" ng-model="billingInfo.email">
-											</div>
+									<label for="address2" class="col-md-2 control-label">Address 2</label>
+									<div class="col-md-10">
+										<input type="text" name="address2" class="form-control" id="Address2" placeholder="Address 2" ng-model="billingInfo.address2">
+									</div>
+								</div>
+								<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.billingForm.$submitted ||  forms.billingForm.city.$touched) && forms.billingForm.city.$invalid}">
+									<label for="City" class="col-md-2 control-label">City<small class="text-default">*</small></label>
+									<div class="col-md-10">
+										<input type="text" name="city" class="form-control" id="City" placeholder="City" required ng-model="billingInfo.city" maxlength="32">
+										<div ng-messages="forms.billingForm.city.$error" class="text-danger" role="alert" ng-if="forms.billingForm.city.$touched || forms.billingForm.$submitted">
+											<span ng-message="required">Please enter a value for this field.</span>
+										</div>
+									</div>
+								</div>
+								<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.billingForm.$submitted ||  forms.billingForm.state.$touched) && forms.billingForm.state.$invalid}">
+									<label class="col-md-2 control-label">State<small class="text-default">*</small></label>
+									<div class="col-md-10">
+										<select class="form-control" name="state" required ng-model="billingInfo.state">
+											<option value="">Select State</option>
+											<option value="AA">Armed Forces America</option>
+											<option value="AE">Armed Forces Europe</option>
+											<option value="AK">Alaska</option>
+											<option value="AL">Alabama</option>
+											<option value="AP">Armed Forces Pacific</option>
+											<option value="AR">Arkansas</option>
+											<option value="AS">American Samoa</option>
+											<option value="AZ">Arizona</option>
+											<option value="CA">California</option>
+											<option value="CO">Colorado</option>
+											<option value="CT">Connecticut</option>
+											<option value="DC">District of Columbia</option>
+											<option value="DE">Delaware</option>
+											<option value="FL">Florida</option>
+											<option value="FM">Micronesia, Federated States Of</option>
+											<option value="GA">Georgia</option>
+											<option value="GU">Guam</option>
+											<option value="HI">Hawaii</option>
+											<option value="IA">Iowa</option>
+											<option value="ID">Idaho</option>
+											<option value="IL">Illinois</option>
+											<option value="IN">Indiana</option>
+											<option value="KS">Kansas</option>
+											<option value="KY">Kentucky</option>
+											<option value="LA">Louisiana</option>
+											<option value="MA">Massachusetts</option>
+											<option value="MD">Maryland</option>
+											<option value="ME">Maine</option>
+											<option value="MH">Marshall Islands</option>
+											<option value="MI">Michigan</option>
+											<option value="MN">Minnesota</option>
+											<option value="MO">Missouri</option>
+											<option value="MP">Northern Mariana Islands</option>
+											<option value="MS">Mississippi</option>
+											<option value="MT">Montana</option>
+											<option value="NC">North Carolina</option>
+											<option value="ND">North Dakota</option>
+											<option value="NE">Nebraska</option>
+											<option value="NH">New Hampshire</option>
+											<option value="NJ">New Jersey</option>
+											<option value="NM">New Mexico</option>
+											<option value="NV">Nevada</option>
+											<option value="NY">New York</option>
+											<option value="OH">Ohio</option>
+											<option value="OK">Oklahoma</option>
+											<option value="OR">Oregon</option>
+											<option value="PA">Pennsylvania</option>
+											<option value="PR">Puerto Rico</option>
+											<option value="PW">Palau (Micronesia)</option>
+											<option value="RI">Rhode Island</option>
+											<option value="SC">South Carolina</option>
+											<option value="SD">South Dakota</option>
+											<option value="TN">Tennessee</option>
+											<option value="TX">Texas</option>
+											<option value="UM">US Minor Outlying Islands</option>
+											<option value="UT">Utah</option>
+											<option value="VA">Virginia</option>
+											<option value="VI">Virgin Islands Of The United States</option>
+											<option value="VT">Vermont</option>
+											<option value="WA">Washington</option>
+											<option value="WI">Wisconsin</option>
+											<option value="WV">West Virginia</option>
+											<option value="WY">Wyoming</option>
+										</select>
+										<div ng-messages="forms.billingForm.state.$error" class="text-danger" role="alert" ng-if="forms.billingForm.state.$touched || forms.billingForm.$submitted">
+											<span ng-message="required">Please select a value for this field.</span>
+										</div>
+									</div>
+								</div>
+								<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.billingForm.$submitted ||  forms.billingForm.zipcode.$touched) && forms.billingForm.zipcode.$invalid}">
+									<label for="_zip" class="col-md-2 control-label">Zip Code<small class="text-default">*</small></label>
+									<div class="col-md-10">
+										<input type="text" name='zipcode' class="form-control" id="PostalCode" placeholder="Postal Code" required ng-model="billingInfo.zipcode" maxlength="10">
+										<div ng-messages="forms.billingForm.zipcode.$error" class="text-danger" role="alert" ng-if="forms.billingForm.zipcode.$touched || forms.billingForm.$submitted">
+											<span ng-message="required">Please enter a value for this field.</span>
 										</div>
 									</div>
 								</div>
@@ -171,9 +203,66 @@
 						<div class="space"></div>
 					</form>
 				</fieldset>
+				<div class="space-bottom" id="payment-form-start"></div>
+				<fieldset>
+					<legend>Payment Information</legend>
+					<form role="form" class="form-horizontal" id="payment-information">
+						<div class="row">
+							<div class="col-lg-3">
+								<h3 class="title">Credit Card Info</h3>
+							</div>
+							<div class="col-lg-9">
+								<div class="form-group">
+									<label class="col-md-3 control-label">Card Number<small class="text-danger">*</small></label>
+									<div class="col-md-9">
+										<div class="row">
+											<div class="col-xs-6">
+												<input type="text" class="form-control" ng-model="paymentInfo.number" ng-change="lookupCardType()">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-3 control-label">CVC<small class="text-danger">*</small></label>
+									<div class="col-md-9">
+										<div class="row">
+											<div class="col-xs-6 col-sm-2">
+												<input type="text" class="form-control" ng-model="paymentInfo.cvc">
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-3 control-label">Credit Card</label>
+									<div class="col-md-9">
+										<div class="row">
+											<div class="col-md-4">
+												<input type="text" class="form-control" ng-model="paymentInfo.cardType" value="[[paymentInfo.cardType]]" disabled>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-md-3 control-label">Expiration Date<small class="text-danger">*</small></label>
+									<div class="col-md-9">
+										<div class="row">
+											<div class="col-xs-6 col-sm-3">
+												<input type="text" class="form-control" ng-model="paymentInfo.exp" placeholder="MM/YY">
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+					<div class="text-center">
+						<h3 class="text-danger text-center" ng-if="invalidBillingForm">[[invalidBillingForm]]</h3>
+						<i class="fa fa-spinner fa-spin fa-5x" ng-show="submittingPayment"></i>
+					</div>
+				</fieldset>
 				<div class="text-right">	
 					<a href="#/cart/checkout" move-to-top class="btn btn-group btn-default"><i class="icon-left-open-big"></i> Go Back</a>
-					<a href="#/cart/review" move-to-top class="btn btn-group btn-default">Review and Complete Your Order <i class="icon-right-open-big"></i></a>
+					<a href="" class="btn btn-group btn-default" ng-click="submitPaymentInfo()">Review and Complete Your Order <i class="icon-right-open-big"></i></a>
 				</div>
 
 			</div>

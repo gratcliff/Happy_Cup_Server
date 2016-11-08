@@ -23,7 +23,6 @@ happy_cup.factory('shop_factory', function($http){
 				shoppingCart.checkoutStatus = {
 					payment : false,
 					review : false,
-					complete : false
 				}
 
 
@@ -253,6 +252,12 @@ happy_cup.factory('shop_factory', function($http){
 			
 			
 
+		})
+	}
+
+	factory.processPayment = function(token, callback) {
+		$http.post('orders/payment/', token).then(function(response){
+			callback(response)
 		})
 	}
 
