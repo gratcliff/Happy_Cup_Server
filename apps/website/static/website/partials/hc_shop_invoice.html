@@ -13,7 +13,7 @@
 
 				<!-- page-title start -->
 				<!-- ================ -->
-				<h1 class="page-title">Invoice: Order #001 - May, 15 2016</h1>
+				<h1 class="page-title">Invoice: Order #[[order.id]] - [[order.created_at | date: mediumDate]]</h1>
 				<div class="separator-2"></div>
 				<!-- page-title end -->
 
@@ -32,11 +32,11 @@
 						<div class="col-sm-3 col-xs-6">
 							<h5 class="text-left page-title">Client Billing</h5>
 							<p class="text-left small">
-								John Doe <br>
-								795 Folsom Ave, Suite 600 <br>
-								San Francisco, CA 99999 <br>
-								123-456-789 <br>
-								john.doe@gmail.com
+								[[billing.name]]<br>
+								[[billing.address_line1]] [[billing.address_line2]]<br>
+								[[billing.address_city]], [[billing.address_state]] [[billing.address_zip]] <br>
+								[[billing.phone_number]] <br>
+								[[billing.email]]
 							</p>
 						</div>
 						<div class="col-sm-3 col-xs-6">

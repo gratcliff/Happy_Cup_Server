@@ -262,7 +262,8 @@ happy_cup.factory('shop_factory', function($http){
 	};
 
 	factory.getInvoice = function(id, callback){
-		$http.get('orders/invoice/', id).then(function(response){
+		console.log(id);
+		$http.post('orders/invoice/', id).then(function(response){
 			callback(response);
 		});
 	}

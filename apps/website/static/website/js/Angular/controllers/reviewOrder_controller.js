@@ -31,7 +31,7 @@ happy_cup.controller('reviewOrder_controller', function($scope, $location, $time
 			$scope.submittingOrder = true;
 			$scope.invalidBillingForm = undefined;
 
-			shop_factory.processPayment({token:$scope.stripe.id, email:$scope.billingInfo.email}, function(res) {
+			shop_factory.processPayment({token:$scope.stripe.id, email:$scope.billingInfo.email, phone_number:$scope.billingInfo.phone_number}, function(res) {
 			
 				if (res.data.error) {
 					$scope.invalidBillingForm = res.data.error.message;

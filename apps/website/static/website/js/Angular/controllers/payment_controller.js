@@ -71,6 +71,8 @@ happy_cup.controller('payment_controller', function ($scope, $location, $timeout
 		if (validNumber && validCvc && validExp) {
 			$scope.submittingPayment = true;
 
+			var card_metadata = {'email':$scope.billingInfo.email, 'phone_number': $scope.billingInfo.phone_number};
+
 			$scope.stripe.card.createToken({
 				number: $scope.paymentInfo.number,
 				cvc: $scope.paymentInfo.cvc,
@@ -80,7 +82,8 @@ happy_cup.controller('payment_controller', function ($scope, $location, $timeout
 				address_line2: $scope.billingInfo.address2,
 				address_city: $scope.billingInfo.city,
 				address_state: $scope.billingInfo.state,
-				address_zip: $scope.billingInfo.zipcode
+				address_zip: $scope.billingInfo.zipcode,
+				
 			}, $scope.stripeResponseHandler);
 		} else {
 			$scope.invalidBillingForm = 'Invalid credit card information';
@@ -91,6 +94,7 @@ happy_cup.controller('payment_controller', function ($scope, $location, $timeout
 	}
 
 	$scope.stripeResponseHandler = function(status, response) {
+		console.log(response);
 		if (response.error) {
 			$scope.invalidBillingForm = response.error.message;
 			$scope.submittingPayment = false;

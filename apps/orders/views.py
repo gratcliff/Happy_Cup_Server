@@ -56,6 +56,7 @@ class ProcessPayment(View):
 	def post(self, request):
 		token = json.loads(request.body).get('token')
 		email = json.loads(request.body).get('email')
+		phone_number = json.loads(request.body).get('phone_number')
 		shoppingCart = request.session.get('shoppingCart')
 		order = None
 		customer = None
@@ -81,13 +82,13 @@ class ProcessPayment(View):
 			charge_metadata = {
 				'HC_order_id': order.id,
 				'shipping_address': customer.shipping_address(True),
-				'num_items': shoppingCart['totalItems'],
+				'billing_phone' : phone_number
 			}
 
 			coffee_metadata = order.parse_coffee(True)
 			merch_metadata = order.parse_merchandise(True)
 
-			if len(coffee_metadata) + len(merch_metadata) > 18:
+			if len(coffee_metadata) + len(merch_metadata) < 18:
 				for idx in range(len(coffee_metadata)):
 					charge_metadata['coffee0'+str(idx+1)] = coffee_metadata[idx] if len(coffee_metadata[idx]) < 500 else coffee_metadata[idx][:499]
 
@@ -114,7 +115,7 @@ class ProcessPayment(View):
 					update_charge.metadata = {
 						'HC_order_id': order.id,
 						'shipping_address': customer.shipping_address(True),
-						'num_items': shoppingCart['totalItems'],
+						'billing_phone' : phone_number,
 						'metadata_error' : str(e)
 					}
 					update_charge.save()
@@ -133,24 +134,23 @@ class ProcessPayment(View):
 		return JsonResponse({'status':True, 'order_id':order.id})
 
 
-
-
-
-
-
 class ProvideInvoice(View):
 
-	def get(self, request):
-		print request.body
+	def post(self, request):
 		try:
+
 			order = CustomerOrder.objects.select_related('customer', 'coupon', 'customer__discount_rate').get(id=int(request.body))
 			charge = stripe.Charge.retrieve(order.charge_id)
+			order_json = order.serialize_model()
 
-			order_json = order.serialize_model
-			
-			return JsonResponse({'charge':charge, 'order':order_json})
+			response = {'charge':{'shipping': charge['shipping'], 'source': charge['source']}, 'order':order_json}
+			response['charge']['source']['phone_number'] = charge['metadata'].get('billing_phone')
+			response['charge']['source']['email'] = charge.get('receipt_email')
+
+			return JsonResponse(response)
 
 		except Exception as e:
+			print e
 			return JsonResponse({'status': False})
 
 
