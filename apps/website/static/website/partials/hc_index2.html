@@ -156,7 +156,7 @@
 								<td>[[coffee.name]]</td>
 								<td>[[coffee.roast.name]]</td>
 								<td class="hidden-xs" ng-class="{ 'featured-product-font' : coffee.featured }">[[coffee.price_per_pound | currency : symbol : fractionSize]]</td>
-								<td class="hidden-xs">1 lbs </td>
+								<td class="hidden-xs">1 lb </td>
 								<td class="hidden-xs"><select class="form-control" ng-init="order.grind=coffee.grinds[0]" ng-options="grind.name for grind in coffee.grinds track by grind.id" ng-model="order.grind"></select>
 								</td>
 								<td class="hidden-xs quantity">

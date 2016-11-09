@@ -40,7 +40,7 @@ class JsonSerializer:
 			'description' : coffee.description,
 			'price_per_pound' : coffee.price_per_pound,
 			'image_url' : coffee.image_url,
-			'type' : 'coffee'
+			'type' : 'wholesale'
 
 			}
 
