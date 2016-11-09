@@ -4,7 +4,7 @@
 
 <section class="main-container" ng-controller="invoice_controller">
 
-	<div class="container">
+	<div class="container" ng-show="userAllowedInView">
 		<div class="row">
 
 			<!-- main start -->
@@ -42,68 +42,73 @@
 						<div class="col-sm-3 col-xs-6">
 							<h5 class="text-right page-title">Client Shipping</h5>
 							<p class="text-right small">
-								John Doe <br>
-								795 Folsom Ave, Suite 600 <br>
-								San Francisco, CA 99999 <br>
-								123-456-789 <br>
-								john.doe@gmail.com
+								[[shipping.name]]<br>
+								[[shipping.address.line1]] [[shipping.address.line2]]<br>
+								[[shipping.address.city]], [[shipping.address.state]] [[shipping.address.postal_code]] <br>
+								[[shipping.phone]] <br>
+								[[shipping.email]]
 							</p>
 						</div>
 					</div>
-					<p class="small"><strong>Comments/PO:</strong> Lorem ipsum dolor sit amet, consectetur.</p>
-					<table class="table cart table-bordered">
-						<thead>
-							<tr>
-								<th>Description </th>
-								<th>Price </th>
-								<th>Quantity</th>
-								<th class="amount">Total </th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td class="product"><a href="shop-product.html">Product Title 1</a> <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas inventore modi.</small></td>
-								<td class="price">$99.50 </td>
-								<td class="quantity">2 </td>
-								<td class="amount">$199.00 </td>
-							</tr>
-							<tr>
-								<td class="product"><a href="shop-product.html">Product Title 2</a> <small>Quas inventore modi</small></td>
-								<td class="price"> $99.66 </td>
-								<td class="quantity">3 </td>
-								<td class="amount">$299.00 </td>
-							</tr>
-							<tr>
-								<td class="product"><a href="shop-product.html">Product Title 3</a> <small>Fugiat nemo enim officiis repellendus</small></td>
-								<td class="price"> $499.66 </td>
-								<td class="quantity">3 </td>
-								<td class="amount">$1499.00 </td>
-							</tr>
-							<tr>
-								<td class="total-quantity" colspan="3">Subtotal</td>
-								<td class="amount">$1997.00</td>
-							</tr>
-							<tr>
-								<td class="total-quantity" colspan="1">Discount Coupon</td>
-								<td class="price">TheProject25672</td>
-								<td class="price">-20%</td>
-								<td class="amount">-$399.40</td>
-							</tr>
-							<tr>
-								<td class="total-quantity" colspan="2">Sales Tax</td>
-								<td class="price">+10%</td>
-								<td class="amount">$159.76</td>
-							</tr>
-							<tr>										
-								<td class="total-quantity" colspan="3">Shipping</td>
-								<td class="amount">$12.00</td>
-							</tr>
-							<tr>
-								<td class="total-quantity" colspan="3">Total 8 Items</td>
-								<td class="total-amount">$1769.36</td>
-							</tr>
-						</tbody>
-					</table>
+					<p class="small"><strong>Comments/PO:</strong> [[order.other_info]]</p>
+					<table class="table cart">
+					<thead>
+						<tr>
+							<th>Product </th>
+							<th>Price </th>
+							<th>Quantity</th>
+							<th class="amount">Total </th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-if="order.coffee.length" >
+							<th colspan="5">Coffee</th>
+						</tr>
+						<tr ng-repeat="coffee in order.coffee track by $index">
+							<td class="product">[[coffee.name]] ([[coffee.size.qty]]) <small>[[coffee.roast.name]] - [[coffee.grind.name]]</small></td>
+							<td class="price">[[coffee.size.base_price | currency : symbol : fractonSize]]</td>
+							<td class="quantity">[[coffee.qty]]</td>
+							<td class="amount">[[coffee.subtotal | currency : symbol : fractonSize]] </td>
+						</tr>
+						<tr ng-if="order.subscriptions.length">
+							<th colspan="5">Subscriptions</th>
+						</tr>
+						<tr ng-repeat="sub in order.subscriptions track by $index">
+							<td class="product">[[sub.name]] <small>[[sub.coffee.name]] - [[sub.grind.name]]</small></td>
+							<td class="price">[[sub.price | currency : symbol : fractonSize]]</td>
+							<td class="quantity">[[sub.qty]]</td>
+							<td class="amount">[[sub.subtotal | currency : symbol : fractonSize]] </td>
+						</tr>
+						<tr ng-if="order.merch.length">
+							<th colspan="5">Merchandise</th>
+						</tr>
+						<tr ng-repeat="merch in order.merch track by $index">
+							<td class="product">[[merch.name]]
+								<small>
+									<span ng-if = '!merch.coffee.length && merch.coffee != undefined'>Coffee: [[merch.coffee.name]] - [[merch.grind.name]]<br></span>
+									<span ng-if = 'merch.coffee.length'>Coffee: <br><span ng-repeat="coffee in merch.coffee | unique: 'id' ">&nbsp;&nbsp;[[coffee.qty]]x [[coffee.name]] - [[merch.grind.name]]<br></span></span>
+									<span ng-if = 'merch.size'>T-Shirt: [[merch.size.size]]</span>
+								</small>
+							</td>
+							<td class="price">[[merch.price | currency : symbol : fractonSize]]</td>
+							<td class="quantity">[[merch.qty]]</td>
+							<td class="amount">[[merch.subtotal | currency : symbol : fractonSize]] </td>
+						</tr>
+						<tr>
+							<td class="total-quantity" colspan="3">Subtotal</td>
+							<td class="amount">[[order.totalPrice | currency : symbol : fractonSize]]</td>
+						</tr>
+						<tr ng-if="order.coupon.valid">										
+							<td class="total-quantity" colspan="2">Discount Coupon</td>
+							<td class="price">[[order.coupon.code]]</td>
+							<td class="amount">[[order.coupon.discount * 100 | number : 0]]%</td>
+						</tr>
+						<tr>
+							<td class="total-quantity" colspan="3">Total [[order.totalItems]] Item<span ng-hide="order.totalItems === 1">s</span></td>
+							<td class="total-amount">[[order.totalPrice * (1 - order.coupon.discount) | currency : symbol : fractonSize]]</td>
+						</tr>
+					</tbody>
+				</table>
 					<p class="small">If you have any questions concerning this invoice, contact <strong>Cheryl Yeats</strong>, tel: <strong>971-302-7461</strong>, email: <strong><a href="mailto:cherylyeats@happycup.com"> cherylyeats@happycup.com</strong></a> <br> Thank you for your business!</p>
 					<hr>
 				</div>

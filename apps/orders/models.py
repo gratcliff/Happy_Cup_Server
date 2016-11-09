@@ -20,6 +20,7 @@ class CustomerOrder(models.Model):
 	coupon = models.ForeignKey(Coupon, blank = True, null = True, on_delete = models.SET_NULL)
 	totalPrice = models.FloatField('Total Price')
 	totalItems = models.PositiveSmallIntegerField('Total Items')
+	other_info = models.TextField(blank=True)
 	created_at = models.DateTimeField(auto_now_add = True)
 	updated_at = models.DateTimeField(auto_now = True)
 
@@ -34,6 +35,7 @@ class CustomerOrder(models.Model):
 		self.customer = customer
 		self.totalPrice = shoppingCart['totalPrice']
 		self.totalItems = shoppingCart['totalItems']
+		self.other_info = shoppingCart['shipping'].get('message', '')
 
 	def parse_coffee(self, as_json=False):
 		if not self.coffee:
@@ -125,7 +127,8 @@ class CustomerOrder(models.Model):
 			} if self.coupon else None,
 			'discount_rate' : self.customer.discount_rate.discount_percentage if self.customer.discount_rate else 0,
 			'totalPrice' : self.totalPrice,
-			'totalItems' : self.totalItems
+			'totalItems' : self.totalItems,
+			'other_info' : self.other_info
 
 		}
 

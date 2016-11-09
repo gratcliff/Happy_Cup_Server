@@ -94,7 +94,6 @@ happy_cup.controller('payment_controller', function ($scope, $location, $timeout
 	}
 
 	$scope.stripeResponseHandler = function(status, response) {
-		console.log(response);
 		if (response.error) {
 			$scope.invalidBillingForm = response.error.message;
 			$scope.submittingPayment = false;

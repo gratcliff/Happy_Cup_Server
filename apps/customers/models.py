@@ -56,6 +56,7 @@ class Customer(models.Model):
 				},
 				'name': self.name,
 				'phone': self.phone_number,
+				'email': self.email
 			}
 
 

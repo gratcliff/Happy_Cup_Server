@@ -6,9 +6,8 @@ happy_cup.controller('invoice_controller', function($scope, $location, shop_fact
 		if (response.invoiceAvailable && response.order_id) {
 
 			shop_factory.getInvoice(response.order_id, function(response){
-				console.log(response);
 
-				$scope.shipping = response.data.charge.shipping || response.data.order.customer;
+				$scope.shipping = response.data.order.customer || response.data.charge.shipping;
 				$scope.billing = response.data.charge.source
 				$scope.order = response.data.order
 
@@ -23,10 +22,6 @@ happy_cup.controller('invoice_controller', function($scope, $location, shop_fact
 				}
 
 				$scope.userAllowedInView = true;
-
-				console.log($scope.shipping);
-				console.log($scope.billing);
-				console.log($scope.order);
 
 			});
 

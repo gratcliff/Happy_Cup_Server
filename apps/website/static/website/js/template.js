@@ -2014,6 +2014,6 @@ if (jQuery(".btn-print").length>0) {
 		mywindow.document.close();
 		mywindow.focus();
 		mywindow.print();
-		mywindow.close();
+		// mywindow.close();
 	}
 }
