@@ -1,23 +1,28 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.utils import timezone
 
 
 from ..product_options.models import CoffeeVolume, CoffeeGrind, CoffeeRoast, ShirtSize
 from ..website.models import PriceTimestamp
-
-from django.utils import timezone
 
 
 # Create your models here.
 
 
 class Coupon(models.Model):
-	code = models.CharField(max_length = 24)
+	code = models.CharField(max_length = 24, unique=True)
 	discount = models.PositiveSmallIntegerField('Percent discount', default=15, help_text='Positive, whole numbers only')
-	expiration_date = models.DateTimeField('Date and time that promotion ends', help_text='Server timezone is UTC (Coordinated Universal Time)')
+	expiration_date = models.DateTimeField('Date and time that coupon stops working', help_text='Server timezone is UTC (Coordinated Universal Time)')
 	created_at = models.DateTimeField(auto_now = True)
 	updated_at = models.DateTimeField(auto_now_add = True)
+
+	def __str__(self):
+		return "%s (%s percent off)" % (self.code, self.discount)
+
+	def is_valid_coupon(self):
+		return self.expiration_date > timezone.now()
 
 class Coffee(PriceTimestamp):
 

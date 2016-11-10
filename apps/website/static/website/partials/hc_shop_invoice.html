@@ -3,7 +3,9 @@
 <!-- main-container start -->
 
 <section class="main-container" ng-controller="invoice_controller">
-
+	<div class="row text-center">
+		<i class="fa fa-spinner fa-spin fa-5x" ng-show="!userAllowedInView"></i>
+	</div>
 	<div class="container" ng-show="userAllowedInView">
 		<div class="row">
 
@@ -50,7 +52,7 @@
 							</p>
 						</div>
 					</div>
-					<p class="small"><strong>Comments/PO:</strong> [[order.other_info]]</p>
+					<p class="small"><strong>Comments:</strong> [[order.other_info]]</p>
 					<table class="table cart">
 					<thead>
 						<tr>
@@ -94,18 +96,26 @@
 							<td class="quantity">[[merch.qty]]</td>
 							<td class="amount">[[merch.subtotal | currency : symbol : fractonSize]] </td>
 						</tr>
+						<tr ng-if="order.coupon">										
+							<td class="total-quantity" colspan="2">Discount Coupon</td>
+							<td class="price">[[order.coupon.code]]</td>
+							<td class="amount">[[order.coupon.discount | number : 0]]%</td>
+						</tr>
 						<tr>
 							<td class="total-quantity" colspan="3">Subtotal</td>
 							<td class="amount">[[order.totalPrice | currency : symbol : fractonSize]]</td>
 						</tr>
-						<tr ng-if="order.coupon.valid">										
-							<td class="total-quantity" colspan="2">Discount Coupon</td>
-							<td class="price">[[order.coupon.code]]</td>
-							<td class="amount">[[order.coupon.discount * 100 | number : 0]]%</td>
+						<tr>
+							<td class="total-quantity" colspan="3">Tax</td>
+							<td class="amount">$0.00</td>
+						</tr>
+						<tr>
+							<td class="total-quantity" colspan="3">Shipping</td>
+							<td class="amount">$0.00</td>
 						</tr>
 						<tr>
 							<td class="total-quantity" colspan="3">Total [[order.totalItems]] Item<span ng-hide="order.totalItems === 1">s</span></td>
-							<td class="total-amount">[[order.totalPrice * (1 - order.coupon.discount) | currency : symbol : fractonSize]]</td>
+							<td class="total-amount">[[order.totalPrice | currency : symbol : fractonSize]]</td>
 						</tr>
 					</tbody>
 				</table>

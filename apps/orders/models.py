@@ -1,10 +1,11 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
 from ..customers.models import Customer
 from ..products.models import Coffee, Merchandise, Subscription, VarietyPack, Coupon
-
 
 import json
 
@@ -28,7 +29,7 @@ class CustomerOrder(models.Model):
 		return str(self.customer)
 
 
-	def migrate_data(self, shoppingCart, customer):
+	def migrate_data(self, shoppingCart, customer, coupon):
 		self.coffee = json.dumps(shoppingCart['coffee']) if len(shoppingCart['coffee']) > 0 else ""
 		self.merch = json.dumps(shoppingCart['merch']) if len(shoppingCart['merch']) > 0 else ""
 		self.subscriptions = json.dumps(shoppingCart['subscriptions']) if len(shoppingCart['subscriptions']) > 0 else ""
@@ -36,6 +37,7 @@ class CustomerOrder(models.Model):
 		self.totalPrice = shoppingCart['totalPrice']
 		self.totalItems = shoppingCart['totalItems']
 		self.other_info = shoppingCart['shipping'].get('message', '')
+		self.coupon = coupon
 
 	def parse_coffee(self, as_json=False):
 		if not self.coffee:
@@ -113,8 +115,8 @@ class CustomerOrder(models.Model):
 		
 		return result
 
-	def serialize_model(self):
-		return {
+	def serialize_model(self, as_json=False):
+		obj = {
 			'coffee' : self.coffee,
 			'merch' : self.merch,
 			'subscriptions' : self.subscriptions,
@@ -129,8 +131,44 @@ class CustomerOrder(models.Model):
 			'totalPrice' : self.totalPrice,
 			'totalItems' : self.totalItems,
 			'other_info' : self.other_info
-
 		}
+
+		if as_json:
+
+			if self.coffee:
+				obj['coffee'] = json.loads(obj['coffee'])
+			if self.merch:
+				obj['merch'] = json.loads(obj['merch'])
+				for item in obj['merch']:
+					if 'coffee' in item:
+						if type(item['coffee']) is not list:
+							item['coffee'] = [ item['coffee'] ]
+
+			if self.subscriptions:
+				obj['subscriptions'] = json.loads(obj['subscriptions'])
+
+		return obj
+
+	def send_email_confirmation(self, charge):
+
+		build_context = {'charge':{'shipping': charge['shipping'], 'source': charge['source']}}
+		build_context['charge']['source']['phone_number'] = charge['metadata'].get('billing_phone')
+		build_context['charge']['source']['email'] = charge.get('receipt_email')
+		build_context['order'] = self.serialize_model(True)
+
+		message_context = {
+			'shipping': build_context['order']['customer'],
+			'billing' : build_context['charge']['source'],
+			'order': build_context['order']
+		}
+
+		subject = "Your Happy Cup Coffee Order"
+		recipient = [ build_context['charge']['source']['email'] ]
+		from_email = ''
+		message = 'Thank you for your order.'
+		message_html = render_to_string('orders/email_confirmation.html', message_context)
+
+		send_mail(subject,message,from_email,recipient, html_message=message_html)
 
 
 

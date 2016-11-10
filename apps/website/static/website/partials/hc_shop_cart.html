@@ -82,7 +82,7 @@
 
 						<!-- Total-->
 						<tr ng-show="currentCart.totalItems">
-							<td colspan="2">Discount Coupon <span ng-if="currentCart.coupon.valid">submitted and will be applied on Checkout</span><span class="pull-right" ng-if="invalidCoupon">Invalid Discount Coupon</span></td>
+							<td colspan="2">Discount Coupon <span ng-if="currentCart.coupon.valid">submitted and will be applied on Checkout</span><span class="pull-right" ng-if="invalidCoupon">Invalid Coupon Code</span></td>
 							
 							<td colspan="3">
 								<div class="form-group">
@@ -93,7 +93,7 @@
 										<div class="input-group-addon" id="coupon-input-addon" ng-show="currentCart.coupon.code">
 
 											<button class="btn btn-default" ng-click="submitCoupon()" ng-show="!currentCart.coupon.valid">Apply</button>
-											<button class="btn btn-default" ng-click="currentCart.coupon.code = undefined; currentCart.coupon.valid = false;" ng-show="currentCart.coupon.valid">Remove</button>
+											<button class="btn btn-default" ng-click="removeCoupon()" ng-show="currentCart.coupon.valid">Remove</button>
 
 										</div>
 

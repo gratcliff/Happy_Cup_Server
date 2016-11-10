@@ -77,6 +77,12 @@ class VarietyPackAdmin(admin.ModelAdmin):
 	list_display = ('__str__','price', 'featured')
 	list_editable = ('featured',)
 
+class CouponAdmin(admin.ModelAdmin):
+	list_display = ('__str__', 'discount', 'expires_on')
+
+	def expires_on(self, obj):
+		return obj.expiration_date.strftime("%m-%d-%Y %H:%M %Z")
+
 
 
 
@@ -85,4 +91,4 @@ admin.site.register(Subscription, SubscriptionAdmin)
 admin.site.register(Merchandise, MerchandiseAdmin)
 admin.site.register(VarietyPack, VarietyPackAdmin)
 admin.site.register(ProductPromotion, ProductPromotionAdmin)
-admin.site.register(Coupon)
+admin.site.register(Coupon, CouponAdmin)

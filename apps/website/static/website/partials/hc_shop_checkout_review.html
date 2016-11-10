@@ -66,11 +66,11 @@
 						<tr ng-if="currentCart.coupon.valid">										
 							<td class="total-quantity" colspan="2">Discount Coupon</td>
 							<td class="price">[[currentCart.coupon.code]]</td>
-							<td class="amount">[[currentCart.coupon.discount * 100 | number : 0]]%</td>
+							<td class="amount">[[currentCart.coupon.discount | number : 0]]%</td>
 						</tr>
 						<tr>
 							<td class="total-quantity" colspan="3">Total [[currentCart.totalItems]] Item<span ng-hide="currentCart.totalItems === 1">s</span></td>
-							<td class="total-amount">[[currentCart.totalPrice * (1 - currentCart.coupon.discount) | currency : symbol : fractonSize]]</td>
+							<td class="total-amount">[[currentCart.totalPrice * (1 - (currentCart.coupon.discount / 100)) | currency : symbol : fractonSize]]</td>
 						</tr>
 					</tbody>
 				</table>
@@ -152,7 +152,7 @@
 							<br>
 							[[currentCart.shipping.city]], [[currentCart.shipping.state]] [[currentCart.shipping.zipcode]]</td>
 						</tr>
-						<tr>
+						<tr id="anchor-scroll">
 							<td>Additional Info</td>
 							<td class="information">[[currentCart.shipping.message]]</td>
 						</tr>

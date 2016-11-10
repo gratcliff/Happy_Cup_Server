@@ -214,8 +214,14 @@ happy_cup.factory('shop_factory', function($http){
 		$http.post('sync/', shoppingCart).then(function(response){
 			if (shoppingCart.totalItems === 0) {
 				cart = response.data.shoppingCart
-				delete shoppingCart.billing
-				delete shoppingCart.shipping
+
+				if (shoppingCart.billing) {
+					delete shoppingCart.billing
+				}
+				if (shoppingCart.shipping) {
+					delete shoppingCart.shipping
+				}
+
 				shoppingCart.checkoutStatus = cart.checkoutStatus
 			}
 			callback(shoppingCart);
@@ -226,15 +232,14 @@ happy_cup.factory('shop_factory', function($http){
 	factory.submitCoupon = function(cart, callback) {
 		var couponCode = cart.coupon.code;
 		//post the coupon code to server and verify validity and discount
+		$http.post('orders/coupon/', couponCode).then(function(response){
+			console.log(response.data);
+			var coupon = response.data;
+			if (coupon.valid) {
+				shoppingCart.coupon = coupon;
+			}
+			callback(shoppingCart)
 
-		var check = Math.random();
-		if (check >= 0.5) {
-			cart.coupon.valid = true;
-			cart.coupon.discount = 0.15;
-		}
-
-		$http.post('sync/', shoppingCart).then(function(response){
-			callback(shoppingCart);
 		});
 	};
 
@@ -261,9 +266,14 @@ happy_cup.factory('shop_factory', function($http){
 		});
 	};
 
-	factory.getInvoice = function(id, callback){
-		console.log(id);
-		$http.post('orders/invoice/', id).then(function(response){
+	factory.sendEmailConfirmation = function(data, callback) {
+		$http.post('orders/confirmation/', data).then(function(response){
+			callback()
+		});
+	}
+
+	factory.getInvoice = function(data, callback){
+		$http.post('orders/invoice/', data).then(function(response){
 			callback(response);
 		});
 	}

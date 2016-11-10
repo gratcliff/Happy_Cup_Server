@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Happy Cup Coffee : Online Order Confirmation</title>
+	</head>
+	<body style="margin: 15px; padding: 0;">
+		<table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td>
+					<!-- Header Start -->
+					<table align="center" border="0" cellpadding="0" cellspacing="0" width="960" style="border-collapse: collapse;">
+						<tr>
+							<td style="padding:15px 0 0 0;">
+								<table align="center" border="0" cellpadding="0" cellspacing="0" width="960" style="border-collapse: collapse;">
+									<tr>
+										<td>
+											<table align="left" border="0" cellpadding="0" cellspacing="0" width="960" style="border-collapse: collapse;">
+												<!-- logo -->
+												<tr>
+													<td align="left">
+													<td width="100%" align="left" style="font-size: 28px; line-height: 34px; font-family:helvetica, Arial, sans-serif; color:black;">
+														Invoice: Order #{{order.id}} - {{order.created_at|date:"M d, Y"}}
+													</td>
+													</td>
+												</tr>						
+												<!-- Space -->
+												<tr><td style="font-size: 0; line-height: 0;" height="15">&nbsp;</td></tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+					<!-- Header End -->
+
+					<!-- Banner Start -->
+					<table align="center" border="0" cellpadding="0" cellspacing="0" width="960" style="border-collapse: collapse; border-bottom: 1px solid black;">
+						<tr>
+							<td>
+								<table align="center" border="0" cellpadding="0" cellspacing="0" width="960" style="border-collapse: collapse;">
+									<tr>
+										<td>
+											<table width="100%" align="left" border="0" cellpadding="0" cellspacing="0" style="border-collapse: collapse; ">
+												<tr>
+													<td style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: left;">
+														<h5>Happy Cup Coffee Company</h5>
+														<p>
+															2850 NE Sandy Blvd.<br>
+															Portland, OR 97232<br>
+															Billing: 971-302-7461<br>
+															Ordering: 503-544-7052<br>
+															E-mail: <a href="mailto:adamBray@happycup.com">adamBray@happycup.com</a>
+														</p>
+													</td>
+													<td style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: left; padding-left: 100px;">
+														<h5>Client Billing</h5>
+														<p>
+															{{billing.name}}<br>
+															{{billing.address_line1}} {{billing.address_line2}}<br>
+															{{billing.address_city}}, {{billing.address_state}} {{billing.address_zip}} <br>
+															{{billing.phone_number}} <br>
+															{{billing.email}}
+														</p>
+													</td>
+													<td style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: right;">
+														<h5>Client Shipping</h5>
+														<p>
+															{{shipping.name}}<br>
+															{{shipping.address.line1}} {{shipping.address.line2}}<br>
+															{{shipping.address.city}}, {{shipping.address.state}} {{shipping.address.postal_code}} <br>
+															{{shipping.phone}} <br>
+															{{shipping.email}}
+														</p>
+													</td>
+												</tr>
+												<tr>
+													<td style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: left;">
+														Comments:
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+					<!-- Banner End -->
+
+					<!-- Section Start -->
+					<table align="center" border="1" cellpadding="0" cellspacing="0" width="960" style="border-collapse: collapse; margin-top: 15px;">
+						<tr style="font-family: helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 21px; text-align: left;">
+							<th style="width: 60%;">Products </th>
+							<th>Price </th>
+							<th>Quantity</th>
+							<th>Total </th>
+						</tr>
+						{% if order.coffee|length %}
+							<tr style="font-family: helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 21px; text-align: left;">
+								<th colspan="4">
+									Coffee
+								</th>
+							<tr>
+						{% endif %}
+						{% for coffee in order.coffee  %}
+							<tr style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: left;">
+								<td>
+									{{coffee.name}} ({{coffee.size.qty}})<br>
+									<small>{{coffee.roast.name}} - {{coffee.grind.name}}</small>
+								</td>
+								<td>
+									{{coffee.size.base_price|floatformat:2}}
+								</td>
+								<td>
+									{{coffee.size.qty}}
+								</td>
+								<td>
+									{{coffee.subtotal|floatformat:2}}
+								</td>
+							</tr>
+						{% endfor %}
+						{% if order.merch|length %}
+							<tr style="font-family: helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 21px; text-align: left;">
+								<th colspan="4">
+									Merchandise
+								</th>
+							<tr>
+						{% endif %}
+						{% for merch in order.merch  %}
+							<tr style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: left;">
+								<td>
+									{{merch.name}}<br>
+									<small>
+										{% if merch.coffee %}
+											Coffee:<br>
+											{% for coffee in merch.coffee  %}
+												&nbsp;&nbsp;{{coffee.name}} - {{merch.grind.name}}<br>
+											{% endfor %}
+										{% endif %}
+										{% if merch.size %}
+											T-Shirt: {{merch.size.size}}
+										{% endif %}
+									</small>
+								</td>
+								<td>
+									{{merch.price|floatformat:2}}
+								</td>
+								<td>
+									{{merch.qty}}
+								</td>
+								<td>
+									{{merch.subtotal|floatformat:2}}
+								</td>
+							</tr>
+						{% endfor %}
+						{% if order.subscriptions|length %}
+							<tr style="font-family: helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; line-height: 21px; text-align: left;">
+								<th colspan="4">
+									Subscriptions
+								</th>
+							<tr>
+						{% endif %}
+						{% for sub in order.subscriptions  %}
+							<tr style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: left;">
+								<td>
+									{{sub.name}}<br>
+									<small>{{sub.coffee.name}} - {{sub.grind.name}}</small>
+								</td>
+								<td>
+									{{sub.price|floatformat:2}}
+								</td>
+								<td>
+									{{sub.qty}}
+								</td>
+								<td>
+									{{sub.subtotal | floatformat:2}}
+								</td>
+							</tr>
+						{% endfor %}
+						{% if order.coupon %}
+							<tr style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: left;">										
+								<td colspan="2">Discount Coupon</td>
+								<td>{{order.coupon.code}}</td>
+								<td>{{order.coupon.discount|floatformat:0}}%</td>
+							</tr>
+						{% endif %}
+						<tr style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: left;">
+							<td colspan="3">Subtotal</td>
+							<td>{{order.totalPrice | floatformat:2}}</td>
+						</tr>
+						<tr style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: left;">
+							<td colspan="3">Tax</td>
+							<td>$0.00</td>
+						</tr>
+						<tr style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: left;">
+							<td colspan="3">Shipping</td>
+							<td>$0.00</td>
+						</tr>
+						<tr style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: left;">
+							<td colspan="3">Total Items: {{order.totalItems}}</td>
+							<td>{{order.totalPrice|floatformat:2}}</td>
+						</tr>
+					</table>
+					<table align="center" border="0" cellpadding="0" cellspacing="0" width="960" style="border-collapse: collapse; margin-top: 15px;">
+						<tr style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: left;">
+							<td>
+							If you have any questions concerning this invoice, contact <strong>Cheryl Yeats</strong>, tel: <strong>971-302-7461</strong>, email: <strong><a href="mailto:cherylyeats@happycup.com"> cherylyeats@happycup.com</strong></a> <br> Thank you for your business!
+							</td>
+						</tr>
+					</table>
+				</td>
+				
+			</tr>
+			
+		</table>
+	</body>
+</html>

@@ -21,7 +21,7 @@ class Customer(models.Model):
 	discount_rate = models.ForeignKey(DiscountRate, blank = True, null = True, on_delete = models.SET_NULL, help_text="Leave blank for no discount")
 	name = models.CharField(max_length=64, blank=True)
 	email = models.EmailField(max_length = 128)
-	phone_number = models.CharField(max_length = 24, blank=True)
+	phone_number = models.CharField(max_length = 24)
 	address = models.TextField()
 	address2 = models.TextField(blank=True)
 	city = models.CharField(max_length = 32)
@@ -35,8 +35,8 @@ class Customer(models.Model):
 
 	def __str__(self):
 		if self.user is None:
-			return 'Unregistered'
-		return str(self.user)
+			return 'Unregistered id: %s' % self.id
+		return '%s, Customer ID: %s' % (str(self.user), self.id)
 
 	def shipping_address(self, no_html=False, as_json=False):
 		if no_html:

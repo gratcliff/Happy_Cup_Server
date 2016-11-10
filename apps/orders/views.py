@@ -3,10 +3,12 @@ from django.views.generic import View
 from django.contrib.auth.models import User
 
 from django.http import JsonResponse
-from django.utils.html import format_html
+from django.utils import timezone
 
 from ..customers.models import Customer
 from ..customers.forms import CustomerShippingForm
+
+from ..products.models import Coupon
 
 from .models import CustomerOrder
 
@@ -18,7 +20,35 @@ import time
 
 
 
+
 # Create your views here.
+
+class VerifyCouponCode(View):
+
+	def post(self, request):
+		code = request.body
+		shoppingCart = request.session.get('shoppingCart')
+		try:
+			coupon = Coupon.objects.get(code__iexact=code, expiration_date__gt=timezone.now())
+
+			if coupon.is_valid_coupon():
+
+				shoppingCart['coupon']['code'] = coupon.code
+				shoppingCart['coupon']['valid'] = True
+				shoppingCart['coupon']['discount'] = coupon.discount
+				request.session['shoppingCart'] = shoppingCart
+
+				return JsonResponse(request.session['shoppingCart']['coupon'])
+
+		except Exception as e:
+			print e.args
+
+
+		
+		return JsonResponse({'error': 'Invalid coupon code'})
+
+
+
 
 def checkShippingAddress(request):
 
@@ -60,8 +90,20 @@ class ProcessPayment(View):
 		shoppingCart = request.session.get('shoppingCart')
 		order = None
 		customer = None
+		coupon = None
 
 		try:
+			if shoppingCart['coupon'].get('code'):
+				coupon = Coupon.objects.get(code__iexact=shoppingCart['coupon']['code'])
+				if coupon.is_valid_coupon():
+					shoppingCart['totalPrice'] = float("{0:.2f}".format(shoppingCart['totalPrice'] * (1-(coupon.discount/100.0)),))
+				else:
+					return JsonResponse({'coupon_error': 'Your order could not be completed. The coupon code used is no longer valid and has been removed. Please try again.'})
+		except Exception as e:
+			print e.args
+			return JsonResponse({'coupon_error': 'Your order could not be completed. The coupon code used is not valid and has been removed. Please try again.'})
+
+		try: 
 			charge = stripe.Charge.create(
 					amount = int(shoppingCart['totalPrice']*100),
 					currency = 'usd',
@@ -75,7 +117,7 @@ class ProcessPayment(View):
 			customer.save()
 
 			order = CustomerOrder()
-			order.migrate_data(shoppingCart, customer)
+			order.migrate_data(shoppingCart, customer, coupon)
 			order.charge_id = charge['id']
 			order.save()
 
@@ -123,23 +165,41 @@ class ProcessPayment(View):
 				except Exception as e:
 					print e
 
-				return JsonResponse({'status':True, 'order_id':order.id})
+				return JsonResponse({'status':True, 'order_id':order.id, 'customer_id': customer.id})
 	
 
 			return JsonResponse({'error': {'message':'Your online order could not be processed at this time.  Please try again later.'}})
 
 
 
+		return JsonResponse({'status':True, 'order_id':order.id, 'customer_id': customer.id})
 
-		return JsonResponse({'status':True, 'order_id':order.id})
+class SendEmailConfirmation(View):
+
+	def post(self, request):
+		try:
+			data = json.loads(request.body)
+			order_id = data.get('order_id')
+			cust_id = data.get('customer_id')
+			order = CustomerOrder.objects.select_related('customer', 'coupon', 'customer__discount_rate').get(id=int(order_id), customer_id=int(cust_id))
+			charge = stripe.Charge.retrieve(order.charge_id)
+
+			order.send_email_confirmation(charge)
+		except Exception as e:
+			print e.args
+
+		return JsonResponse({'status': True})
+
 
 
 class ProvideInvoice(View):
 
 	def post(self, request):
 		try:
-
-			order = CustomerOrder.objects.select_related('customer', 'coupon', 'customer__discount_rate').get(id=int(request.body))
+			data = json.loads(request.body)
+			order_id = data.get('order_id')
+			cust_id = data.get('customer_id')
+			order = CustomerOrder.objects.select_related('customer', 'coupon', 'customer__discount_rate').get(id=int(order_id), customer_id=int(cust_id))
 			charge = stripe.Charge.retrieve(order.charge_id)
 			order_json = order.serialize_model()
 

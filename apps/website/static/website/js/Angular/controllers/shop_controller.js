@@ -182,8 +182,6 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 			data.size = order.size;
 		}
 
-		console.log(data)
-
 
 		shop_factory.addMerchandiseToCart(data, function (newCart){
 

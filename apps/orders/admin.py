@@ -32,8 +32,8 @@ class CustomerOrderAdmin(admin.ModelAdmin):
 	def has_add_permission (self, request):
 		return False
 
-	def has_delete_permission(self, request, obj=None):
-		return False
+	# def has_delete_permission(self, request, obj=None):
+	# 	return False
 
 	def shipping_address(self, obj):
 		return format_html(obj.customer.shipping_address())

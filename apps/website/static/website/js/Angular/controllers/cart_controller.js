@@ -5,13 +5,11 @@ happy_cup.controller('cart_controller', function ($scope, $location, $timeout, u
 
 	$scope.$emit('getShoppingCart', function(cart){
 			$scope.currentCart = cart;
+
+			if (!$scope.currentCart.coupon.valid) {
+				$scope.currentCart.coupon.code = undefined;
+			}
 	});
-
-	// shop_factory.getShoppingCart(function(cart){
-	// 	$scope.currentCart = cart;
-	// 	$scope.currentCart.unsavedChanges = false;
-	// });
-
 	
 
 	$scope.updateCart = function() {
@@ -53,6 +51,15 @@ happy_cup.controller('cart_controller', function ($scope, $location, $timeout, u
 			if (!newCart.coupon.valid) {
 				$scope.invalidCoupon = true;
 			}
+			$scope.currentCart = newCart;
+		});
+	};
+
+	$scope.removeCoupon = function() {
+		$scope.currentCart.coupon.code = undefined;
+		$scope.currentCart.coupon.valid = false;
+		$scope.currentCart.coupon.discount = 0;
+		shop_factory.updateCart($scope.currentCart, function(newCart){
 			$scope.currentCart = newCart;
 		});
 	}

@@ -7,6 +7,9 @@ happy_cup.controller('completeOrder_controller', function($scope, $location) {
 
 		if (orderCompleted) {
 			$scope.userAllowedInView = true;
+
+			$scope.$emit('sendEmailConfirmation');
+
 		} else {
 			$location.path('/')
 		}
