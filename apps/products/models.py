@@ -24,6 +24,17 @@ class Coupon(models.Model):
 	def is_valid_coupon(self):
 		return self.expiration_date > timezone.now()
 
+class WholeSaleCoffee(PriceTimestamp):
+	name = models.CharField(max_length=32)
+	roast = models.ForeignKey(CoffeeRoast)
+	grinds = models.ManyToManyField(CoffeeGrind)
+	description = models.TextField()
+	price_per_pound = models.DecimalField(max_digits=5, decimal_places=2)
+	image_url = models.URLField()
+
+	def __str__(self):
+		return "%s %s" % (self.name, self.roast)
+
 class Coffee(PriceTimestamp):
 
 	name = models.CharField(max_length=24)

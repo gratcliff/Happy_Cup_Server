@@ -3,9 +3,6 @@ happy_cup.controller('invoice_controller', function($scope, $location, shop_fact
 	$scope.userAllowedInView = false;
 
 	$scope.$emit('viewInvoice', function(response){
-			// response.order_id = 115;
-			// response.customer_id = 123;
-			// response.invoiceAvailable = true;
 		if (response.invoiceAvailable && response.order_id && response.customer_id) {
 
 			shop_factory.getInvoice({order_id:response.order_id, customer_id:response.customer_id}, function(response){

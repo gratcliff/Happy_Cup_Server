@@ -137,6 +137,38 @@
 					</table>
 
 				<h1 class = 'row row-centered'> Offered Wholesale </h1>
+					<table id ="wholesale-coffee-products-table" class = 'table table-hover brown-border'>
+						<thead>
+							<tr>
+								<td>Description</td>
+								<td>Name</td>
+								<td>Roast</td>
+								<td class="hidden-xs">Price Per Pound</td>
+								<td class="hidden-xs">Size</td>
+								<td class="hidden-xs">Grind</td>
+								<td class="hidden-xs">Qty</td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="coffee in products.wholeSaleCoffee track by $index">
+								<td ng-if="!mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' data-toggle = 'modal' data-target ="#wholesale_coffee_modal" ng-click="openWholeSaleModal(coffee, $index)">+</a></td>
+								<td ng-if="mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' ng-click="openWholeSaleModal(coffee, $index)">+</a></td>
+								<td>[[coffee.name]]</td>
+								<td>[[coffee.roast.name]]</td>
+								<td class="hidden-xs" ng-class="{ 'featured-product-font' : coffee.featured }">[[coffee.price_per_pound | currency : symbol : fractionSize]]</td>
+								<td class="hidden-xs">1 lb </td>
+								<td class="hidden-xs"><select class="form-control" ng-init="order.grind=coffee.grinds[0]" ng-options="grind.name for grind in coffee.grinds track by grind.id" ng-model="order.grind"></select>
+								</td>
+								<td class="hidden-xs quantity">
+									<input type="number" class="form-control" ng-init="order.qty = 1" ng-model="order.qty" style="width: 60px; padding-right: 12px;" min="1">
+								</td>
+								<td class="hidden-xs">
+								<button class = 'margin-clear btn btn-brown' ng-click="addWholeSaleCoffeeToCart(coffee, order, $index)" ng-disabled="coffee.addingProduct || order.qty <= 0"><span ng-if="!coffee.addingProduct">Add To Cart</span><span ng-if="coffee.addingProduct">Item Added</span> </button>
+								</td>
+							</tr>
+						</tbody>
+
+					</table>
 			</div>
 
 						

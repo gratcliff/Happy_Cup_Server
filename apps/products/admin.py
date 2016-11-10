@@ -3,7 +3,7 @@ from django.contrib import admin
 from ..products.forms import VarietyPackForm
 
 from ..product_options.models import CoffeeVolume, CoffeeGrind, CoffeeRoast, ShirtSize
-from ..products.models import Coffee, Subscription, Merchandise, VarietyPack, ProductPromotion, Coupon
+from ..products.models import Coffee, Subscription, Merchandise, VarietyPack, ProductPromotion, Coupon, WholeSaleCoffee
 
 from django.db import connection
 
@@ -29,6 +29,9 @@ class CoffeeAdmin(admin.ModelAdmin):
 		coffee = coffee.select_related('roast', 'featured').prefetch_related('sizes')
 		return coffee
 
+class WholeSaleCoffeeAdmin(admin.ModelAdmin):
+	filter_horizontal = ('grinds', )
+	list_display = ('__str__', )
 
 class ProductPromotionAdmin(admin.ModelAdmin):
 	list_display = ('__str__', 'expired')
@@ -87,8 +90,10 @@ class CouponAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Coffee, CoffeeAdmin)
+admin.site.register(WholeSaleCoffee, WholeSaleCoffeeAdmin)
 admin.site.register(Subscription, SubscriptionAdmin)
 admin.site.register(Merchandise, MerchandiseAdmin)
 admin.site.register(VarietyPack, VarietyPackAdmin)
 admin.site.register(ProductPromotion, ProductPromotionAdmin)
 admin.site.register(Coupon, CouponAdmin)
+

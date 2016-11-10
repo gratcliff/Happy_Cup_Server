@@ -39,6 +39,10 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 		$scope.$emit('openCoffeeModal', coffee);
 		
 	};
+	$scope.openWholeSaleModal = function (coffee, idx){
+		coffee.idx = idx;
+		$scope.$emit('openWholeSaleModal', coffee);
+	}
 	$scope.openSubscriptionModal = function (sub, idx) {
 		sub.idx =  idx;
 		$scope.$emit('openSubscriptionModal', sub);
@@ -62,6 +66,18 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 			emit_message = 'openCoffeeModal';
 			modal = '#coffee_modal'
 			console.log(product.idx, 'coffee');
+		}
+		else if (product.type == 'wholesale'){
+			angular.forEach($scope.products.wholeSaleCoffee, function (coffee, idx){
+				if (product.id === coffee.id){
+					product.idx = idx;
+					return
+				}
+			});
+
+			emit_message = 'openWholeSaleModal';
+			modal = '#wholesale_coffee_modal';
+			console.log(product.idx, 'wholesale');
 		}
 		else if (product.type == 'merchandise' || product.type == 'variety') {
 
