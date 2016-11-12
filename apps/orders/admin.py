@@ -9,10 +9,11 @@ import json
 
 
 class CustomerOrderAdmin(admin.ModelAdmin):
-	list_display = ('order_date','order_id', 'billing_info', 'customer', 'shipping_address', 'totalItems', 'items')
-	search_fields = ['id', 'customer__name']
-	list_filter = ('created_at',)
+	list_display = ('order_date','order_id', 'billing_info', 'customer', 'ship_to', 'totalItems', 'items')
+	search_fields = ['id', 'customer__id', 'customer__user__first_name', 'customer__user__last_name', 'customer__name']
+	list_filter = ('customer__user__email',)
 	list_per_page = 10
+	date_hierarchy = 'created_at'
 
 
 	def get_readonly_fields(self, request, obj):
@@ -35,8 +36,8 @@ class CustomerOrderAdmin(admin.ModelAdmin):
 	# def has_delete_permission(self, request, obj=None):
 	# 	return False
 
-	def shipping_address(self, obj):
-		return format_html(obj.customer.shipping_address())
+	def ship_to(self, obj):
+		return format_html(obj.parse_shipping_address(True))
 
 	
 

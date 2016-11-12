@@ -18,6 +18,7 @@ class CustomerOrder(models.Model):
 	subscriptions = models.TextField(blank=True)
 	merch = models.TextField(blank=True)
 	customer = models.ForeignKey(Customer)
+	shipping_address = models.TextField(blank=True)
 	coupon = models.ForeignKey(Coupon, blank = True, null = True, on_delete = models.SET_NULL)
 	totalPrice = models.FloatField('Total Price')
 	totalItems = models.PositiveSmallIntegerField('Total Items')
@@ -28,12 +29,35 @@ class CustomerOrder(models.Model):
 	def __str__(self):
 		return str(self.customer)
 
+	def parse_shipping_address(self, no_html=False, as_json=False):
 
-	def migrate_data(self, shoppingCart, customer, coupon):
+		address_json = json.loads(self.shipping_address)
+
+		if no_html:
+			if address_json['address']['line2']:
+				return "%s : %s %s, %s, %s %s" % (address_json['name'], address_json['address']['line1'], address_json['address']['line2'], address_json['address']['city'], address_json['address']['state'], address_json['address']['postal_code'])
+
+			return "%s : %s, %s, %s %s" % (address_json['name'], address_json['address']['line1'], address_json['address']['city'], address_json['address']['state'], address_json['address']['postal_code'])
+
+
+
+		if as_json:
+			return address_json
+
+
+		if address_json.addres['line2']:
+			return "%s<br>%s %s<br>%s, %s %s" % (address_json['name'], address_json['address']['line1'], address_json['address']['line2'], address_json['address']['city'], address_json['address']['state'], address_json['address']['postal_code'])
+
+		return "%s<br>%s<br>%s, %s %s" % (address_json['name'], address_json['address']['line1'], address_json['address']['city'], address_json['address']['state'], address_json['address']['postal_code'])
+
+
+	def migrate_data(self, shoppingCart, customer, coupon, shipping_address):
+		print 'migrate data 34'
 		self.coffee = json.dumps(shoppingCart['coffee']) if len(shoppingCart['coffee']) > 0 else ""
 		self.merch = json.dumps(shoppingCart['merch']) if len(shoppingCart['merch']) > 0 else ""
 		self.subscriptions = json.dumps(shoppingCart['subscriptions']) if len(shoppingCart['subscriptions']) > 0 else ""
 		self.customer = customer
+		self.shipping_address = json.dumps(shipping_address(False, True))
 		self.totalPrice = shoppingCart['totalPrice']
 		self.totalItems = shoppingCart['totalItems']
 		self.other_info = shoppingCart['shipping'].get('message', '')
@@ -120,7 +144,8 @@ class CustomerOrder(models.Model):
 			'coffee' : self.coffee,
 			'merch' : self.merch,
 			'subscriptions' : self.subscriptions,
-			'customer' : self.customer.shipping_address(False, True),
+			'customer' : self.customer.id,
+			'shipping_address' : self.parse_shipping_address(False, True),
 			'id' : self.id,
 			'created_at' : self.created_at,
 			'coupon' : {

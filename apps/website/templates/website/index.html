@@ -173,10 +173,10 @@
 					<!-- "centered": mandatory class for the centered logo layout -->
 					<!-- ================ --> 
 					<header class="header  fixed    clearfix" >
-						<div id='user-reg-alert' class="alert alert-success text-center animate-show" role="alert" ng-if="userRegAlert">
+						<div id='user-reg-alert' class="alert text-center animate-show" role="alert" ng-if="userRegAlert">
 	  					<h2>Welcome, [[currentUser.first_name]]! You have successfully logged in.</h2>
 						</div>
-						<div id='user-logout-alert' class="alert alert-info text-center animate-show" role="alert" ng-if="userLogoutAlert">
+						<div id='user-logout-alert' class="alert text-center animate-show" role="alert" ng-if="userLogoutAlert">
 	  					<h3>[[userLogoutAlert]]</h3>
 						</div>
 						
@@ -247,6 +247,9 @@
 														</li>
 														<li>
 															<a href="#/contact" ng-style="currentView === 'contact' ? {'color' : '#914E38'} : null">Contact</a>
+														</li>
+														<li>
+															<a href="#/profile" ng-style="currentView === 'profile' ? {'color' : '#914E38'} : null" ng-if="currentUser !== 'None'">Profile</a>
 														</li>
 														<li class="visible-xs">
 															<a href="#/cart" ng-style="currentView === 'cart' ? {'color' : '#914E38'} : null">Cart<span ng-if="shoppingCart.totalItems > 0"> - [[shoppingCart.totalItems]] item(s)</span></a>

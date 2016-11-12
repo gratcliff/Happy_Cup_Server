@@ -5,3 +5,4 @@ whitenoise==3.2
 django-tinymce==2.4.0
 googlemaps==2.4.4
 stripe==1.41.1
+pytz==2016.7

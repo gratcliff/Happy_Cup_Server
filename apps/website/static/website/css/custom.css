@@ -23,10 +23,12 @@ File Description: Place here your custom CSS styles
 
 #user-reg-alert, #user-logout-alert {
 	position: fixed;
-	top: 0%;
-	right: 0%;
+	top: -15px;
+	right: 0;
 	z-index: 10000;
-	width: 80%;
+	width: 100%;
+	height: 137px;
+	background-color: #F0EBD2;
 
 }
 .table_image{

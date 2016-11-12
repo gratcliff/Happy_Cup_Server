@@ -232,7 +232,7 @@
 									</div>
 								</div>
 								<div class="form-group has-feedback" ng-class="{ 'has-error' : (forms.checkoutForm.$submitted ||  forms.checkoutForm.zipcode.$touched) && forms.checkoutForm.zipcode.$invalid}">
-									<label for="_zip" class="col-md-2 control-label">Zip Code<small class="text-default">*</small></label>
+									<label for="zip" class="col-md-2 control-label">Zip Code<small class="text-default">*</small></label>
 									<div class="col-md-10">
 										<input type="text" name='zipcode' class="form-control" id="PostalCode" placeholder="Postal Code" required ng-model="shippingInfo.zipcode" maxlength="10">
 										<div ng-messages="forms.checkoutForm.zipcode.$error" class="text-danger" role="alert" ng-if="forms.checkoutForm.zipcode.$touched || forms.checkoutForm.$submitted">
@@ -240,7 +240,16 @@
 										</div>
 									</div>
 								</div>
+								<div class="form-group" ng-show="currentUser !== 'None'">
+								<div class="col-sm-offset-2 col-sm-8">
+									<div class="checkbox">
+										<label>
+											<input type="checkbox" name="saveShipping" ng-model="shippingInfo.saveShipping"> Save this shipping address for future orders
+										</label>
+									</div>
+								</div>
 							</div>
+						</div>
 						</div>
 						<div class="space"></div>
 						<div class="row">
@@ -261,7 +270,7 @@
 				</fieldset>
 				<div class="text-right">	
 					<a href="#/cart" class="btn btn-group btn-default"><i class="icon-left-open-big"></i> Go Back To Cart</a>
-					<a ng-click="submitShippingInfo()" class="btn btn-group btn-default">Next Step <i class="icon-right-open-big"></i></a>
+					<a ng-click="submitShippingInfo()" class="btn btn-group btn-default">Next Step <i class="icon-right-open-big" ng-show="!submittingInfo"></i><i class="fa fa-spinner fa-spin" ng-show="submittingInfo"></i></a>
 				</div>
 
 			</div>

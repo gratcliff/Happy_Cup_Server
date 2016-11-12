@@ -2,7 +2,7 @@
 from django.contrib import admin
 
 
-from .models import Customer
+from .models import Customer, ShippingAddress
 
 from django.db import connection
 # Register your models here.

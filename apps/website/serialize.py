@@ -1,5 +1,7 @@
 from django.db import connection
 
+from ..customers.models import Customer
+
 db_modified = False
 db_price_change = False
 
@@ -290,6 +292,31 @@ class JsonSerializer:
 		db_modified = False
 		return data if len(data) > 0 else None
 
+
+	def serialize_user(self, user):
+
+		try:
+			customer = Customer.objects.get(user=user)
+			obj = {
+				'id' : user.id,
+				'first_name' : user.first_name,
+				'last_name' : user.last_name,
+				'email' : user.email,
+				'customer' : customer.id,
+				'shipping' : customer.shipping_address(False, True)
+			}
+
+		except Exception as e:
+			obj = {
+				'id' : user.id,
+				'first_name' : user.first_name,
+				'last_name' : user.last_name,
+				'email' : user.email,
+				'customer' : None
+			}
+
+
+		return obj
 
 
 		

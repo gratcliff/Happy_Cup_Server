@@ -11,30 +11,47 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 	$scope.authorizedUser = false;
 	$scope.contact_marker = false;
 
-
 	content_factory.getContent(function(content){
 			$scope.globalContent = content.global;
 			$scope.pageLoading = false;
 
-			shop_factory.getShoppingCart(function(cart){
-				$scope.shoppingCart = cart;
+			user_factory.getCurrentUser(function(currentUser){
+				$scope.currentUser = currentUser
+
+				shop_factory.getShoppingCart(function(cart){
+
+					$scope.shoppingCart = cart;
+					if ($scope.currentUser !== 'None') {
+						$scope.shoppingCart.user = $scope.currentUser;
+					}
+				});
+
 			});
 
 	});
 
-	user_factory.getCurrentUser(function(currentUser){
-		$scope.currentUser = currentUser
-	});
-
 	$scope.registerUser = function() {
 
-		try {
+		$scope.backendErrors = undefined;
 
-			if ($scope.forms.userRegForm.$valid) {
-			
-			user_factory.registerUser($scope.userReg, function(userData){
+		if ($scope.forms.userRegForm.$valid) {
+		
+			user_factory.registerUser($scope.userReg, function(response){
+				if (response.errors) {
+					var errors = JSON.parse(response.errors);
+					var errorList = []
 
+					angular.forEach(errors, function(list, key){
+						for (idx in list) {
+							errorList.push(list[idx]);
+						}
+					});
 
+					$scope.backendErrors = errorList
+
+					return
+
+				}
 				//dismiss modal
 				$timeout(function() {
 					$scope.forms.userRegForm.$setUntouched();
@@ -43,7 +60,7 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 					$scope.dismissMobileModal();
 					$('#user-reg-modal').modal('hide')
 					$scope.userRegAlert = true;
-					$scope.currentUser = userData;
+					$scope.currentUser = response;
 				}, 250);
 
 				//dismiss flash alert
@@ -54,13 +71,6 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 			});
 
 		}
-
-		} catch (err) {
-			console.log(err)
-		}
-
-		
-
 		
 	};
 
@@ -80,7 +90,8 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 						$('#user-login-modal').modal('hide')
 						$scope.userRegAlert = true;
 						$scope.currentUser = userData;
-						
+						$scope.shoppingCart.user = userData;
+						$scope.$broadcast('userLoggedOn', $scope.shoppingCart);
 					}, 250);
 
 					//dismiss flash alert
@@ -110,19 +121,27 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 		$scope.userLogoutAlert = 'Logging out...'
 		user_factory.logout(function(response){
 			$scope.currentUser = response;
-			$timeout(function() {
 
-					$scope.userLogoutAlert = 'You have successfully logged out.'
+			shop_factory.getShoppingCart(function(cart){
+				$scope.shoppingCart = cart;
+				
+				$timeout(function() {
 					
-			}, 1000);
+					$scope.userLogoutAlert = 'You have successfully logged out.'
+					$scope.$broadcast('userLoggedOut', cart);
+				}, 1000);
 
 			//dismiss flash alert
-			$timeout(function() {
-
+				$timeout(function() {
+					
 					$scope.userLogoutAlert = false;
 					
-			}, 2000);
+				}, 2000);
+			});
+
+
 		});
+			
 	}
 
 

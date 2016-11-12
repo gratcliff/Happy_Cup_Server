@@ -4,17 +4,28 @@ happy_cup.factory('user_factory',function($http){
 	var currentUser = {};
 
 	factory.getCurrentUser = function(callback){
-			currentUser = 'None'
-			callback(currentUser);
-		
+
+			$http.get('customers/user').then(function(response){
+				if (response.data.status) {
+					currentUser = response.data.user;
+				} else {
+					currentUser = 'None'
+				}
+				callback(currentUser);
+			});
 	};
 
 	factory.registerUser = function(userData, callback){
 
 		$http.post('customers/register/', userData).then(function(response){
-			console.log(response)
-			currentUser = userData
-			callback(currentUser)
+			if (response.data.errors) {
+				callback(response.data);
+			} else {
+				currentUser = response.data.user
+				callback(response.data.user);
+			}
+			
+			
 		});
 		
 	};
@@ -23,14 +34,23 @@ happy_cup.factory('user_factory',function($http){
 		if (currentUser === 'None') {
 			currentUser = {};
 		}
-		currentUser.username = userData.email_username;
-		currentUser.first_name = 'Bob';
-		callback(currentUser);
+		$http.post('customers/login/', userData).then(function(response){
+			if (response.data.status) {
+				currentUser = response.data.user;
+				callback(currentUser);
+			} else {
+				currentUser = 'None';
+				callback({error:true});
+			}
+		});
+
 	};
 
 	factory.logout = function(callback) {
-		currentUser = 'None';
-		callback(currentUser);
+		$http.get('customers/logout/').then(function(response){
+			currentUser = 'None';
+			callback(currentUser);
+		});
 	};
 
 
