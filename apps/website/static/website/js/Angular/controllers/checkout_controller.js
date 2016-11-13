@@ -18,17 +18,28 @@ happy_cup.controller('checkout_controller', function ($scope, $location, $timeou
 		if (cart.unsavedChanges || !cart.totalItems) {
 			$location.url('/cart');
 		} else {
-			$scope.currentCart = cart
+			$scope.currentCart = cart;
 			$scope.userAllowedInView = true;
 			$scope.shippingInfo = {};
 
 			$scope.populateForms(cart);
+
 
 		}
 		
 
 
 	});
+
+	$scope.useSavedShipping = function(address){
+
+		var name = address.name.split(' ');
+		address.first_name = name.splice(0, name.length-1).join(' ');
+		address.last_name = name.join(' ');
+		$scope.currentCart.user.shipping = address;
+		$scope.populateForms($scope.currentCart, true);
+
+	};
 
 	$scope.submitShippingInfo = function() {
 		if (!$scope.submittingInfo) {
@@ -57,7 +68,6 @@ happy_cup.controller('checkout_controller', function ($scope, $location, $timeou
 						$location.url('/cart/payment');
 					}
 
-			
 				});
 			}
 		}
@@ -74,12 +84,12 @@ happy_cup.controller('checkout_controller', function ($scope, $location, $timeou
 		}
 	}
 
-	$scope.populateForms = function(cart) {
-		if (cart.shipping) {
+	$scope.populateForms = function(cart, savedAddress) {
+		if (cart.shipping && !savedAddress) {
 
 			$scope.shippingInfo = cart.shipping
 
-		} else if (cart.user) {
+		} else if (cart.user && !savedAddress) {
 
 			if (cart.user.shipping) {
 				var shipping = cart.user.shipping;
@@ -98,6 +108,21 @@ happy_cup.controller('checkout_controller', function ($scope, $location, $timeou
 				};
 			}
 				
+		} else if (savedAddress) {
+				var shipping = cart.user.shipping;
+
+				$scope.shippingInfo = {
+					first_name: cart.user.shipping.first_name,
+					last_name: cart.user.shipping.last_name,
+					phone_number: shipping.phone,
+					email: shipping.email,
+					address: shipping.address.line1,
+					address2: shipping.address.line2,
+					city: shipping.address.city,
+					state: shipping.address.state,
+					zipcode: shipping.address.postal_code,
+					saveShipping: true
+				};
 		}
 	}
 

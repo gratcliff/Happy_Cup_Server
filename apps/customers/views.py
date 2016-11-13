@@ -8,6 +8,7 @@ from .forms import UserRegisterForm
 from django.contrib.auth import authenticate, login, logout
 
 from ..website.serialize import JsonSerializer
+from .models import ShippingAddress, Customer
 
 
 import json
@@ -86,6 +87,8 @@ class LoginUser(View):
 
 		return JsonResponse({'status': False})
 
+		
+
 
 class GetCurrentUser(View):
 
@@ -96,7 +99,6 @@ class GetCurrentUser(View):
 			return JsonResponse({'status': True, 'user':user_json});
 
 		return JsonResponse({'status': False})
-
 
 
 

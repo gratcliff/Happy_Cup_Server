@@ -80,6 +80,24 @@
 				<div class="space-bottom" id="shipping-form-start"></div>
 				<fieldset>
 					<legend>Shipping information</legend>
+					<div class="row">
+						<div class="col-lg-3">
+							<h3 class="title">Saved Addresses</h3>
+						</div>
+						<div class="col-lg-8 col-lg-offset-1"> 
+							<div class="form-group" >
+								<label class="radio-inline" ng-repeat="address in currentUser.shipping_list" style="padding-bottom: 15px;">
+									<input type="radio" name="savedAddress" ng-click="useSavedShipping(address)">
+									[[address.name]]<br>
+									[[address.address.line1]] [[address.address.line2]]<br>
+									[[address.address.city]], [[address.address.state]] [[address.address.postal_code]]<br>
+									[[address.phone]]<br>
+									[[address.email]]
+								</label>
+							</div>
+						</div>
+					</div>
+					
 					<form role="form" name="forms.checkoutForm" novalidate class="form-horizontal" id="shipping-information">
 						<div class="row">
 							<div class="col-lg-3">

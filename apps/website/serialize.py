@@ -296,14 +296,15 @@ class JsonSerializer:
 	def serialize_user(self, user):
 
 		try:
-			customer = Customer.objects.get(user=user)
+			customer = Customer.objects.prefetch_related('shippingaddress_set').get(user=user)
 			obj = {
 				'id' : user.id,
 				'first_name' : user.first_name,
 				'last_name' : user.last_name,
 				'email' : user.email,
 				'customer' : customer.id,
-				'shipping' : customer.shipping_address(False, True)
+				'shipping' : customer.shipping_address(False, True),
+				'shipping_list' : [ address.shipping_address(False, True) for address in customer.shippingaddress_set.all()]
 			}
 
 		except Exception as e:

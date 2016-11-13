@@ -182,7 +182,7 @@ class CustomerOrder(models.Model):
 		build_context['order'] = self.serialize_model(True)
 
 		message_context = {
-			'shipping': build_context['order']['customer'],
+			'shipping': build_context['order']['shipping_address'],
 			'billing' : build_context['charge']['source'],
 			'order': build_context['order']
 		}

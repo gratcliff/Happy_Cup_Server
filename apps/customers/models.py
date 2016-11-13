@@ -102,7 +102,7 @@ class ShippingAddress(models.Model):
 	updated_at = models.DateTimeField(auto_now=True)
 
 	class Meta:
-		unique_together = ('customer','name', 'address', 'address2', 'city', 'state', 'zipcode')
+		unique_together = ('customer', 'name', 'address', 'address2', 'city', 'state', 'zipcode')
 
 	def shipping_address(self, no_html=False, as_json=False):
 		if no_html:
