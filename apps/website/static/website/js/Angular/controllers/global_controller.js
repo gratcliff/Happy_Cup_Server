@@ -61,6 +61,8 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 					$('#user-reg-modal').modal('hide')
 					$scope.userRegAlert = true;
 					$scope.currentUser = response;
+					$scope.shoppingCart.user = response;
+					$scope.$broadcast('userLoggedOn', $scope.shoppingCart);
 				}, 250);
 
 				//dismiss flash alert

@@ -8,8 +8,8 @@ from django.contrib.auth.models import User
 
 
 # Create your models here.
-class DiscountRate(models.Model):
-	discount_percentage = models.PositiveSmallIntegerField(help_text = 'Percentage discount customer will receive on all coffee orders.')
+class WholesalePrice(models.Model):
+	price = models.PositiveSmallIntegerField(help_text = 'Price per pound')
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 
@@ -18,7 +18,7 @@ class DiscountRate(models.Model):
 
 class Customer(models.Model):
 	user = models.OneToOneField(User, blank = True, null = True, limit_choices_to={'is_staff':False})
-	discount_rate = models.ForeignKey(DiscountRate, blank = True, null = True, on_delete = models.SET_NULL, help_text="Leave blank for no discount")
+	wholesale_price = models.ForeignKey(WholesalePrice, blank = True, null = True, on_delete = models.SET_NULL, help_text="Leave blank for no discount")
 	name = models.CharField(max_length=64, blank=True)
 	email = models.EmailField(max_length = 128, blank=True)
 	phone_number = models.CharField(max_length = 24, blank=True)

@@ -52,7 +52,6 @@ class CustomerOrder(models.Model):
 
 
 	def migrate_data(self, shoppingCart, customer, coupon, shipping_address):
-		print 'migrate data 34'
 		self.coffee = json.dumps(shoppingCart['coffee']) if len(shoppingCart['coffee']) > 0 else ""
 		self.merch = json.dumps(shoppingCart['merch']) if len(shoppingCart['merch']) > 0 else ""
 		self.subscriptions = json.dumps(shoppingCart['subscriptions']) if len(shoppingCart['subscriptions']) > 0 else ""

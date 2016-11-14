@@ -37,7 +37,7 @@ class CustomerOrderAdmin(admin.ModelAdmin):
 	# 	return False
 
 	def ship_to(self, obj):
-		return format_html(obj.parse_shipping_address(True))
+		return format_html(obj.parse_shipping_address())
 
 	
 

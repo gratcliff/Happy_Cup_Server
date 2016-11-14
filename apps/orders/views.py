@@ -238,7 +238,7 @@ class SendEmailConfirmation(View):
 			data = json.loads(request.body)
 			order_id = data.get('order_id')
 			cust_id = data.get('customer_id')
-			order = CustomerOrder.objects.select_related('customer', 'coupon', 'customer__discount_rate').get(id=int(order_id), customer_id=int(cust_id))
+			order = CustomerOrder.objects.select_related('customer', 'coupon', 'customer__wholesale_price').get(id=int(order_id), customer_id=int(cust_id))
 			charge = stripe.Charge.retrieve(order.charge_id)
 
 			order.send_email_confirmation(charge)
@@ -256,7 +256,7 @@ class ProvideInvoice(View):
 			data = json.loads(request.body)
 			order_id = data.get('order_id')
 			cust_id = data.get('customer_id')
-			order = CustomerOrder.objects.select_related('customer', 'coupon', 'customer__discount_rate').get(id=int(order_id), customer_id=int(cust_id))
+			order = CustomerOrder.objects.select_related('customer', 'coupon', 'customer__wholesale_price').get(id=int(order_id), customer_id=int(cust_id))
 			charge = stripe.Charge.retrieve(order.charge_id)
 			order_json = order.serialize_model()
 
