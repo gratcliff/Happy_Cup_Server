@@ -151,7 +151,7 @@ class CustomerOrder(models.Model):
 				'code' : self.coupon.code,
 				'discount' : self.coupon.discount,
 			} if self.coupon else None,
-			'discount_rate' : self.customer.discount_rate.discount_percentage if self.customer.discount_rate else 0,
+			'wholesale_price' : self.customer.wholesale_price.price if self.customer.wholesale_price else None,
 			'totalPrice' : self.totalPrice,
 			'totalItems' : self.totalItems,
 			'other_info' : self.other_info

@@ -99,7 +99,7 @@ class ShippingAddress(models.Model):
 	state = models.CharField(max_length = 32)
 	zipcode = models.CharField(max_length = 10)
 	created_at = models.DateTimeField(auto_now_add=True)
-	updated_at = models.DateTimeField(auto_now=True)
+	updated_at = models.DateTimeField(auto_now=True)	
 
 	class Meta:
 		unique_together = ('customer', 'name', 'address', 'address2', 'city', 'state', 'zipcode')
