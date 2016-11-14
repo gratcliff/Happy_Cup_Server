@@ -37,20 +37,23 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 	$scope.openCoffeeModal = function(coffee, idx) {
 		coffee.idx = idx;
 		$scope.$emit('openCoffeeModal', coffee);
-		
 	};
+
 	$scope.openWholeSaleModal = function (coffee, idx){
+		// console.log(coffee);
 		coffee.idx = idx;
 		$scope.$emit('openWholeSaleModal', coffee);
-	}
+	};
+
 	$scope.openSubscriptionModal = function (sub, idx) {
 		sub.idx =  idx;
 		$scope.$emit('openSubscriptionModal', sub);
-	}
+	};
+
 	$scope.openMerchandiseModal = function (merch, idx) {
 		merch.idx = idx;
 		$scope.$emit('openMerchandiseModal', merch);
-	}
+	};
 
 	$scope.openFeaturedProductModal = function(product, mobileCheck) {
 
@@ -119,6 +122,8 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 			$scope.addSubscriptionsToCart(product, order, idx);
 		} else if (productType === 'merchandise' || productType === 'variety') {
 			$scope.addMerchToCart(product, order, idx);
+		} else if (productType === 'wholesale'){
+			$scope.addWholeSaleCoffeeToCart(product, order, idx);
 		}
 
 	});
@@ -152,6 +157,28 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 			}, 1000);
 		});
 
+	}
+
+	$scope.addWholeSaleCoffeeToCart = function (coffee, order, idx){
+		$scope.products.wholeSaleCoffee[idx].addingProduct = true;
+		var data = {
+			id: coffee.id,
+			qty: order.qty,
+			name: coffee.name,
+			roast: coffee.roast,
+			grind: order.grind,
+			size: 1,
+			subtotal: coffee.price_per_pound * order.qty
+		};
+		console.log(data);
+
+		shop_factory.addWholeSaleCoffeeToCart(data, function (newCart){
+			$timeout(function(){
+				delete $scope.products.wholeSaleCoffee[idx].addingProduct;
+				$('#wholesale_coffee_modal').modal('hide');
+				$scope.$emit('addedToCart');
+			}, 1000);
+		});
 	}
 
 	$scope.addSubscriptionsToCart = function(sub, order, idx){
