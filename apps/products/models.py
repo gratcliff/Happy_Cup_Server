@@ -7,6 +7,8 @@ from django.utils import timezone
 from ..product_options.models import CoffeeVolume, CoffeeGrind, CoffeeRoast, ShirtSize
 from ..website.models import PriceTimestamp
 
+import stripe
+
 
 # Create your models here.
 
@@ -52,11 +54,30 @@ class Coffee(PriceTimestamp):
 class Subscription(PriceTimestamp):
 
 	frequency = models.PositiveSmallIntegerField('Number of weeks between each shipment')
-	coffees = models.ManyToManyField(Coffee)
+	coffees = models.ManyToManyField(Coffee, blank=True)
+	wholesale_coffees = models.ManyToManyField(WholeSaleCoffee, blank=True)
+	image_url = models.URLField()
 	price = models.DecimalField(max_digits=5, decimal_places=2)
+	stripe_id = models.CharField(max_length=32, blank=True, help_text="Ignore this field. Data is be added after plan is created.")
+
+	class Meta:
+		unique_together = ('frequency', 'price', 'stripe_id')
 
 	def __str__(self):
-		return '%s Week Subscription' % (self.frequency,)
+		return '%s Week Retail Subscription' % (self.frequency,) if 'retail' in self.stripe_id else '%s Week Wholesale Subscription' % (self.frequency,)
+
+	def delete(self, *args, **kwargs):
+		stripe_id = self.stripe_id
+
+		super(Subscription, self).delete(*args, **kwargs)
+
+		try:
+			plan = stripe.Plan.retrieve(stripe_id)
+			plan.delete()
+		except Exception as e:
+			print e.args
+
+
 
 class Merchandise(PriceTimestamp):
 

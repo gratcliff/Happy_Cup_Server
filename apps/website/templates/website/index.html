@@ -312,7 +312,7 @@
 																				<th colspan = "4" class="text-center">Subscriptions</th></tr>
 																			<tr ng-repeat = 'subscription in shoppingCart.subscriptions | orderBy: ["-qty", "name"]'>
 																				<td class ='quantity'>[[subscription.qty]] x</td>
-																				<td class = 'product' colspan="2">[[subscription.name]]<span class = 'small'>[[subscription.coffee.name]]</span></td>
+																				<td class = 'product' colspan="2">[[subscription.name]]<span class = 'small'>[[subscription.coffee.name]] - [[subscription.grind.name]]</span></td>
 																				
 																				<td class = 'amount'>[[subscription.subtotal | currency: symbol : fractionSize ]]</td>
 																			</tr>

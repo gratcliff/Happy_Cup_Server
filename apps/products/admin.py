@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from ..products.forms import VarietyPackForm
+from ..products.forms import VarietyPackForm, SubscriptionForm
 
 from ..product_options.models import CoffeeVolume, CoffeeGrind, CoffeeRoast, ShirtSize
 from ..products.models import Coffee, Subscription, Merchandise, VarietyPack, ProductPromotion, Coupon, WholeSaleCoffee
@@ -67,7 +67,14 @@ class ProductPromotionAdmin(admin.ModelAdmin):
 
 
 class SubscriptionAdmin(admin.ModelAdmin):
-	filter_horizontal = ('coffees',)
+	form = SubscriptionForm
+	list_display = ('__str__', 'price', 'stripe_id')
+	filter_horizontal = ('coffees', 'wholesale_coffees')
+
+	def get_readonly_fields(self, request, obj=None):
+		if obj:
+			return ['frequency', 'price', 'stripe_id']
+		return []
 
 class MerchandiseAdmin(admin.ModelAdmin):
 	filter_horizontal = ('sizes',)

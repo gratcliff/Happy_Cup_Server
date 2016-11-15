@@ -1,4 +1,4 @@
-happy_cup.controller('shop_controller', function ($scope, $timeout, content_factory, shop_factory){
+happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScroll, content_factory, shop_factory){
 
 	content_factory.getPageContent('home', function(content){
 			$scope.products = content.products;
@@ -124,7 +124,10 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 	});
 
 	$scope.addCoffeeToCart = function(coffee, order, idx) {
-
+		if ($scope.shoppingCart.subscriptions.length) {
+			$anchorScroll('coffee_products')
+			return
+		}
 		if (order.qty <= 0 || isNaN(order.qty)) {
 			return
 		}
@@ -138,7 +141,7 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 			size: order.size,
 			grind: order.grind,
 			qty: order.qty,
-			subtotal: order.size.base_price * order.qty
+			subtotal: (Math.round(order.size.base_price*100) * order.qty) / 100
 		};
 			
 		shop_factory.addCoffeeToCart(data, function(newCart) {
@@ -155,15 +158,26 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 	}
 
 	$scope.addSubscriptionsToCart = function(sub, order, idx){
+		if ($scope.shoppingCart.merch.length || $scope.shoppingCart.coffee.length) {
+			$anchorScroll('subscription-products')
+			return 
+		}
+
+		if (order.shipments < 4 || isNaN(order.shipments)) {
+			return
+		}
+
 		$scope.products.subscriptions[idx].addingProduct = true;
 		var data = {
 			id: sub.id,
+			stripe_id : sub.stripe_id,
 			qty: 1,
 			name: sub.name,
-			roast: order.roast,
+			coffee: order.coffee,
 			grind: order.grind,
 			price: sub.price,
-			subtotal: sub.price
+			subtotal: sub.price,
+			shipments: order.shipments,
 		};
 
 		shop_factory.addSubscriptionsToCart(data, function (newCart){
@@ -177,6 +191,10 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 	}
 
 	$scope.addMerchToCart = function(merch, order, idx){
+		if ($scope.shoppingCart.subscriptions.length) {
+			$anchorScroll('merchandise_products')
+			return
+		}
 		$scope.products.merchandise[idx].addingProduct = true;
 		var data = {
 			id: merch.id,

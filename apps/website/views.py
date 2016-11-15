@@ -73,6 +73,7 @@ class ProvideContent(View):
 					'coffee' : self.content.coffee_json,
 					'wholeSaleCoffee' : self.content.wholeSaleCoffee_json,
 					'merchandise' : self.content.merchandise_json,
+					'subscriptions' : self.content.subscription_json
 				},
 			},
 			'about' : {
@@ -105,6 +106,7 @@ class SyncShoppingCart(View):
 
 	def post(self, request):
 		cart = json.loads(request.body)
+		print cart
 
 		cart['unsavedChanges'] = False
 		cart['checkoutStatus']['review'] = False

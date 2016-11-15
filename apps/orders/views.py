@@ -118,8 +118,6 @@ class CheckShippingAddress(View):
 
 class ProcessPayment(View):
 
-	stripe.api_key = os.environ.get('STRIPE_SECRET_TEST')
-
 	def post(self, request):
 		post_data = json.loads(request.body)
 		shoppingCart = request.session.get('shoppingCart')

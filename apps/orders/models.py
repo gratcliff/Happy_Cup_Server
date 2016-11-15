@@ -45,7 +45,7 @@ class CustomerOrder(models.Model):
 			return address_json
 
 
-		if address_json.addres['line2']:
+		if address_json['address']['line2']:
 			return "%s<br>%s %s<br>%s, %s %s" % (address_json['name'], address_json['address']['line1'], address_json['address']['line2'], address_json['address']['city'], address_json['address']['state'], address_json['address']['postal_code'])
 
 		return "%s<br>%s<br>%s, %s %s" % (address_json['name'], address_json['address']['line1'], address_json['address']['city'], address_json['address']['state'], address_json['address']['postal_code'])

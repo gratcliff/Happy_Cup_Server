@@ -89,7 +89,7 @@
 					<ul class="nav nav-pills">
 						<li ng-class="{active: productDisplay.showCoffee === true}"><a ng-click = 'showCoffee()' title="Current Coffee"> <span class = 'tab_text'>Current Roasts</span></a></li>
 						<li ng-class="{active: productDisplay.showMerch === true}"><a ng-click = 'showMerch()' title="Merchandise"><span class = 'tab_text'>Merchandise</span></a></li>
-						<!-- <li ng-class="{active: productDisplay.showSubs === true}"><a ng-click = 'showSubs()' title="Subscriptions"> <span class = 'tab_text'>Subscriptions</span></a></li> -->
+						<li ng-class="{active: productDisplay.showSubs === true}"><a ng-click = 'showSubs()' title="Subscriptions"> <span class = 'tab_text'>Subscriptions</span></a></li>
 					</ul>
 				</div>
 			</div>
@@ -102,6 +102,11 @@
 			<div class="row" ng-show = 'productDisplay.showCoffee === true' id="coffee_products">
 
 				<h1 class = 'row row-centered'> Offered In All Sizes </h1>
+				<div class = 'row row-centered' ng-show="shoppingCart.subscriptions.length">
+					<h5 class = 'col-sm-10 col-centered text-danger'>
+						*** You currently have one or more subscriptions in your shopping cart and are unable to add coffee or merchandise. Please purchase these items in another order. You can view your cart <a href="#/cart">here.</a>
+					</h3>
+				</div>
 					<table id ="coffee-products-table" class = 'table table-hover brown-border'>
 						<thead>
 							<tr>
@@ -176,40 +181,80 @@
 
 
 			<!--Subscriptions Start -->
-			<div ng-show = 'productDisplay.showSubs === true'>
+			<div ng-show = 'productDisplay.showSubs === true' id="subscription-products">
 
 				<h1 class = 'row row-centered'>Subscriptions</h1>
 				<br>
 				<div class = 'row row-centered'>
-					<p class = 'col-sm-10 col-centered'>Happy Cup sent directly to your door! Choose your favorite roast, or switch things up every month with the "Roaster's Choice" option and try one bag each of our current cofeee lineup! A great way to introduce a friend to Happy Cup and spread the Portland coffee scene.</p>
+					<p class = 'col-sm-10 col-centered'>Happy Cup sent directly to your door! Choose your favorite roast, or switch things up every month with the "Roaster's Choice" option and try one bag each of our current coffee lineup! A great way to introduce a friend to Happy Cup and spread the Portland coffee scene.</p>
+				</div>
+				<div class = 'row row-centered' ng-show="shoppingCart.coffee.length || shoppingCart.merch.length">
+					<h5 class = 'col-sm-10 col-centered text-danger'>
+						*** You currently have coffee or merchandise in your shopping cart and are unable to add a subscription plan. Please purchase subscriptions in another order. You can view your cart <a href="#/cart">here.</a>
+					</h3>
 				</div>
 
 				<table class = 'table table-hover brown-border'>
+					<caption class="text-center"><h1>Retail</h1></caption>
 					<thead>
 						<tr>
 							<td>Description</td>
-							<td class = 'visible-xs'>Name</td>
-							<td class="hidden-xs"></td>
+							<td>Plan</td>
+							<td>Price</td>
 							<td class="hidden-xs">Roast</td>
 							<td class="hidden-xs">Grind</td>
-							<td>Price</td>
+							<td class="hidden-xs"># of Shipments</td>
+							<td></td>
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat = 'subscription in products.subscriptions track by subscription.id'>
+						<tr ng-repeat = 'subscription in products.subscriptions track by $index' ng-if="subscription.plan_type =='retail' ">
 							<td ng-if="!mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' data-toggle = 'modal' data-target = '#subscription_modal' ng-click="openSubscriptionModal(subscription, $index)">+</a></td>
 							<td ng-if="mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' ng-click="openSubscriptionModal(subscription, $index)">+</a></td>
-							<td class="hidden-xs"><img class = 'table_image' ng-src ='[[subscription.img_src]]'></td>
-							<td class = 'visible-xs'>[[subscription.name]]</td>
-
-							<td class = 'hidden-xs'><select class = 'form-control' ng-init = 'order.roast=subscription.roasts[0]'
-							ng-model = 'order.roast' ng-options = 'roast.name for roast in subscription.roasts track by $index' ></select>
+							<!-- <td class="hidden-xs"><img class = 'table_image' ng-src ='[[subscription.image_url]]'></td> -->
+							<td >[[subscription.name]]</td>
+							<td>[[subscription.price | currency : symbol : fractionSize]] / [[subscription.frequency]]wk</td>
+							<td class = 'hidden-xs'><select class = 'form-control' ng-init = 'order.coffee=subscription.coffees[0]'
+							ng-model = 'order.coffee' ng-options = 'coffee.name for coffee in subscription.coffees track by coffee.id' ></select>
 							</td>
-
-							<td class="hidden-xs"><select class = 'form-control' ng-init="order.grind=order.roast.grinds[0]" ng-model = 'order.grind' ng-options = 'grind.type for grind in order.roast.grinds track by $index' ></select>
+							<td class="hidden-xs"><select class = 'form-control' ng-init="order.grind=order.coffee.grinds[0]" ng-model = 'order.grind' ng-options = 'grind.name for grind in order.coffee.grinds track by grind.id'></select>
 							</td>
+							<td><input type="number" min="4" class="form-control hidden-xs" style="padding-right: 0; width: 100px;" ng-init="order.shipments=4" ng-model="order.shipments"></td>
+							<td class="hidden-xs">
+								<button class = 'margin-clear btn btn-brown' ng-click = 'addSubscriptionsToCart(subscription, order, $index)' ng-disabled = 'subscription.addingProduct'><span ng-if = '!subscription.addingProduct'>Add To Cart</span><span ng-if='subscription.addingProduct'>Item Added</span></button>
+							</td>
+						</tr>
+					</tbody>
 
-							<td>[[subscription.pricing | currency : symbol : fractionSize]]</td>
+				</table>
+
+				<table class = 'table table-hover brown-border'>
+					<caption class="text-center"><h1>Wholesale</h1></caption>
+					<thead>
+						<tr>
+							<td>Description</td>
+							<td>Plan</td>
+							<td>Price</td>
+							<td class="hidden-xs">Roast</td>
+							<td class="hidden-xs">Grind</td>
+							<td class="hidden-xs"># of Shipments</td>
+							<td></td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat = 'subscription in products.subscriptions track by $index' ng-if="subscription.plan_type =='wholesale' ">
+							<td ng-if="!mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' data-toggle = 'modal' data-target = '#subscription_modal' ng-click="openSubscriptionModal(subscription, $index)">+</a></td>
+							<td ng-if="mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' ng-click="openSubscriptionModal(subscription, $index)">+</a></td>
+							<!-- <td class="hidden-xs"><img class = 'table_image' ng-src ='[[subscription.image_url]]'></td> -->
+							<td >[[subscription.name]]</td>
+							<td>[[subscription.price | currency : symbol : fractionSize]] / [[subscription.frequency]]wk</td>
+							<td class = 'hidden-xs'><select class = 'form-control' ng-init = 'order.coffee=subscription.wholesale_coffees[0]'
+							ng-model = 'order.coffee' ng-options = 'coffee.name for coffee in subscription.wholesale_coffees track by coffee.id' ></select>
+							</td>
+							<td class="hidden-xs"><select class = 'form-control' ng-init="order.grind=order.coffee.grinds[0]" ng-model = 'order.grind' ng-options = 'grind.name for grind in order.coffee.grinds track by grind.id'></select>
+							</td>
+							<td><input type="number" min="4" class="form-control hidden-xs" style="padding-right: 0; width: 100px;" ng-init="order.shipments=4" ng-model="order.shipments">
+							</td>
 							<td class="hidden-xs">
 								<button class = 'margin-clear btn btn-brown' ng-click = 'addSubscriptionsToCart(subscription, order, $index)' ng-disabled = 'subscription.addingProduct'><span ng-if = '!subscription.addingProduct'>Add To Cart</span><span ng-if='subscription.addingProduct'>Item Added</span></button>
 							</td>
@@ -221,9 +266,14 @@
 			<!-- Subscriptions End -->
 
 			<!-- Merch Start -->
-			<div ng-show = 'productDisplay.showMerch === true'>
+			<div ng-show = 'productDisplay.showMerch === true' id="merchandise_products">
 
 				<h1 class = 'row row-centered'>Happy Cup Gifts </h1>
+				<div class = 'row row-centered' ng-show="shoppingCart.subscriptions.length">
+					<h5 class = 'col-sm-10 col-centered text-danger'>
+						*** You currently have one or more subscriptions in your shopping cart and are unable to add coffee or merchandise. Please purchase these items in another order. You can view your cart <a href="#/cart">here.</a>
+					</h3>
+				</div>
 				<table class = 'table table-hover brown-border'>
 					<thead>
 						<tr>

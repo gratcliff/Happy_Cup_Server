@@ -38,8 +38,8 @@
 							<th colspan="5">Subscriptions</th>
 						</tr>
 						<tr ng-repeat="sub in currentCart.subscriptions track by $index">
-							<td class="product">[[sub.name]] <small>[[sub.coffee.name]] - [[sub.grind.name]]</small></td>
-							<td class="price">[[sub.price | currency : symbol : fractonSize]]</td>
+							<td class="product">[[sub.name]]: [[sub.shipments]] shipments <small>[[sub.coffee.name]] - [[sub.grind.name]]</small></td>
+							<td class="price">[[sub.price | currency : symbol : fractonSize]] / shipment</td>
 							<td class="quantity">[[sub.qty]]</td>
 							<td class="amount">[[sub.subtotal | currency : symbol : fractonSize]] </td>
 						</tr>
@@ -67,12 +67,13 @@
 							<td class="price">[[currentCart.coupon.code]]</td>
 							<td class="amount">[[currentCart.coupon.discount | number : 0]]%</td>
 						</tr>
-						<tr ng-if="!currentCart.coupon.valid">										
+						<tr ng-if="!currentCart.coupon.valid && !currentCart.subscriptions.length">						
 							<td class="total-quantity" colspan="2">Discount Coupon</td>
 							<td class="amount" colspan="2"><a href="#/cart">Add Coupon Code</a></td>
 						</tr>
 						<tr>
-							<td class="total-quantity" colspan="3">Total [[currentCart.totalItems]] Item<span ng-hide="currentCart.totalItems === 1">s</span></td>
+							<td class="total-quantity" colspan="3" ng-if="!currentCart.subscriptions.length">Total [[currentCart.totalItems]] Item<span ng-hide="currentCart.totalItems === 1">s</span></td>
+							<td class="total-quantity" colspan="3" ng-if="currentCart.subscriptions.length">Total Due Today<span ng-hide="currentCart.totalItems === 1">s</span></td>
 							<td class="total-amount">[[currentCart.totalPrice * (1 - (currentCart.coupon.discount / 100)) | currency : symbol : fractonSize]]</td>
 						</tr>
 					</tbody>

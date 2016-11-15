@@ -9,16 +9,17 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class WholesalePrice(models.Model):
-	price = models.PositiveSmallIntegerField(help_text = 'Price per pound')
+	price = models.DecimalField(help_text = 'Price per pound', unique=True, max_digits=5, decimal_places=2)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
-		return self.discount_percentage
+		return self.price
 
 class Customer(models.Model):
-	user = models.OneToOneField(User, blank = True, null = True, limit_choices_to={'is_staff':False})
-	wholesale_price = models.ForeignKey(WholesalePrice, blank = True, null = True, on_delete = models.SET_NULL, help_text="Leave blank for no discount")
+	user = models.OneToOneField(User, blank = True, null = True, limit_choices_to={'is_staff':False, 'customer': None})
+	stripe_id = models.CharField(max_length=128, blank=True)
+	wholesale_price = models.ForeignKey(WholesalePrice, blank = True, null = True, on_delete = models.SET_NULL, help_text="Leave blank to use default price")
 	name = models.CharField(max_length=64, blank=True)
 	email = models.EmailField(max_length = 128, blank=True)
 	phone_number = models.CharField(max_length = 24, blank=True)
@@ -27,6 +28,7 @@ class Customer(models.Model):
 	city = models.CharField(max_length = 32, blank=True)
 	state = models.CharField(max_length = 32, blank=True)
 	zipcode = models.CharField(max_length = 10, blank=True)
+	registered = models.BooleanField(default=False)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 

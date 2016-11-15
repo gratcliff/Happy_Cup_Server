@@ -28,6 +28,8 @@ class ContentProvider(object):
 
 		self.wholeSaleCoffee_json = self.json_serializer.serialize_wholeSaleCoffee(self.query_set.wholeSaleCoffee)
 
+		self.subscription_json = self.json_serializer.serialize_subscriptions(self.query_set.subscriptions)
+
 		(self.coffee_json, self.featured_coffee) = self.json_serializer.serialize_coffee(self.query_set.coffee)
 
 		(self.merchandise_json, self.featured_merchandise) = self.json_serializer.serialize_merch(self.query_set.merchandise)

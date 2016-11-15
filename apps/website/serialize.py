@@ -126,6 +126,35 @@ class JsonSerializer:
 
 		return data
 
+	def serialize_subscriptions(self, subs):
+		data = []
+		global db_modified
+
+		for sub in subs:
+
+			name = str(sub).split(' ')[:2]
+
+			plan_type = 'retail' if 'Retail' in str(sub) else 'wholesale'
+
+			obj = {
+				'id' : sub.id,
+				'name' : ' '.join(name),
+				'frequency' : sub.frequency,
+				'coffees' : self.serialize_coffee(sub.coffees.all())[0],
+				'wholesale_coffees' : self.serialize_wholeSaleCoffee(sub.wholesale_coffees.all()),
+				'image_url' : sub.image_url,
+				'price' : float(sub.price),
+				'stripe_id' : sub.stripe_id,
+				'type' : 'subscription',
+				'plan_type' : plan_type
+			}
+
+			data.append(obj)
+
+		db_modified = False
+
+		return data
+
 
 	def serialize_merch(self, products):
 		global db_modified
@@ -313,7 +342,7 @@ class JsonSerializer:
 				'first_name' : user.first_name,
 				'last_name' : user.last_name,
 				'email' : user.email,
-				'customer' : customer.id
+				'customer' : customer.id if customer else None
 			}
 
 

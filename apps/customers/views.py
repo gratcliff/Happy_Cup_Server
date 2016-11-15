@@ -32,7 +32,7 @@ class RegisterUser(View):
 			user = authenticate(username=username, email=email, password=password)
 			if user is not None:
 				login(request, user)
-				Customer.objects.create(user=user, email=email, name="%s %s"%(user.first_name, user.last_name))
+				Customer.objects.create(user=user, email=email, name="%s %s"%(user.first_name, user.last_name), registered=True)
 				user_json = serialize.serialize_user(user)
 
 				return JsonResponse({'status': True, 'user':user_json});
