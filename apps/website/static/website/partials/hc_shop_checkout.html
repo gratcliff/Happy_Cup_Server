@@ -34,6 +34,17 @@
 							<td class="quantity">[[coffee.qty]]</td>
 							<td class="amount">[[coffee.subtotal | currency : symbol : fractonSize]] </td>
 						</tr>
+
+						<tr ng-if="currentCart.wholeSaleCoffee.length" >
+							<th colspan="5">Wholesale Coffee</th>
+						</tr>
+						<tr ng-repeat="wholesale in currentCart.wholeSaleCoffee track by $index">
+							<td class="product">[[wholesale.name]] ([[wholesale.size]]) <small>[[wholesale.roast.name]] - [[wholesale.grind.name]]</small></td>
+							<td class="price">[[wholesale.price | currency : symbol : fractonSize]]</td>
+							<td class="quantity">[[wholesale.qty]]</td>
+							<td class="amount">[[wholesale.subtotal | currency : symbol : fractonSize]] </td>
+						</tr>
+
 						<tr ng-if="currentCart.subscriptions.length">
 							<th colspan="5">Subscriptions</th>
 						</tr>
@@ -43,6 +54,7 @@
 							<td class="quantity">[[sub.qty]]</td>
 							<td class="amount">[[sub.subtotal | currency : symbol : fractonSize]] </td>
 						</tr>
+
 						<tr ng-if="currentCart.merch.length">
 							<th colspan="5">Merchandise</th>
 						</tr>

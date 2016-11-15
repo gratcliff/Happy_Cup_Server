@@ -23,6 +23,7 @@ happy_cup.controller('checkout_controller', function ($scope, $location, $timeou
 			$scope.shippingInfo = {};
 
 			$scope.populateForms(cart);
+			console.log($scope.currentCart);
 
 
 		}

@@ -18,6 +18,7 @@ happy_cup.factory('shop_factory', function($http){
 				shoppingCart.coffee = [];
 				shoppingCart.subscriptions = [];
 				shoppingCart.merch = [];
+				shoppingCart.wholesale = [];
 				shoppingCart.unsavedChanges = false;
 				shoppingCart.coupon = {code: undefined, valid:false, discount: 0};
 				shoppingCart.checkoutStatus = {
@@ -46,6 +47,10 @@ happy_cup.factory('shop_factory', function($http){
 					totalItems += this.subscriptions[idx].qty;
 					totalPrice = roundPrice(totalPrice,this.subscriptions[idx].subtotal);
 				}
+				for (idx in this.wholeSaleCoffee) {
+					totalItems += this.wholeSaleCoffee[idx].qty;
+					totalPrice += this.wholeSaleCoffee[idx].subtotal;
+				}
 				this.totalItems = totalItems;
 				this.totalPrice = totalPrice;
 
@@ -55,7 +60,6 @@ happy_cup.factory('shop_factory', function($http){
 			callback(shoppingCart);
 
 		});
-
 		
 	};
 
@@ -87,11 +91,33 @@ happy_cup.factory('shop_factory', function($http){
 		$http.post('sync/', shoppingCart).then(function(response){
 			callback(shoppingCart);
 		});
-
-
-
 		
 	}		// if an identical product exists in the cart, 
+
+
+	factory.addWholeSaleCoffeeToCart = function(order, callback){
+		var identicalProduct = false;
+
+		for (idx in shoppingCart.wholeSaleCoffee) {
+			if (shoppingCart.wholeSaleCoffee[idx].id === order.id && 
+				shoppingCart.wholeSaleCoffee[idx].grind.id === order.grind.id){
+				shoppingCart.wholeSaleCoffee[idx].qty += order.qty;
+				shoppingCart.wholeSaleCoffee[idx].subtotal += order.subtotal;
+				identicalProduct = true;
+				break;
+			}
+		}
+		if (!identicalProduct){
+			shoppingCart.wholeSaleCoffee.push(order);
+			shoppingCart.totalItems += 1;
+		}
+		
+		shoppingCart.totalPrice += order.subtotal;
+
+		$http.post('sync/', shoppingCart).then(function(response){
+			callback(shoppingCart);
+		})
+	}
 
 	factory.addSubscriptionsToCart = function(order, callback) {
 		var identicalProduct = false;
@@ -190,6 +216,15 @@ happy_cup.factory('shop_factory', function($http){
 		}
 
 		shoppingCart.coffee = nonZeroQtyCheck;
+
+		nonZeroQtyCheck = [];
+		for (idx in cart.wholeSaleCoffee){
+			if (cart.wholeSaleCoffee[idx].qty > 0){
+				nonZeroQtyCheck.push(cart.wholeSaleCoffee[idx]);
+			}
+		}
+		shoppingCart.wholeSaleCoffee = nonZeroQtyCheck;
+
 		nonZeroQtyCheck = [];
 		for (idx in cart.subscriptions){
 			if (cart.subscriptions[idx].qty > 0){

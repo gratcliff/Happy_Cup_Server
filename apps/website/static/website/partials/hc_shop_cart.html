@@ -42,6 +42,22 @@
 							<td class="amount">[[coffee.subtotal | currency : symbol : fractonSize]]</td>
 						</tr>
 
+						<!-- Wholesale -->
+						<tr ng-if = 'currentCart.wholeSaleCoffee.length'>
+							<th colspan = "5"><h3>Wholesale Coffee</h3></th>
+						</tr>
+						<tr ng-repeat="wholesale in currentCart.wholeSaleCoffee track by $index">
+							<td class="product">[[wholesale.name]] ([[wholesale.size]])<small>[[wholesale.roast.name]] - [[wholesale.grind.name]]</small></td>
+							<td class="price">[[wholesale.price | currency : symbol : fractonSize]]</td>
+							<td class="quantity">
+								<div class="form-group">
+									<input type="number" class="form-control" ng-model="wholesale.qty" ng-change="currentCart.unsavedChanges=true; wholesale.subtotal = wholesale.price * wholesale.qty; currentCart.countTotals();" min="0">
+								</div>											
+							</td>
+							<td class="remove"><button class="btn btn-default" ng-show="wholesale.qty" ng-click="wholesale.qty = 0; removeProduct($index, 'wholeSaleCoffee');" move-to-top>Remove</button></td>
+							<td class="amount">[[wholesale.subtotal | currency : symbol : fractonSize]]</td>
+						</tr>
+
 						<!--Subscriptions -->
 						<tr ng-if = 'currentCart.subscriptions.length'>
 							<th colspan = "5"><h3>Subscriptions</h3></th>

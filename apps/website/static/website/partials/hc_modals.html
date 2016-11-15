@@ -197,6 +197,51 @@
 </div>
 <!-- End Coffee Modals -->
 
+<!-- WholeSale Coffee Modals -->
+<div class="modal fade" id="wholesale_coffee_modal" tabindex="-1" role="dialog" aria-labelledby="wholesale_coffee_modal_label" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+			</div>
+			<div class="modal-body">
+				<div class = 'container-fluid'>
+					<div class = 'row'>
+						<div class="col-xs-8 col-md-5 col-xs-offset-2 col-sm-offset-2 col-md-offset-0 text-center">
+							<img ng-src="[[wholeSaleCoffeeModal.image_url]]" alt="[[wholeSaleCoffeeModal.name]]">
+						</div>
+						<div class = 'col-xs-12 col-md-7'>
+							<h3>[[wholeSaleCoffeeModal.name]]</h3>
+							<p>[[wholeSaleCoffeeModal.description]]</p>
+							<form class = 'form-horizontal' role = 'form'>
+								<div class = 'form-group has-feedback'>
+									<label for = 'grind' class = 'col-sm-2 control-label'>Grind:</label>
+									<div class = 'col-sm-8'>
+										<select class="form-control" ng-options="grind.name for grind in wholeSaleCoffeeModal.grinds track by grind.id" ng-model="wholeSaleOrder.grind" >
+										</select>
+									</div>
+								</div>
+								<div class = 'form-group has-feedback'>
+									<label for="qty" class="control-label col-sm-2 modal-qty-input">Qty:</label>
+									<div class="col-sm-3">
+										<input type="number" ng-model="wholeSaleOrder.qty" min="1" class="form-control" style="padding-right: 12px;">
+									</div>
+								</div>
+								<div class="form-group text-center">
+										<button type="submit" class="btn btn-group btn-default btn-animated" ng-click="broadcastToCart(wholeSaleCoffeeModal, wholeSaleOrder, wholeSaleCoffeeModal.idx)" ng-show="wholeSaleOrder.qty > 0"><span ng-if="!addingProduct">Add To Cart</span><span ng-if="addingProduct">Item Added</span><i class="fa fa-shopping-cart"></i></button>
+										<button type="button" class="btn btn-group btn-dark" data-dismiss="modal">Cancel</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- End Whole Sale Coffee Modals -->
+
 <!-- Subscription Modals -->
 	<div class="modal fade" id="subscription_modal" tabindex="-1" role="dialog" aria-labelledby="subscription_modal_label" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
