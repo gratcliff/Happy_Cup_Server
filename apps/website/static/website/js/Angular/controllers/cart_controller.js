@@ -18,6 +18,7 @@ happy_cup.controller('cart_controller', function ($scope, $location, $timeout, u
 			if (!$scope.currentCart.coupon.valid) {
 				$scope.currentCart.coupon.code = undefined;
 			}
+			console.log($scope.currentCart);
 	});
 	
 

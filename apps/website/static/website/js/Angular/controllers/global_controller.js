@@ -172,10 +172,10 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 	$scope.$on('openWholeSaleModal', function (event, coffee){
 		
 		$scope.wholeSaleCoffeeModal = coffee;
-		$scope.coffeeOrder = {};
-		$scope.coffeeOrder.size = 1;
-		$scope.coffeeOrder.qty = 1;
-		$scope.coffeeOrder.grind = coffee.grinds[0];
+		$scope.wholeSaleOrder = {};
+		$scope.wholeSaleOrder.size = 1;
+		$scope.wholeSaleOrder.qty = 1;
+		$scope.wholeSaleOrder.grind = coffee.grinds[0];
 		$scope.mobileModal('#wholesale_coffee_modal');
 	})
 

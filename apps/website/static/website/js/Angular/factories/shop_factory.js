@@ -43,6 +43,10 @@ happy_cup.factory('shop_factory', function($http){
 					totalItems += this.merch[idx].qty;
 					totalPrice += this.merch[idx].subtotal;
 				}
+				for (idx in this.wholeSaleCoffee) {
+					totalItems += this.wholeSaleCoffee[idx].qty;
+					totalPrice += this.wholeSaleCoffee[idx].subtotal;
+				}
 				this.totalItems = totalItems;
 				this.totalPrice = totalPrice;
 

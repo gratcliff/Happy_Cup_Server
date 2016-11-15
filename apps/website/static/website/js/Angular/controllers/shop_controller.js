@@ -167,11 +167,10 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, content_fact
 			name: coffee.name,
 			roast: coffee.roast,
 			grind: order.grind,
-			size: 1,
+			price: coffee.price_per_pound,
+			size: '1 lb',
 			subtotal: coffee.price_per_pound * order.qty
 		};
-		console.log(data);
-
 		shop_factory.addWholeSaleCoffeeToCart(data, function (newCart){
 			$timeout(function(){
 				delete $scope.products.wholeSaleCoffee[idx].addingProduct;
