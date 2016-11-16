@@ -34,9 +34,10 @@ class Index(View):
 
 class ProvideContent(View):
 
-	content = ContentProvider()
+	
 
 	try:
+		content = ContentProvider()
 		content.populate_products()
 		content.populate_aboutPage()
 		content.populate_locations()
