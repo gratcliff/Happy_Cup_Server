@@ -14,7 +14,7 @@ class WholesalePrice(models.Model):
 	updated_at = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
-		return self.price
+		return str(self.price)
 
 class Customer(models.Model):
 	user = models.OneToOneField(User, blank = True, null = True, limit_choices_to={'is_staff':False, 'customer': None})
