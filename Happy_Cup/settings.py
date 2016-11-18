@@ -89,23 +89,23 @@ WSGI_APPLICATION = 'Happy_Cup.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dbhappycup',
-        'USER': 'happyCupAdmin',
-        'PASSWORD': 'adminOR97232',
-        'HOST': 'dbhappycupwebsite.czbpsfihj64a.us-west-2.rds.amazonaws.com',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'dbhappycup',
+#         'USER': 'happyCupAdmin',
+#         'PASSWORD': 'adminOR97232',
+#         'HOST': 'dbhappycupwebsite.czbpsfihj64a.us-west-2.rds.amazonaws.com',
+#         'PORT': '5432',
+#     }
+# }
 
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # SECURE_CONTENT_TYPE_NOSNIFF = True

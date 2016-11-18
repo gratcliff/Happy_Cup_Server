@@ -165,6 +165,12 @@
 							<h3>[[coffeeModal.name]]</h3>
 							<p>[[coffeeModal.description]]</p>
 							<form class = 'form-horizontal' role = 'form'>
+								<div class="form-group margin-clear">
+									<p for = 'price' class = 'col-sm-2 text-right'>Price: </p>
+									<div class="col-sm-8">
+										<p>[[coffeeOrder.size.base_price]]</p>
+									</div>
+								</div>
 								<div class = 'form-group has-feedback'>
 									<label for = 'grind' class = 'col-sm-2 control-label'>Grind:</label>
 									<div class = 'col-sm-8'>
@@ -188,6 +194,14 @@
 										<button type="button" class="btn btn-group btn-dark" data-dismiss="modal">Cancel</button>
 								</div>
 							</form>
+
+						</div>
+					</div>
+					<div class="row" ng-show="shoppingCart.subscriptions.length && cartModalError">
+						<div class="col-xs-12">
+							<h5 class = 'text-danger'>
+								*** You currently have one or more subscriptions in your shopping cart and are unable to add one-time purchases of coffee or merchandise for billing reasons. Please purchase these items separately. You can view your cart <a href="#/cart" ng-click="dismissModal('#coffee_modal')">here.</a>
+							</h5>
 						</div>
 					</div>
 				</div>
@@ -256,19 +270,26 @@
 								<img ng-src="[[subscriptionModal.image_url]]" alt="[[subscriptionModal.name]]">
 							</div>
 							<div class = 'col-xs-12 col-md-7'>
-								<h3>[[subscriptionModal.name]]</h3>
+								<h3>[[subscriptionModal.name]] Plan</h3>
 								<p>[[subscriptionModal.description]]</p>
 								<form class = 'form-horizontal' role = 'form'>
 									<div class = 'form-group has-feedback'>
 										<label for ='size' class = 'col-sm-2 control-label'> Coffee:</label>
 										<div class = 'col-sm-8'> 
-										 	<select class = 'form-control' ng-options = 'coffee.name for coffee in subscriptionModal.roasts track by coffee.id' ng-model = 'modalOrder.coffee'></select>
+										 	<select class = 'form-control' ng-options = 'coffee.name for coffee in subscriptionModal.coffees' ng-model = 'modalOrder.coffee'></select>
 										</div>
 									</div>
 									<div class = 'form-group has-feedback'>
 										<label for = 'grind' class = 'col-sm-2 control-label'>Grind:</label>
 										<div class = 'col-sm-8'>  
-											<select class = 'form-control' ng-options = 'grind.name for grind in modalOrder.coffee.grinds track by grind.id' ng-model = 'modalOrder.grind'></select>
+											<select class = 'form-control' ng-options = 'grind.name for grind in modalOrder.coffee.grinds track by grind.id' ng-model = 'modalOrder.grind' ng-change="modalOrder.grind = modalOrder.grind != undefined ? modalOrder.grind : modalOrder.coffee.grinds[0]"></select>
+										</div>
+									</div>
+									<div class = 'form-group has-feedback'>
+										<label for ='size' class = 'col-sm-2 control-label'> Size:</label>
+										<div class = 'col-sm-3'> 
+										 	<select class="form-control" ng-options="size.qty for size in modalOrder.coffee.sizes track by size.id" ng-model="modalOrder.size" ng-change="modalOrder.size = modalOrder.size != undefined ? modalOrder.size : modalOrder.coffee.sizes[0]">
+											</select>
 										</div>
 									</div>
 									<div class="form-group text-center">
@@ -276,6 +297,13 @@
 											<button type="button" class="btn btn-group btn-dark" data-dismiss="modal">Cancel</button>
 									</div>
 								</form>
+							</div>
+						</div>
+						<div class="row" ng-show="cartModalError &&shoppingCart.coffee.length || shoppingCart.merch.length ">
+							<div class="col-xs-12">
+								<h5 class = 'text-danger'>
+									*** You currently have one or more subscriptions in your shopping cart and are unable to add one-time purchases of coffee or merchandise for billing reasons. Please purchase these items separately. You can view your cart <a href="#/cart" ng-click="dismissModal('#subscription_modal')">here.</a>
+								</h5>
 							</div>
 						</div>
 					</div>
@@ -310,7 +338,7 @@
 										</div>
 										<div ng-if = 'merchandiseModal.coffee_qty > 1' class = 'col-sm-8'> 
 										 	<div class = 'dropdown has-feedback' ng-class="{'has-error': giftBoxError}"> 
-										 		<button id="three_coffee_select_btn" class="form-control dropdown-toggle text-left " data-toggle="dropdown" ng-click="stopDefaultAction('#three_cup_gift_options')">&nbsp;&nbsp;[[modalOrder.coffee.length]] Selected <span class="text-danger" ng-if="giftBoxError">* Must choose 3</span>
+										 		<button id="three_coffee_select_btn" class="form-control dropdown-toggle text-left " data-toggle="dropdown" ng-click="stopDefaultAction('#three_cup_gift_options')">&nbsp;&nbsp;[[modalOrder.coffee.length]] Selected <span class="text-danger" ng-if="giftBoxError">* Must choose [[merchandiseModal.coffee_qty]]</span>
 										 		</button>
 
 										 		<ul id="three_cup_gift_options" class="dropdown-menu col-xs-12">
@@ -347,6 +375,13 @@
 											<button type="button" class="btn btn-group btn-dark" data-dismiss="modal">Cancel</button>
 									</div>
 								</form>
+							</div>
+						</div>
+						<div class="row" ng-show="shoppingCart.subscriptions.length && cartModalError">
+							<div class="col-xs-12">
+								<h5 class = 'text-danger'>
+									*** You currently have one or more subscriptions in your shopping cart and are unable to add one-time purchases of coffee or merchandise for billing reasons. Please purchase these items separately. You can view your cart <a href="#/cart" ng-click="dismissModal('#merch_modal')">here.</a>
+								</h5>
 							</div>
 						</div>
 					</div>

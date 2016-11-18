@@ -5,6 +5,7 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 			if ($scope.products.featured) {
 				$('#carousel-featured-products').carousel();
 			}
+			console.log(content)
 			
 	});
 
@@ -114,23 +115,27 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 
 	}
 
-	$scope.$on('sendToCart', function(event, product, order, idx) {
+	$scope.$on('sendToCart', function(event, product, order, idx, callback) {
 		var productType = product.type
 		if (productType === 'coffee') {
-			$scope.addCoffeeToCart(product, order, idx);
+			$scope.addCoffeeToCart(product, order, idx, callback);
 		} else if (productType === 'subscription'){
-			$scope.addSubscriptionsToCart(product, order, idx);
+			$scope.addSubscriptionsToCart(product, order, idx, callback);
 		} else if (productType === 'merchandise' || productType === 'variety') {
-			$scope.addMerchToCart(product, order, idx);
+			$scope.addMerchToCart(product, order, idx, callback);
 		} else if (productType === 'wholesale'){
-			$scope.addWholeSaleCoffeeToCart(product, order, idx);
+			$scope.addWholeSaleCoffeeToCart(product, order, idx, callback);
 		}
 
 	});
 
-	$scope.addCoffeeToCart = function(coffee, order, idx) {
+	$scope.addCoffeeToCart = function(coffee, order, idx, callback) {
 		if ($scope.shoppingCart.subscriptions.length) {
-			$anchorScroll('coffee_products')
+			$scope.cartError = true;
+			$anchorScroll('product-tabs');
+			if (typeof(callback) === 'function') {
+				callback();
+			}
 			return
 		}
 		if (order.qty <= 0 || isNaN(order.qty)) {
@@ -146,7 +151,8 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 			size: order.size,
 			grind: order.grind,
 			qty: order.qty,
-			subtotal: (Math.round(order.size.base_price*100) * order.qty) / 100
+			ship_wt: order.size.ship_wt * order.qty,
+			subtotal: Math.round(order.size.base_price * 100 * order.qty) / 100
 		};
 			
 		shop_factory.addCoffeeToCart(data, function(newCart) {
@@ -162,7 +168,15 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 
 	}
 
-	$scope.addWholeSaleCoffeeToCart = function (coffee, order, idx){
+	$scope.addWholeSaleCoffeeToCart = function (coffee, order, idx, callback){
+		if ($scope.shoppingCart.subscriptions.length) {
+			$scope.cartError = true;
+			$anchorScroll('product-tabs');
+			if (typeof(callback) === 'function') {
+				callback()
+			}
+			return
+		}
 		$scope.products.wholeSaleCoffee[idx].addingProduct = true;
 		var data = {
 			id: coffee.id,
@@ -170,9 +184,9 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 			name: coffee.name,
 			roast: coffee.roast,
 			grind: order.grind,
-			price: coffee.price_per_pound,
-			size: '1 lb',
-			subtotal: coffee.price_per_pound * order.qty
+			size: order.size,
+			subtotal: Math.round(order.size.base_price*100 * order.qty) / 100,
+			ship_wt: order.size.ship_wt * order.qty,
 		};
 		shop_factory.addWholeSaleCoffeeToCart(data, function (newCart){
 			$timeout(function(){
@@ -183,15 +197,16 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 		});
 	}
 
-	$scope.addSubscriptionsToCart = function(sub, order, idx){
+	$scope.addSubscriptionsToCart = function(sub, order, idx, callback){
 		if ($scope.shoppingCart.merch.length || $scope.shoppingCart.coffee.length) {
-			$anchorScroll('subscription-products')
+			$scope.cartError = true;
+			$anchorScroll('product-tabs');
+			if (typeof(callback) === 'function') {
+				callback()
+			}
 			return 
 		}
-
-		if (order.shipments < 4 || isNaN(order.shipments)) {
-			return
-		}
+		console.log(order)
 
 		$scope.products.subscriptions[idx].addingProduct = true;
 		var data = {
@@ -200,10 +215,12 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 			qty: 1,
 			name: sub.name,
 			coffee: order.coffee,
+			size: order.size,
 			grind: order.grind,
-			price: sub.price,
-			subtotal: sub.price,
+			price: order.size.base_price_plan,
+			subtotal: order.size.base_price_plan,
 			shipments: order.shipments,
+			ship_wt: order.size.ship_wt
 		};
 
 		shop_factory.addSubscriptionsToCart(data, function (newCart){
@@ -216,9 +233,13 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 		});
 	}
 
-	$scope.addMerchToCart = function(merch, order, idx){
+	$scope.addMerchToCart = function(merch, order, idx, callback){
 		if ($scope.shoppingCart.subscriptions.length) {
-			$anchorScroll('merchandise_products')
+			$scope.cartError = true;
+			$anchorScroll('product-tabs');
+			if (typeof(callback) === 'function') {
+				callback()
+			}
 			return
 		}
 		$scope.products.merchandise[idx].addingProduct = true;
@@ -229,6 +250,7 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 			price: merch.price,
 			subtotal: merch.price,
 			featured: merch.featured,
+			ship_wt: merch.ship_wt
 
 		};
 		//Can be length 1 or 3

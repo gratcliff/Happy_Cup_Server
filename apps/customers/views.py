@@ -93,8 +93,6 @@ class LoginUser(View):
 class GetCurrentUser(View):
 
 	def get(self, request):
-		if request.user.is_superuser:
-			logout(request)
 
 		if request.user.is_authenticated:
 			

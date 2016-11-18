@@ -9,12 +9,12 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class WholesalePrice(models.Model):
-	price = models.DecimalField(help_text = 'Price per pound', unique=True, max_digits=5, decimal_places=2)
+	discount_rate = models.PositiveSmallIntegerField('Percent discount', help_text="Specific customers will receive this discount on wholesale volumes.", unique=True)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
-		return self.price
+		return "%s percent" % (str(self.discount_rate),)
 
 class Customer(models.Model):
 	user = models.OneToOneField(User, blank = True, null = True, limit_choices_to={'is_staff':False, 'customer': None})

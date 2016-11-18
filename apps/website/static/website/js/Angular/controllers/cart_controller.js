@@ -2,11 +2,6 @@ happy_cup.controller('cart_controller', function ($scope, $location, $timeout, u
 
 	$scope.cartSaved = false;
 
-	$scope.$on('userLoggedOut', function(event, cart){
-		$scope.currentCart = cart;
-		$location.url('/')
-	});
-
 	$scope.$on('userLoggedOn', function(event, cart){
 		$scope.currentCart = cart;
 	});

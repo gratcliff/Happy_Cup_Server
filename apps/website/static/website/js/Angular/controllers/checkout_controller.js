@@ -2,18 +2,6 @@ happy_cup.controller('checkout_controller', function ($scope, $location, $timeou
 
 	$scope.userAllowedInView = false;
 
-	$scope.$on('userLoggedOut', function(event, cart){
-		$scope.currentCart = cart;
-		$location.url('/')
-	});
-
-	$scope.$on('userLoggedOn', function(event, cart){
-		$scope.currentCart = cart;
-		$scope.populateForms(cart);
-	});
-
-
-
 	$scope.$emit('getShoppingCart', function(cart){
 		if (cart.unsavedChanges || !cart.totalItems) {
 			$location.url('/cart');
@@ -28,8 +16,6 @@ happy_cup.controller('checkout_controller', function ($scope, $location, $timeou
 
 		}
 		
-
-
 	});
 
 	$scope.useSavedShipping = function(address){

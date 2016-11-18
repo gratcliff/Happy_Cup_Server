@@ -26,11 +26,11 @@ class ContentProvider(object):
 
 		self.featured_products = []
 
-		self.wholeSaleCoffee_json = self.json_serializer.serialize_wholeSaleCoffee(self.query_set.wholeSaleCoffee)
-
-		self.subscription_json = self.json_serializer.serialize_subscriptions(self.query_set.subscriptions)
+		(self.wholeSaleCoffee_json, self.featured_wholesale) = self.json_serializer.serialize_coffee(self.query_set.wholeSaleCoffee, True)
 
 		(self.coffee_json, self.featured_coffee) = self.json_serializer.serialize_coffee(self.query_set.coffee)
+
+		self.subscription_json = self.json_serializer.serialize_subscriptions(self.query_set.subscriptions)
 
 		(self.merchandise_json, self.featured_merchandise) = self.json_serializer.serialize_merch(self.query_set.merchandise)
 
@@ -41,6 +41,7 @@ class ContentProvider(object):
 
 		# concatenate each featured product list
 		self.featured_products.extend(self.featured_coffee)
+		self.featured_products.extend(self.featured_wholesale)
 		self.featured_products.extend(self.featured_merchandise)
 		self.featured_products.extend(self.featured_variety)
 

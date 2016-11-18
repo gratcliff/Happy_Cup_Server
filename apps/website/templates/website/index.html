@@ -314,7 +314,7 @@
 																			<tr ng-repeat="wholesale in shoppingCart.wholeSaleCoffee | orderBy: ['-qty','name']">
 																				<td class="quantity">[[wholesale.qty]] x</td>
 																				<td class="product">[[wholesale.name]]<span class="small">[[wholesale.roast.name]]</span></td>
-																				<td>[[wholesale.size]]</td>
+																				<td>[[wholesale.size.qty]]</td>
 																				<td class="amount">[[wholesale.subtotal | currency: symbol : fractionSize ]]</td>
 																			</tr>
 
@@ -323,7 +323,7 @@
 																				<th colspan = "4" class="text-center">Subscriptions</th></tr>
 																			<tr ng-repeat = 'subscription in shoppingCart.subscriptions | orderBy: ["-qty", "name"]'>
 																				<td class ='quantity'>[[subscription.qty]] x</td>
-																				<td class = 'product' colspan="2">[[subscription.name]]<span class = 'small'>[[subscription.coffee.name]] - [[subscription.grind.name]]</span></td>
+																				<td class = 'product' colspan="2">[[subscription.size.qty]] / [[subscription.name]]<span class = 'small'>[[subscription.coffee.name]] - [[subscription.grind.name]]</span></td>
 																				
 																				<td class = 'amount'>[[subscription.subtotal | currency: symbol : fractionSize ]]</td>
 																			</tr>

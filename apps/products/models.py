@@ -5,7 +5,7 @@ from django.utils import timezone
 
 
 from ..product_options.models import CoffeeVolume, CoffeeGrind, CoffeeRoast, ShirtSize
-from ..website.models import PriceTimestamp
+from ..website.models import PriceTimestamp, Timestamp
 
 import stripe
 
@@ -26,18 +26,24 @@ class Coupon(models.Model):
 	def is_valid_coupon(self):
 		return self.expiration_date > timezone.now()
 
-class WholeSaleCoffee(PriceTimestamp):
+class WholeSaleCoffee(Timestamp):
 	name = models.CharField(max_length=32)
 	roast = models.ForeignKey(CoffeeRoast)
 	grinds = models.ManyToManyField(CoffeeGrind)
+	sizes = models.ManyToManyField(CoffeeVolume)
 	description = models.TextField()
-	price_per_pound = models.DecimalField(max_digits=5, decimal_places=2)
+	price_factor = models.SmallIntegerField('Increase or decrease the base price by the following percentage.  Use negative values to decrease price.', default=0)
 	image_url = models.URLField()
+	featured = models.ForeignKey('ProductPromotion', verbose_name="To feature this product, select a promotional deal.", blank=True, null=True, on_delete=models.SET_NULL, limit_choices_to = {'expired' : False})
+
+	class Meta:
+		verbose_name_plural = "Coffees - Wholesale"
+		verbose_name = "Coffee - Wholesale"
 
 	def __str__(self):
 		return "%s %s" % (self.name, self.roast)
 
-class Coffee(PriceTimestamp):
+class Coffee(Timestamp):
 
 	name = models.CharField(max_length=24)
 	roast = models.ForeignKey(CoffeeRoast)
@@ -51,7 +57,7 @@ class Coffee(PriceTimestamp):
 	def __str__(self):
 		return '%s %s' % (self.name, self.roast)
 
-class Subscription(PriceTimestamp):
+class Subscription(Timestamp):
 
 	frequency = models.PositiveSmallIntegerField('Number of weeks between each shipment')
 	coffees = models.ManyToManyField(Coffee, blank=True)
@@ -64,7 +70,7 @@ class Subscription(PriceTimestamp):
 		unique_together = ('frequency', 'price', 'stripe_id')
 
 	def __str__(self):
-		return '%s Week Retail Subscription' % (self.frequency,) if 'retail' in self.stripe_id else '%s Week Wholesale Subscription' % (self.frequency,)
+		return '%s Week Subscription' % (self.frequency,)
 
 	def delete(self, *args, **kwargs):
 		stripe_id = self.stripe_id
@@ -79,7 +85,7 @@ class Subscription(PriceTimestamp):
 
 
 
-class Merchandise(PriceTimestamp):
+class Merchandise(Timestamp):
 
 	name = models.CharField(max_length=24)
 	description = models.TextField()
@@ -87,6 +93,7 @@ class Merchandise(PriceTimestamp):
 	sizes = models.ManyToManyField(ShirtSize, verbose_name='Shirt Sizes available (if applicable)', blank=True)
 	price = models.DecimalField(max_digits=5, decimal_places=2)
 	featured = models.ForeignKey('ProductPromotion', verbose_name="To feature this product, select a promotional deal.", blank=True, null=True, on_delete=models.SET_NULL, limit_choices_to = {'expired' : False})
+	ship_wt = models.DecimalField('Shipping Weight', max_digits=4, decimal_places=2)
 
 	def __str__(self):
 		return self.name
@@ -94,7 +101,7 @@ class Merchandise(PriceTimestamp):
 	class Meta:
 		verbose_name_plural = "Merchandise"
 
-class VarietyPack(PriceTimestamp):
+class VarietyPack(Timestamp):
 	name = models.CharField(max_length=24)
 	description = models.TextField()
 	image_url = models.URLField()
@@ -103,6 +110,7 @@ class VarietyPack(PriceTimestamp):
 	merchandise = models.ManyToManyField('Merchandise', verbose_name='Merchandise in variety pack (if applicable)', blank=True)
 	price = models.DecimalField(max_digits=5, decimal_places=2)
 	featured = models.ForeignKey('ProductPromotion', verbose_name="To feature this product, select a promotional deal.", blank=True, null=True, on_delete=models.SET_NULL, limit_choices_to = {'expired' : False})
+	ship_wt = models.DecimalField('Shipping Weight', max_digits=4, decimal_places=2)
 
 	def __str__(self):
 		return self.name

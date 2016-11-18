@@ -3,11 +3,6 @@ happy_cup.controller('payment_controller', function ($scope, $location, $timeout
 	$scope.userAllowedInView = false;
 	$scope.submittingPayment = false;
 
-	$scope.$on('userLoggedOut', function(event, cart){
-		$scope.currentCart = cart;
-		$location.url('/')
-	});
-
 	$scope.$on('userLoggedOn', function(event, cart){
 		$scope.currentCart = cart;
 		$scope.currentCart.checkoutStatus.payment = false;

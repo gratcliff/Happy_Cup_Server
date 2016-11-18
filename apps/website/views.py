@@ -9,7 +9,7 @@ from django.db import connection
 import serialize
 from querysets import QuerySet
 from contentprovider import ContentProvider
-from shopping_cart import ShoppingCart, empty_all_carts
+from shopping_cart import ShoppingCart
 
 
 import json
@@ -34,37 +34,17 @@ class Index(View):
 
 class ProvideContent(View):
 
-	
-
-	try:
-		content = ContentProvider()
-		content.populate_products()
-		content.populate_aboutPage()
-		content.populate_locations()
-		content.populate_news()
-
-	except Exception as e:
-		print e
-
-	
+	content = ContentProvider()	
 
 	def get(self,request):
 
 		self.content.query_set = QuerySet()
-		
 		self.content.expired_promotion_check()
-		self.content.refresh_geocodes()			
-
-		if serialize.db_modified:
-			print 'refreshing data'
-			self.content.populate_products()
-			self.content.populate_aboutPage()
-			self.content.populate_locations()
-			self.content.populate_news()
-			if serialize.db_price_change:
-				# if database data that could alter product pricing is modified, all user shopping carts get emptied
-				serialize.db_price_change = False
-				empty_all_carts()
+		self.content.refresh_geocodes()	
+		self.content.populate_products()
+		self.content.populate_aboutPage()
+		self.content.populate_locations()
+		self.content.populate_news()
 
 		self.context = {
 			'home' : {
@@ -107,7 +87,6 @@ class SyncShoppingCart(View):
 
 	def post(self, request):
 		cart = json.loads(request.body)
-		print cart
 
 		cart['unsavedChanges'] = False
 		cart['checkoutStatus']['review'] = False
