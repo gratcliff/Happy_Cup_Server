@@ -121,6 +121,8 @@ class ProcessPayment(View):
 	def post(self, request):
 		post_data = json.loads(request.body)
 		shoppingCart = request.session.get('shoppingCart')
+		if len(shoppingCart['wholeSaleCoffee']):
+			shoppingCart['coffee'].extend(shoppingCart['wholeSaleCoffee'])
 		amount = int(shoppingCart['totalPrice']*100)
 		
 		source = post_data.get('token')

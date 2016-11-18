@@ -16,7 +16,7 @@ class ShippingFeeAdmin(admin.ModelAdmin):
 class CustomerOrderAdmin(admin.ModelAdmin):
 	list_display = ('order_date','order_id', 'billing_info', 'customer', 'ship_to', 'totalItems', 'items')
 	search_fields = ['id', 'customer__id', 'customer__user__first_name', 'customer__user__last_name', 'customer__name', 'shipping_address']
-	list_filter = ('customer__user__email', 'shipping_address')
+	list_filter = ('customer__user__email',)
 	list_per_page = 10
 	date_hierarchy = 'created_at'
 

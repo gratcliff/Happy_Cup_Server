@@ -25,7 +25,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-if="currentCart.coffee.length" >
+						<tr ng-if="currentCart.coffee.length || currentCart.wholeSaleCoffee.length" >
 							<th colspan="5">Coffee</th>
 						</tr>
 						<tr ng-repeat="coffee in currentCart.coffee track by $index">
@@ -34,12 +34,8 @@
 							<td class="quantity">[[coffee.qty]]</td>
 							<td class="amount">[[coffee.subtotal | currency : symbol : fractonSize]] </td>
 						</tr>
-
-						<tr ng-if="currentCart.wholeSaleCoffee.length" >
-							<th colspan="5">Wholesale Coffee</th>
-						</tr>
 						<tr ng-repeat="wholesale in currentCart.wholeSaleCoffee track by $index">
-							<td class="product">[[wholesale.name]] ([[wholesale.size]]) <small>[[wholesale.roast.name]] - [[wholesale.grind.name]]</small></td>
+							<td class="product">[[wholesale.name]] ([[wholesale.size.qty]]) <small>[[wholesale.roast.name]] - [[wholesale.grind.name]]</small></td>
 							<td class="price">[[wholesale.price | currency : symbol : fractonSize]]</td>
 							<td class="quantity">[[wholesale.qty]]</td>
 							<td class="amount">[[wholesale.subtotal | currency : symbol : fractonSize]] </td>
@@ -93,7 +89,7 @@
 				<div class="space-bottom" id="shipping-form-start"></div>
 				<fieldset>
 					<legend>Shipping information</legend>
-					<div class="row">
+					<div class="row" ng-if="currentUser.shipping_list.length">
 						<div class="col-lg-3">
 							<h3 class="title">Saved Addresses</h3>
 						</div>

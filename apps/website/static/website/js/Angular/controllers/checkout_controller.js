@@ -2,6 +2,13 @@ happy_cup.controller('checkout_controller', function ($scope, $location, $timeou
 
 	$scope.userAllowedInView = false;
 
+	$scope.$on('userLoggedOn', function(event, cart){
+		$scope.currentCart = cart;
+		$scope.populateForms(cart);
+	});
+
+
+
 	$scope.$emit('getShoppingCart', function(cart){
 		if (cart.unsavedChanges || !cart.totalItems) {
 			$location.url('/cart');
@@ -11,8 +18,6 @@ happy_cup.controller('checkout_controller', function ($scope, $location, $timeou
 			$scope.shippingInfo = {};
 
 			$scope.populateForms(cart);
-			console.log($scope.currentCart);
-
 
 		}
 		
@@ -72,6 +77,7 @@ happy_cup.controller('checkout_controller', function ($scope, $location, $timeou
 	}
 
 	$scope.populateForms = function(cart, savedAddress) {
+		console.log(cart);
 		if (cart.shipping && !savedAddress) {
 
 			$scope.shippingInfo = cart.shipping
@@ -85,7 +91,7 @@ happy_cup.controller('checkout_controller', function ($scope, $location, $timeou
 					first_name: cart.user.first_name,
 					last_name: cart.user.last_name,
 					phone_number: shipping.phone,
-					email: shipping.email,
+					email: shipping.email ? shipping.email : cart.user.email,
 					address: shipping.address.line1,
 					address2: shipping.address.line2,
 					city: shipping.address.city,

@@ -104,7 +104,8 @@ happy_cup.factory('shop_factory', function($http){
 
 		for (idx in shoppingCart.wholeSaleCoffee) {
 			if (shoppingCart.wholeSaleCoffee[idx].id === order.id && 
-				shoppingCart.wholeSaleCoffee[idx].grind.id === order.grind.id){
+				shoppingCart.wholeSaleCoffee[idx].grind.id === order.grind.id && 
+				shoppingCart.wholeSaleCoffee[idx].size.id === order.size.id){
 				shoppingCart.wholeSaleCoffee[idx].qty += order.qty;
 				shoppingCart.wholeSaleCoffee[idx].subtotal += order.subtotal;
 				shoppingCart.wholeSaleCoffee[idx].ship_wt += order.ship_wt;

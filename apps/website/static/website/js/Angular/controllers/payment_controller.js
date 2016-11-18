@@ -20,6 +20,9 @@ happy_cup.controller('payment_controller', function ($scope, $location, $timeout
 			if ($scope.currentCart.sameAsBilling !== false) {
 				$scope.currentCart.sameAsBilling = true		
 				$scope.billingInfo = angular.copy($scope.currentCart.shipping)
+			} else if ($scope.prevBillingInfo) {
+				$scope.billingInfo = angular.copy($scope.prevBillingInfo);
+				$scope.$emit('removeOldData');
 			}
 			
 			$scope.paymentInfo = {}

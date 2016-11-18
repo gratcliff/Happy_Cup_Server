@@ -28,7 +28,7 @@
 					<tbody>
 						<!-- Coffee -->
 						<tr ng-if = 'currentCart.coffee.length || currentCart.wholeSaleCoffee.length'>
-							<th colspan = "5"><h3>Coffee</h3></th>
+							<th colspan = "5">Coffee</th>
 						</tr>
 						<tr ng-repeat="coffee in currentCart.coffee track by $index">
 							<td class="product">[[coffee.name]] ([[coffee.size.qty]])<small>[[coffee.roast.name]] - [[coffee.grind.name]]</small></td>
@@ -57,7 +57,7 @@
 
 						<!--Subscriptions -->
 						<tr ng-if = 'currentCart.subscriptions.length'>
-							<th colspan = "5"><h3>Subscriptions</h3></th>
+							<th colspan = "5">Subscriptions</th>
 						</tr>
 						<tr ng-repeat="sub in currentCart.subscriptions track by $index">
 							<td class="product">[[sub.size.qty]] shipment every [[sub.name]]s <small>[[sub.coffee.name]] - [[sub.grind.name]]</small></td>
@@ -73,7 +73,7 @@
 
 						<!-- Merch -->
 						<tr ng-if = 'currentCart.merch.length'>
-							<th colspan = "5"><h3>Merchandise</h3></th>
+							<th colspan = "5">Merchandise</th>
 						</tr>
 						<tr ng-repeat="merch in currentCart.merch track by $index">
 							<td class="product">[[merch.name]]

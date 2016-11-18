@@ -168,7 +168,7 @@
 								<div class="form-group margin-clear">
 									<p for = 'price' class = 'col-sm-2 text-right'>Price: </p>
 									<div class="col-sm-8">
-										<p>[[coffeeOrder.size.base_price]]</p>
+										<p>[[coffeeOrder.size.base_price | currency : symbol : fractionSize]]</p>
 									</div>
 								</div>
 								<div class = 'form-group has-feedback'>
@@ -273,6 +273,12 @@
 								<h3>[[subscriptionModal.name]] Plan</h3>
 								<p>[[subscriptionModal.description]]</p>
 								<form class = 'form-horizontal' role = 'form'>
+									<div class="form-group margin-clear">
+										<p for = 'price' class = 'col-sm-2 text-right'>Price: </p>
+										<div class="col-sm-8">
+											<p>[[modalOrder.size.base_price_plan | currency : symbol : fractionSize]]</p>
+										</div>
+									</div>
 									<div class = 'form-group has-feedback'>
 										<label for ='size' class = 'col-sm-2 control-label'> Coffee:</label>
 										<div class = 'col-sm-8'> 
@@ -331,6 +337,12 @@
 								<h3>[[merchandiseModal.name]]</h3>
 								<p>[[merchandiseModal.description]]</p>
 								<form class = 'form-horizontal' role = 'form'>
+									<div class="form-group margin-clear">
+										<p for = 'price' class = 'col-sm-2 text-right'>Price: </p>
+										<div class="col-sm-8">
+											<p>[[merchandiseModal.price | currency : symbol : fractionSize]]</p>
+										</div>
+									</div>
 									<div ng-if = 'merchandiseModal.coffees' class = 'form-group has-feedback'>
 										<label for ='size' class = 'col-sm-3 control-label'>Coffee:</label>
 										<div ng-if = 'merchandiseModal.coffee_qty === 1' class = 'col-sm-8'> 

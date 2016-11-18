@@ -272,10 +272,15 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 		$scope.contact_marker = false;
 	});
 
+	$scope.$on('removeOldData', function(event){
+		$scope.prevBillingInfo = undefined;
+	});
+
 	$scope.$on('reviewOrder', function(event, data){
 		$scope.$apply(function(){
 			$location.url('/cart/review');
 			$scope.shoppingCart.checkoutStatus.review = true;
+			$scope.prevBillingInfo = data.billingInfo
 			$timeout(function(){
 				$scope.$broadcast('completeOrder', data );
 			},100);
@@ -290,6 +295,9 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 			$scope.orderCompleted = true;
 			$scope.order_id = data.order_id;
 			$scope.customer_id = data.customer_id
+			if ($scope.currentUser !== 'None') {
+				$scope.shoppingCart.user = $scope.currentUser;
+			}
 			$location.url('/cart/completed');
 		});
 	})
