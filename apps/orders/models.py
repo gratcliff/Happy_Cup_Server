@@ -12,6 +12,20 @@ import json
 
 # Create your models here.
 
+class ShippingFee(models.Model):
+	min_weight = models.SmallIntegerField('Minimum weight in range',unique=True, help_text="Pounds")
+	max_weight = models.SmallIntegerField('Maximum weight in range',unique=True, help_text="Pounds")
+	price = models.SmallIntegerField(help_text="Whole Dollars")
+	created_at = models.DateTimeField(auto_now_add = True)
+	updated_at = models.DateTimeField(auto_now = True)
+
+	class Meta:
+		ordering = ['price']
+
+	def __str__(self):
+		return "%s-%slbs : $%s" % (str(self.min_weight), str(self.max_weight), str(self.price))
+
+
 class CustomerOrder(models.Model):
 	charge_id = models.CharField(max_length=40)
 	coffee = models.TextField(blank=True)

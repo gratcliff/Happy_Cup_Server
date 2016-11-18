@@ -27,7 +27,7 @@
 					</thead>
 					<tbody>
 						<!-- Coffee -->
-						<tr ng-if = 'currentCart.coffee.length'>
+						<tr ng-if = 'currentCart.coffee.length || currentCart.wholeSaleCoffee.length'>
 							<th colspan = "5"><h3>Coffee</h3></th>
 						</tr>
 						<tr ng-repeat="coffee in currentCart.coffee track by $index">
@@ -43,12 +43,9 @@
 						</tr>
 
 						<!-- Wholesale -->
-						<tr ng-if = 'currentCart.wholeSaleCoffee.length'>
-							<th colspan = "5"><h3>Wholesale Coffee</h3></th>
-						</tr>
 						<tr ng-repeat="wholesale in currentCart.wholeSaleCoffee track by $index">
-							<td class="product">[[wholesale.name]] ([[wholesale.size]])<small>[[wholesale.roast.name]] - [[wholesale.grind.name]]</small></td>
-							<td class="price">[[wholesale.price | currency : symbol : fractonSize]]</td>
+							<td class="product">[[wholesale.name]] ([[wholesale.size.qty]])<small>[[wholesale.roast.name]] - [[wholesale.grind.name]]</small></td>
+							<td class="price">[[wholesale.size.base_price | currency : symbol : fractonSize]]</td>
 							<td class="quantity">
 								<div class="form-group">
 									<input type="number" class="form-control" ng-model="wholesale.qty" ng-change="currentCart.unsavedChanges=true; wholesale.subtotal = wholesale.price * wholesale.qty; currentCart.countTotals();" min="0">
@@ -63,7 +60,7 @@
 							<th colspan = "5"><h3>Subscriptions</h3></th>
 						</tr>
 						<tr ng-repeat="sub in currentCart.subscriptions track by $index">
-							<td class="product">[[sub.name]]: [[sub.shipments]] shipments <small>[[sub.coffee.name]] - [[sub.grind.name]]</small></td>
+							<td class="product">[[sub.size.qty]] shipment every [[sub.name]]s <small>[[sub.coffee.name]] - [[sub.grind.name]]</small></td>
 							<td class="price">[[sub.price | currency : symbol : fractonSize]] / shipment</td>
 							<td class="quantity">
 								<div class="form-group">

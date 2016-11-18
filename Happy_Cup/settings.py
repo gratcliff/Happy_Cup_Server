@@ -96,6 +96,17 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'dbhappycup',
+#         'USER': 'happyCupAdmin',
+#         'PASSWORD': 'adminOR97232',
+#         'HOST': 'dbhappycupwebsite.czbpsfihj64a.us-west-2.rds.amazonaws.com',
+#         'PORT': '5432',
+#     }
+# }
+
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # SECURE_CONTENT_TYPE_NOSNIFF = True
 # SECURE_BROWSER_XSS_FILTER = True
@@ -153,3 +164,20 @@ STATIC_URL = '/static/'
 LOGIN_URL = '/'
 
 # STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+#TinyMce config
+
+TINYMCE_JS_URL = os.path.join(STATIC_URL, 'tiny_mce/tiny_mce.js')
+TINYMCE_JS_ROOT = os.path.join(STATIC_URL, 'tiny_mce')
+
+TINYMCE_DEFAULT_CONFIG = {
+  'theme' : "advanced",
+  'theme_advanced_toolbar_location' : "top",
+  'theme_advanced_toolbar_align' : "left",
+  'plugins' : "table, save, advhr, advimage, advlink, emotions, iespell, insertdatetime, preview",
+  'theme_advanced_buttons1' : "fullscreen, separator, preview, separator, bold, italic, underline, strikethrough, separator, bullist, numlist, outdent, indent, separator, undo, redo, separator, link, unlink, anchor, separator, image, cleanup, help, separator, code",
+  'auto_cleanup_word' : True,
+  'plugin_insertdate_dateFormat' : "%m/%d/%Y",
+  'plugin_insertdate_timeFormat' : "%H:%M:%S",
+  'extended_valid_elements' : "a[name|href|target=_blank|title|onclick], img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name], hr[class|width|size|noshade], font[face|size|color|style], span[class|align|style]"
+}

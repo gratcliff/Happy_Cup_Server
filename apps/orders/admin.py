@@ -1,11 +1,16 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from .models import CustomerOrder
+from .models import CustomerOrder, ShippingFee
+from .forms import ShippingFeeForm
 
 import datetime
 import json
 # Register your models here.
+
+class ShippingFeeAdmin(admin.ModelAdmin):
+	list_display = ('__str__',)
+	form = ShippingFeeForm
 
 
 class CustomerOrderAdmin(admin.ModelAdmin):
@@ -55,3 +60,4 @@ class CustomerOrderAdmin(admin.ModelAdmin):
 	order_date.short_description = "Order Date (UTC)"
 
 admin.site.register(CustomerOrder, CustomerOrderAdmin)
+admin.site.register(ShippingFee, ShippingFeeAdmin)

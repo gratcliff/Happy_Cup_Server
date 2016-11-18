@@ -5,6 +5,8 @@ from ..customers.models import Customer
 db_modified = False
 db_price_change = False
 
+from django.db import connection
+
 class JsonSerializer:
 
 	""" 
@@ -53,7 +55,7 @@ class JsonSerializer:
 		return data
 
 
-	def serialize_coffee(self, coffees):
+	def serialize_coffee(self, coffees, wholesale=False, check_featured=True):
 
 		global db_modified
 
@@ -71,11 +73,11 @@ class JsonSerializer:
 				'description' : coffee.description,
 				'image_url' : coffee.image_url,
 				'price_factor' : coffee.price_factor,
-				'type' : 'coffee'
+				'type' : 'coffee' if not wholesale else 'wholesale'
 			}
 
 
-			if coffee.featured is not None:
+			if coffee.featured is not None and check_featured:
 
 
 				obj['featured'] = {
@@ -87,12 +89,12 @@ class JsonSerializer:
 
 				featured.append(obj)
 
-
 			data.append(obj)
 
-			
+		
 
 		db_modified = False
+
 		return (data, featured)
 
 	def serialize_grinds(self, grinds):
@@ -119,7 +121,9 @@ class JsonSerializer:
 			obj = {
 				'id' : size.id,
 				'qty' : str(size),
+				'ship_wt' : size.qty if size.unit == 'lbs' else float("{0:.2f}".format(size.qty / 16.0)),
 				'base_price' : float("{0:.2f}".format(float(size.base_price) * featured_price_factor)),
+				'base_price_plan' : float("{0:.2f}".format(float(size.base_price_plan) * ((100+coffee.price_factor)/100.0))),
 			}
 
 			data.append(obj)
@@ -140,14 +144,17 @@ class JsonSerializer:
 				'id' : sub.id,
 				'name' : ' '.join(name),
 				'frequency' : sub.frequency,
-				'coffees' : self.serialize_coffee(sub.coffees.all())[0],
-				'wholesale_coffees' : self.serialize_wholeSaleCoffee(sub.wholesale_coffees.all()),
+				'coffees' : self.serialize_coffee(sub.coffees.all(), False, False)[0],
+				'wholesale_coffees' : self.serialize_coffee(sub.wholesale_coffees.all(), True, False)[0],
 				'image_url' : sub.image_url,
 				'price' : float(sub.price),
 				'stripe_id' : sub.stripe_id,
 				'type' : 'subscription',
 				'plan_type' : plan_type
 			}
+
+			obj['coffees'].extend(obj['wholesale_coffees'])
+			del obj['wholesale_coffees']
 
 			data.append(obj)
 
@@ -171,7 +178,8 @@ class JsonSerializer:
 				'description' : merch.description,
 				'image_url' : merch.image_url,
 				'price' : float(merch.price),
-				'type' : 'merchandise'
+				'type' : 'merchandise',
+				'ship_wt' : float(merch.ship_wt)
 			}
 
 			if merch.featured is not None:
@@ -224,10 +232,11 @@ class JsonSerializer:
 				'description' : pack.description,
 				'image_url' : pack.image_url,
 				'coffee_qty' : pack.coffee_qty,
-				'coffees' : self.serialize_coffee(pack.coffees.all())[0],
+				'coffees' : self.serialize_coffee(pack.coffees.all(), False, False)[0],
 				'merchandise' : self.serialize_merch(pack.merchandise.all())[0],
 				'price' : float(pack.price),
-				'type' : 'variety'
+				'type' : 'variety',
+				'ship_wt' : float(pack.ship_wt)
 
 			}
 
@@ -323,6 +332,8 @@ class JsonSerializer:
 
 
 	def serialize_user(self, user):
+
+		customer = None
 
 		try:
 			customer = Customer.objects.prefetch_related('shippingaddress_set').get(user=user)

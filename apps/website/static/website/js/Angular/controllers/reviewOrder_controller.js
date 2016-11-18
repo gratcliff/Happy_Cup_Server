@@ -2,11 +2,6 @@ happy_cup.controller('reviewOrder_controller', function($scope, $location, $time
 
 	$scope.userAllowedInView = false;
 
-	$scope.$on('userLoggedOut', function(event, cart){
-		$scope.currentCart = cart;
-		$location.url('/')
-	});
-
 	$scope.$on('userLoggedOn', function(event, cart){
 		$scope.currentCart = cart;
 		$scope.currentCart.checkoutStatus.review = false

@@ -3,12 +3,6 @@ happy_cup.factory('shop_factory', function($http){
 	var factory = {};
 	var shoppingCart = {};
 
-	//syncing or creating shoppingCart object
-
-	
-	
-	
-	//------- done creating shopping cart
 
 	factory.getShoppingCart = function(callback) {
 
@@ -35,24 +29,31 @@ happy_cup.factory('shop_factory', function($http){
 			shoppingCart.countTotals = function(){
 				var totalItems = 0;
 				var totalPrice = 0;
+				var totalWeight = 0;
 				for (idx in this.coffee) {
 					totalItems += this.coffee[idx].qty;
 					totalPrice = roundPrice(totalPrice,this.coffee[idx].subtotal);
+					totalWeight += this.coffee[idx].ship_wt;
 				}
 				for (idx in this.merch) {
 					totalItems += this.merch[idx].qty;
 					totalPrice = roundPrice(totalPrice,this.merch[idx].subtotal);
+					totalWeight += this.merch[idx].ship_wt;
 				}
 				for (idx in this.subscriptions) {
 					totalItems += this.subscriptions[idx].qty;
 					totalPrice = roundPrice(totalPrice,this.subscriptions[idx].subtotal);
+					totalWeight += this.subscriptions[idx].ship_wt;
 				}
 				for (idx in this.wholeSaleCoffee) {
 					totalItems += this.wholeSaleCoffee[idx].qty;
 					totalPrice += this.wholeSaleCoffee[idx].subtotal;
+					totalWeight += this.wholeSaleCoffee[idx].ship_wt;
+
 				}
 				this.totalItems = totalItems;
 				this.totalPrice = totalPrice;
+				this.totalWeight = totalWeight
 
 
 			}
@@ -74,7 +75,9 @@ happy_cup.factory('shop_factory', function($http){
 
 				shoppingCart.coffee[idx].qty += order.qty;
 				shoppingCart.coffee[idx].subtotal += order.subtotal;
+				shoppingCart.coffee[idx].ship_wt += order.ship_wt;
 				identicalProduct = true;
+
 				break;
 			}
 
@@ -85,8 +88,9 @@ happy_cup.factory('shop_factory', function($http){
 
 		shoppingCart.totalItems += order.qty;
 		shoppingCart.totalPrice = roundPrice(shoppingCart.totalPrice, order.subtotal)
+		shoppingCart.totalWeight += order.ship_wt;
 
-		console.log(shoppingCart);
+		console.log(shoppingCart.totalWeight);
 
 		$http.post('sync/', shoppingCart).then(function(response){
 			callback(shoppingCart);
@@ -103,6 +107,7 @@ happy_cup.factory('shop_factory', function($http){
 				shoppingCart.wholeSaleCoffee[idx].grind.id === order.grind.id){
 				shoppingCart.wholeSaleCoffee[idx].qty += order.qty;
 				shoppingCart.wholeSaleCoffee[idx].subtotal += order.subtotal;
+				shoppingCart.wholeSaleCoffee[idx].ship_wt += order.ship_wt;
 				identicalProduct = true;
 				break;
 			}
@@ -110,13 +115,17 @@ happy_cup.factory('shop_factory', function($http){
 		if (!identicalProduct){
 			shoppingCart.wholeSaleCoffee.push(order);
 			shoppingCart.totalItems += 1;
+
 		}
 		
 		shoppingCart.totalPrice += order.subtotal;
+		shoppingCart.totalWeight += order.ship_wt;
+		console.log(shoppingCart.totalWeight);		
 
 		$http.post('sync/', shoppingCart).then(function(response){
 			callback(shoppingCart);
 		})
+
 	}
 
 	factory.addSubscriptionsToCart = function(order, callback) {
@@ -126,10 +135,12 @@ happy_cup.factory('shop_factory', function($http){
 
 			if (shoppingCart.subscriptions[idx].id === order.id &&
 			shoppingCart.subscriptions[idx].grind.id === order.grind.id &&
-			shoppingCart.subscriptions[idx].coffee.id === order.coffee.id) {
+			shoppingCart.subscriptions[idx].coffee.name === order.coffee.name &&
+			shoppingCart.subscriptions[idx].size === order.size) {
 
 				shoppingCart.subscriptions[idx].qty += order.qty;
 				shoppingCart.subscriptions[idx].subtotal = roundPrice(shoppingCart.subscriptions[idx].subtotal,order.subtotal);
+				shoppingCart.subscriptions[idx].ship_wt = order.ship_wt;
 				identicalProduct = true;
 				break;
 			}
@@ -141,8 +152,9 @@ happy_cup.factory('shop_factory', function($http){
 
 		shoppingCart.totalItems += order.qty;
 		shoppingCart.totalPrice = roundPrice(shoppingCart.totalPrice,order.subtotal);
+		shoppingCart.totalWeight += order.ship_wt;
 
-		console.log(shoppingCart);
+		console.log(shoppingCart.totalWeight);		
 
 		$http.post('sync/', shoppingCart).then(function(response){
 			callback(shoppingCart);
@@ -187,6 +199,7 @@ happy_cup.factory('shop_factory', function($http){
 			if (identicalProduct) {
 				shoppingCart.merch[idx].qty += order.qty;
 				shoppingCart.merch[idx].subtotal = roundPrice(shoppingCart.merch[idx].subtotal,order.subtotal);
+				shoppingCart.merch[idx].ship_wt = order.ship_wt;
 				identicalProduct = true;
 				break;
 			}
@@ -198,8 +211,9 @@ happy_cup.factory('shop_factory', function($http){
 
 		shoppingCart.totalItems += order.qty;
 		shoppingCart.totalPrice = roundPrice(shoppingCart.totalPrice,order.subtotal);
+		shoppingCart.totalWeight += order.ship_wt;
 
-		console.log(shoppingCart);
+		console.log(shoppingCart.totalWeight);		
 
 		$http.post('sync/', shoppingCart).then(function(response){
 			callback(shoppingCart);
@@ -243,7 +257,7 @@ happy_cup.factory('shop_factory', function($http){
 		shoppingCart.merch = nonZeroQtyCheck;
 		shoppingCart.countTotals();
 
-
+		console.log(shoppingCart.totalWeight);		
 
 		$http.post('sync/', shoppingCart).then(function(response){
 			callback(shoppingCart);
@@ -326,7 +340,6 @@ happy_cup.factory('shop_factory', function($http){
 
 		previous *= 100;
 		additional *= 100;
-		console.log(previous, additional)
 		previous = Math.round(previous)
 		additional = Math.round(additional)
 

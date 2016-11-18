@@ -2,9 +2,6 @@ from ..products.models import Coffee, Merchandise, Subscription, VarietyPack, Pr
 
 from django.db import connection
 
-from django.contrib.sessions.models import Session
-from django.contrib.sessions.backends.db import SessionStore
-
 class ShoppingCart(object):
 
 	def __init__(self):
@@ -22,6 +19,7 @@ class ShoppingCart(object):
 		}
 		self.totalItems = 0
 		self.totalPrice = 0
+		self.totalWeight = 0
 
 	def to_dictionary(self):
 
@@ -34,7 +32,8 @@ class ShoppingCart(object):
 				"coupon" : self.coupon,
 				"checkoutStatus" : self.checkoutStatus,
 				"totalItems" : self.totalItems,
-				"totalPrice": self.totalPrice
+				"totalPrice": self.totalPrice,
+				"totalWeight": self.totalWeight
 			}
 
 	def from_dictionary(self, data):
@@ -48,20 +47,10 @@ class ShoppingCart(object):
 		self.checkoutStatus = data['checkoutStatus']
 		self.totalItems = data['totalItems']
 		self.totalPrice = data['totalPrice']
+		self.totalWeight = data['totalWeight']
 
 		return self
 
-
-
-def empty_all_carts():
-	query = Session.objects.all()
-	
-	for session in query:
-		decode = session.get_decoded()
-		if decode.get('shoppingCart') is not None:
-			data = SessionStore(session_key=session.session_key)
-			data['shoppingCart'] = None
-			data.save()
 
 
 					

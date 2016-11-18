@@ -18,7 +18,6 @@ class LocationForm(forms.ModelForm):
 
 		data = geocode_data(cleaned_data)
 
-
 		if data.get('error') is not None:
 			self.add_error('address', data.get('message'))
 

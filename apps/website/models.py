@@ -1,8 +1,12 @@
 from __future__ import unicode_literals
 
-from django.db import models
+from django.contrib.sessions.models import Session
+from django.contrib.sessions.backends.db import SessionStore
 
+from django.db import models
 import serialize
+
+
 
 # Create your models here.
 
@@ -51,7 +55,7 @@ class PriceTimestamp(models.Model):
 		# must be refreshed so that updated data is sent to the front end
 
 		serialize.db_modified = True
-		serialize.db_price_change = True
+		empty_all_carts()
 
 
 		super(PriceTimestamp, self).save(*args, **kwargs)
@@ -62,9 +66,19 @@ class PriceTimestamp(models.Model):
 		# must be refreshed so that updated data is sent to the front end
 
 		serialize.db_modified = True
-		serialize.db_price_change = True
+		empty_all_carts()
 
 
 		super(PriceTimestamp, self).delete(*args, **kwargs)
 
+
+def empty_all_carts():
+	query = Session.objects.all()
+	
+	for session in query:
+		decode = session.get_decoded()
+		if decode.get('shoppingCart') is not None:
+			data = SessionStore(session_key=session.session_key)
+			data['shoppingCart'] = None
+			data.save()
 

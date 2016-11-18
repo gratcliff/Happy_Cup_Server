@@ -2,11 +2,6 @@ happy_cup.controller('invoice_controller', function($scope, $location, shop_fact
 
 	$scope.userAllowedInView = false;
 
-	$scope.$on('userLoggedOut', function(event, cart){
-		$scope.currentCart = cart;
-		$location.url('/')
-	});
-
 
 	$scope.$emit('viewInvoice', function(response){
 		if (response.invoiceAvailable && response.order_id && response.customer_id) {
