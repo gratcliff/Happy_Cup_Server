@@ -33,7 +33,9 @@ class CustomerOrder(models.Model):
 	merch = models.TextField(blank=True)
 	customer = models.ForeignKey(Customer)
 	shipping_address = models.TextField(blank=True)
+	shipping_fee = models.PositiveSmallIntegerField(default=0)
 	coupon = models.ForeignKey(Coupon, blank = True, null = True, on_delete = models.SET_NULL)
+	subTotalPrice = models.FloatField('Price before coupons and shipping', default=0)
 	totalPrice = models.FloatField('Total Price')
 	totalItems = models.PositiveSmallIntegerField('Total Items')
 	other_info = models.TextField(blank=True)
@@ -71,7 +73,9 @@ class CustomerOrder(models.Model):
 		self.subscriptions = json.dumps(shoppingCart['subscriptions']) if len(shoppingCart['subscriptions']) > 0 else ""
 		self.customer = customer
 		self.shipping_address = json.dumps(shipping_address(False, True))
-		self.totalPrice = shoppingCart['totalPrice']
+		self.subTotalPrice = shoppingCart['subTotalPrice']
+		self.shipping_fee = shoppingCart['shippingFee']
+		self.totalPrice = shoppingCart['totalPrice'] + shoppingCart['shippingFee']
 		self.totalItems = shoppingCart['totalItems']
 		self.other_info = shoppingCart['shipping'].get('message', '')
 		self.coupon = coupon
@@ -166,6 +170,9 @@ class CustomerOrder(models.Model):
 				'discount' : self.coupon.discount,
 			} if self.coupon else None,
 			'wholesale_price' : self.customer.wholesale_price.discount_rate if self.customer.wholesale_price else None,
+			'subTotalPrice' : self.subTotalPrice,
+			'priceAfterCoupon' : self.totalPrice - self.shipping_fee,
+			'shipping_fee' : self.shipping_fee,
 			'totalPrice' : self.totalPrice,
 			'totalItems' : self.totalItems,
 			'other_info' : self.other_info

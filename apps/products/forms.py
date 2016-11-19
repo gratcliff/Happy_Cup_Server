@@ -41,36 +41,11 @@ class SubscriptionForm(ModelForm):
     def clean(self):
         cleaned_data = super(SubscriptionForm, self).clean()
         coffees = len(cleaned_data.get('coffees'))
-        wholesale = len(cleaned_data.get('wholesale_coffees'))
-        if self.instance.stripe_id:
-            id = self.instance.stripe_id
-        else:
-            amount = int(cleaned_data.get('price')*100)
-            id = "%s-week-plan" % (cleaned_data.get('frequency'))
 
-        if coffees == 0 and wholesale == 0:
+        if coffees == 0:
             self.add_error('coffees', 'No products are included in this subscription.')
-            self.add_error('wholesale_coffees', 'No products are included in this subscription.')
-            return
-        try:
-            plan = stripe.Plan.retrieve(id)
-            if cleaned_data.get('frequency'):
-                self.add_error('frequency', 'This subscription plan already exists. ID: %s' % (id,))
-            return
-        except Exception as e:
-            print e.args
-            interval = 'week'
-            currency = 'usd'
-            name = "%s Week Plan" % (cleaned_data.get('frequency'),)
-            plan = stripe.Plan.create(
-                    amount=amount,
-                    currency=currency,
-                    interval=interval,
-                    name=name,
-                    id=id
-                )
-            if plan.get('id'):
-                cleaned_data['stripe_id'] = plan['id']
+
+
 
             
 

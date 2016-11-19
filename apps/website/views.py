@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import View
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
@@ -22,6 +22,9 @@ class Index(View):
 
 	@method_decorator(ensure_csrf_cookie)
 	def get(self, request):
+
+		# if not request.session.get('authorizedUser'):
+		# 	return redirect('/authorize')
 
 		self.context = {
 
@@ -52,7 +55,6 @@ class ProvideContent(View):
 				'products' : {
 					'featured' : self.content.featured_products,
 					'coffee' : self.content.coffee_json,
-					'wholeSaleCoffee' : self.content.wholeSaleCoffee_json,
 					'merchandise' : self.content.merchandise_json,
 					'subscriptions' : self.content.subscription_json
 				},
@@ -99,6 +101,21 @@ class SyncShoppingCart(View):
 			request.session['shoppingCart'] = cart
 
 		return JsonResponse({'status': True})
+
+class AuthorizeUser(View):
+
+	def get(self, request):
+		self.context = {
+			'invalid' : False
+		}
+
+		return render(request, 'website/auth.html')
+
+	def post(self, request):
+
+		if request.POST.get('password') == os.environ.get('AUTHORIZED_USER'):
+			request.session['authorizedUser'] = True
+			return redirect('/')
 
 
 

@@ -12,7 +12,6 @@ happy_cup.factory('shop_factory', function($http){
 				shoppingCart.coffee = [];
 				shoppingCart.subscriptions = [];
 				shoppingCart.merch = [];
-				shoppingCart.wholesale = [];
 				shoppingCart.unsavedChanges = false;
 				shoppingCart.coupon = {code: undefined, valid:false, discount: 0};
 				shoppingCart.checkoutStatus = {
@@ -45,15 +44,10 @@ happy_cup.factory('shop_factory', function($http){
 					totalPrice = roundPrice(totalPrice,this.subscriptions[idx].subtotal);
 					totalWeight += this.subscriptions[idx].ship_wt;
 				}
-				for (idx in this.wholeSaleCoffee) {
-					totalItems += this.wholeSaleCoffee[idx].qty;
-					totalPrice += this.wholeSaleCoffee[idx].subtotal;
-					totalWeight += this.wholeSaleCoffee[idx].ship_wt;
 
-				}
 				this.totalItems = totalItems;
 				this.totalPrice = totalPrice;
-				this.totalWeight = totalWeight
+				this.totalWeight = totalWeight;
 
 
 			}
@@ -67,6 +61,7 @@ happy_cup.factory('shop_factory', function($http){
 	factory.addCoffeeToCart = function(order, callback) {
 		var identicalProduct = false;
 		for (idx in shoppingCart.coffee) {
+			// if an identical product exists in the cart, 
 			// adjust the qty and price of the existing one
 
 			if (shoppingCart.coffee[idx].id === order.id &&
@@ -96,38 +91,7 @@ happy_cup.factory('shop_factory', function($http){
 			callback(shoppingCart);
 		});
 		
-	}		// if an identical product exists in the cart, 
-
-
-	factory.addWholeSaleCoffeeToCart = function(order, callback){
-		var identicalProduct = false;
-
-		for (idx in shoppingCart.wholeSaleCoffee) {
-			if (shoppingCart.wholeSaleCoffee[idx].id === order.id && 
-				shoppingCart.wholeSaleCoffee[idx].grind.id === order.grind.id && 
-				shoppingCart.wholeSaleCoffee[idx].size.id === order.size.id){
-				shoppingCart.wholeSaleCoffee[idx].qty += order.qty;
-				shoppingCart.wholeSaleCoffee[idx].subtotal += order.subtotal;
-				shoppingCart.wholeSaleCoffee[idx].ship_wt += order.ship_wt;
-				identicalProduct = true;
-				break;
-			}
-		}
-		if (!identicalProduct){
-			shoppingCart.wholeSaleCoffee.push(order);
-			shoppingCart.totalItems += 1;
-
-		}
-		
-		shoppingCart.totalPrice += order.subtotal;
-		shoppingCart.totalWeight += order.ship_wt;
-		console.log(shoppingCart.totalWeight);		
-
-		$http.post('sync/', shoppingCart).then(function(response){
-			callback(shoppingCart);
-		})
-
-	}
+	}	
 
 	factory.addSubscriptionsToCart = function(order, callback) {
 		var identicalProduct = false;
@@ -233,12 +197,6 @@ happy_cup.factory('shop_factory', function($http){
 		shoppingCart.coffee = nonZeroQtyCheck;
 
 		nonZeroQtyCheck = [];
-		for (idx in cart.wholeSaleCoffee){
-			if (cart.wholeSaleCoffee[idx].qty > 0){
-				nonZeroQtyCheck.push(cart.wholeSaleCoffee[idx]);
-			}
-		}
-		shoppingCart.wholeSaleCoffee = nonZeroQtyCheck;
 
 		nonZeroQtyCheck = [];
 		for (idx in cart.subscriptions){
@@ -274,10 +232,10 @@ happy_cup.factory('shop_factory', function($http){
 				cart = response.data.shoppingCart
 
 				if (shoppingCart.billing) {
-					delete shoppingCart.billing
+					shoppingCart.billing = {}
 				}
 				if (shoppingCart.shipping) {
-					delete shoppingCart.shipping
+					shoppingCart.shipping = {}
 				}
 
 				shoppingCart.checkoutStatus = cart.checkoutStatus
@@ -306,6 +264,7 @@ happy_cup.factory('shop_factory', function($http){
 			
 			if (response.data.status === true) {
 				shoppingCart.shipping = response.data.shoppingCart.shipping;
+				shoppingCart.shippingFee = response.data.shoppingCart.shippingFee
 				shoppingCart.checkoutStatus.payment = true;
 				callback(shoppingCart);
 			} else {

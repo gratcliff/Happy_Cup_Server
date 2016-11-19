@@ -40,12 +40,6 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 		$scope.$emit('openCoffeeModal', coffee);
 	};
 
-	$scope.openWholeSaleModal = function (coffee, idx){
-		// console.log(coffee);
-		coffee.idx = idx;
-		$scope.$emit('openWholeSaleModal', coffee);
-	};
-
 	$scope.openSubscriptionModal = function (sub, idx) {
 		sub.idx =  idx;
 		$scope.$emit('openSubscriptionModal', sub);
@@ -58,7 +52,7 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 
 	$scope.openFeaturedProductModal = function(product, mobileCheck) {
 
-		if (product.type == 'coffee') {
+		if (product.type == 'coffee' || product.type == 'wholesale') {
 
 			angular.forEach($scope.products.coffee, function(coffee, idx){
 				if (product.id === coffee.id) {
@@ -70,18 +64,6 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 			emit_message = 'openCoffeeModal';
 			modal = '#coffee_modal'
 			console.log(product.idx, 'coffee');
-		}
-		else if (product.type == 'wholesale'){
-			angular.forEach($scope.products.wholeSaleCoffee, function (coffee, idx){
-				if (product.id === coffee.id){
-					product.idx = idx;
-					return
-				}
-			});
-
-			emit_message = 'openWholeSaleModal';
-			modal = '#wholesale_coffee_modal';
-			console.log(product.idx, 'wholesale');
 		}
 		else if (product.type == 'merchandise' || product.type == 'variety') {
 
@@ -117,19 +99,17 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 
 	$scope.$on('sendToCart', function(event, product, order, idx, callback) {
 		var productType = product.type
-		if (productType === 'coffee') {
+		if (productType === 'coffee' || product.type === 'wholesale') {
 			$scope.addCoffeeToCart(product, order, idx, callback);
 		} else if (productType === 'subscription'){
 			$scope.addSubscriptionsToCart(product, order, idx, callback);
 		} else if (productType === 'merchandise' || productType === 'variety') {
 			$scope.addMerchToCart(product, order, idx, callback);
-		} else if (productType === 'wholesale'){
-			$scope.addWholeSaleCoffeeToCart(product, order, idx, callback);
 		}
 
 	});
 
-	$scope.addCoffeeToCart = function(coffee, order, idx, callback) {
+	$scope.addCoffeeToCart = function(coffee, order, callback) {
 		if ($scope.shoppingCart.subscriptions.length) {
 			$scope.cartError = true;
 			$anchorScroll('product-tabs');
@@ -142,7 +122,7 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 			return
 		}
 
-		$scope.products.coffee[idx].addingProduct = true;
+		coffee.addingProduct = true;
 		var data = {
 			id: coffee.id,
 			name: coffee.name,
@@ -159,7 +139,7 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 			
 			
 			$timeout(function(){
-				delete $scope.products.coffee[idx].addingProduct
+				delete coffee.addingProduct
 				$('#coffee_modal').modal('hide')
 				// emits completion event to global controller
 				$scope.$emit('addedToCart');
@@ -168,36 +148,7 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 
 	}
 
-	$scope.addWholeSaleCoffeeToCart = function (coffee, order, idx, callback){
-		if ($scope.shoppingCart.subscriptions.length) {
-			$scope.cartError = true;
-			$anchorScroll('product-tabs');
-			if (typeof(callback) === 'function') {
-				callback()
-			}
-			return
-		}
-		$scope.products.wholeSaleCoffee[idx].addingProduct = true;
-		var data = {
-			id: coffee.id,
-			qty: order.qty,
-			name: coffee.name,
-			roast: coffee.roast,
-			grind: order.grind,
-			size: order.size,
-			subtotal: Math.round(order.size.base_price*100 * order.qty) / 100,
-			ship_wt: order.size.ship_wt * order.qty,
-		};
-		shop_factory.addWholeSaleCoffeeToCart(data, function (newCart){
-			$timeout(function(){
-				delete $scope.products.wholeSaleCoffee[idx].addingProduct;
-				$('#wholesale_coffee_modal').modal('hide');
-				$scope.$emit('addedToCart');
-			}, 1000);
-		});
-	}
-
-	$scope.addSubscriptionsToCart = function(sub, order, idx, callback){
+	$scope.addSubscriptionsToCart = function(sub, order, callback){
 		if ($scope.shoppingCart.merch.length || $scope.shoppingCart.coffee.length) {
 			$scope.cartError = true;
 			$anchorScroll('product-tabs');
@@ -208,7 +159,7 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 		}
 		console.log(order)
 
-		$scope.products.subscriptions[idx].addingProduct = true;
+		sub.addingProduct = true;
 		var data = {
 			id: sub.id,
 			stripe_id : sub.stripe_id,
@@ -226,14 +177,14 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 		shop_factory.addSubscriptionsToCart(data, function (newCart){
 
 			$timeout(function(){
-				delete $scope.products.subscriptions[idx].addingProduct
+				delete sub.addingProduct
 				$('#subscription_modal').modal('hide')
 				$scope.$emit('addedToCart');
 			}, 1000);
 		});
 	}
 
-	$scope.addMerchToCart = function(merch, order, idx, callback){
+	$scope.addMerchToCart = function(merch, order, callback){
 		if ($scope.shoppingCart.subscriptions.length) {
 			$scope.cartError = true;
 			$anchorScroll('product-tabs');
@@ -242,7 +193,7 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 			}
 			return
 		}
-		$scope.products.merchandise[idx].addingProduct = true;
+		merch.addingProduct = true;
 		var data = {
 			id: merch.id,
 			qty: 1,
@@ -268,7 +219,7 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 		shop_factory.addMerchandiseToCart(data, function (newCart){
 
 			$timeout(function(){
-				delete $scope.products.merchandise[idx].addingProduct
+				delete merch.addingProduct
 				$('#merch_modal').modal('hide')
 				$scope.$emit('addedToCart');
 			}, 1000);
@@ -276,4 +227,4 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 	}
 
 	
-})
+});

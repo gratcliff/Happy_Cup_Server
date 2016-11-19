@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Happy Cup Development Site</title>
+</head>
+<body style="text-align: center;">
+	<form action="/authorize/" method="POST" style="margin-top: 15%;">
+		{% csrf_token %}
+		<p>This website is under contruction.  Access is limited to authorized testers only.</p>
+		<input type="password" name="password">
+		{% if invalid %}
+			<p style="color: red;"><strong>Invalid Password</strong></p>
+		{% endif %}
+	</form>
+</body>
+</html>

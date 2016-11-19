@@ -108,6 +108,12 @@
 					</h5>
 				</div>
 					<table id ="coffee-products-table" class = 'table table-hover brown-border'>
+						<caption>
+							<div class="col-sm-4 col-md-2 col-sm-offset-4 col-md-offset-5 input-group">
+								<input class="form-control" ng-model="filter.key" placeholder="Country of Origin">
+								<div class="input-group-addon"><i class="icon-search"></i></div>
+							</div>
+						</caption>
 						<thead>
 							<tr>
 								<td>Description</td>
@@ -120,7 +126,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="coffee in products.coffee track by $index" ng-if="coffee.name !== 'Roaster\'s Choice'">
+							<tr ng-repeat="coffee in products.coffee | filter: { roast:{origin:filter.key} }" ng-if="coffee.type == 'coffee' ">
 								<td ng-if="!mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' data-toggle = 'modal' data-target ="#coffee_modal" ng-click="openCoffeeModal(coffee, $index)">+</a></td>
 								<td ng-if="mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' ng-click="openCoffeeModal(coffee, $index)">+</a></td>
 								<td>[[coffee.name]]</td>
@@ -134,10 +140,10 @@
 									<input type="number" class="form-control" ng-init="order.qty = 1" ng-model="order.qty" style="width: 60px; padding-right: 12px;" min="1">
 								</td>
 								<td class="hidden-xs">
-								<button class = 'margin-clear btn btn-brown' ng-click="addCoffeeToCart(coffee, order, $index)" ng-disabled="coffee.addingProduct || order.qty <= 0"><span ng-if="!coffee.addingProduct">Add To Cart</span><span ng-if="coffee.addingProduct">Item Added</span> </button>
+								<button class = 'margin-clear btn btn-brown' ng-click="addCoffeeToCart(coffee, order)" ng-disabled="coffee.addingProduct || order.qty <= 0"><span ng-if="!coffee.addingProduct">Add To Cart</span><span ng-if="coffee.addingProduct">Item Added</span> </button>
 								</td>
 							</tr>
-							<tr ng-repeat="coffee in products.wholeSaleCoffee track by $index">
+							<tr ng-repeat="coffee in products.coffee | filter: { roast:{origin:filter.key} }" ng-if="coffee.type == 'wholesale' "> 
 								<td ng-if="!mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' data-toggle = 'modal' data-target ="#coffee_modal" ng-click="openCoffeeModal(coffee, $index)">+</a></td>
 								<td ng-if="mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' ng-click="openCoffeeModal(coffee, $index)">+</a></td>
 								<td>[[coffee.name]]</td>
@@ -150,7 +156,7 @@
 									<input type="number" class="form-control" ng-init="order.qty = 1" ng-model="order.qty" style="width: 60px; padding-right: 12px;" min="1">
 								</td>
 								<td class="hidden-xs">
-								<button class = 'margin-clear btn btn-brown' ng-click="addWholeSaleCoffeeToCart(coffee, order, $index)" ng-disabled="coffee.addingProduct || order.qty <= 0"><span ng-if="!coffee.addingProduct">Add To Cart</span><span ng-if="coffee.addingProduct">Item Added</span> </button>
+								<button class = 'margin-clear btn btn-brown' ng-click="addCoffeeToCart(coffee, order)" ng-disabled="coffee.addingProduct || order.qty <= 0"><span ng-if="!coffee.addingProduct">Add To Cart</span><span ng-if="coffee.addingProduct">Item Added</span> </button>
 								</td>
 							</tr>
 						</tbody>
@@ -210,9 +216,7 @@
 						<tr ng-repeat = 'subscription in products.subscriptions track by $index'>
 							<td ng-if="!mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' data-toggle = 'modal' data-target = '#subscription_modal' ng-click="openSubscriptionModal(subscription, $index)">+</a></td>
 							<td ng-if="mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' ng-click="openSubscriptionModal(subscription, $index)">+</a></td>
-							<!-- <td class="hidden-xs"><img class = 'table_image' ng-src ='[[subscription.image_url]]'></td> -->
 							<td >[[subscription.name]]</td>
-
 							<td class = 'hidden-xs'><select class = 'form-control' ng-init = 'order.coffee=subscription.coffees[0]'
 							ng-model = 'order.coffee' ng-options = 'coffee.name for coffee in subscription.coffees'></select>
 							</td>

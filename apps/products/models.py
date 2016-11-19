@@ -26,70 +26,39 @@ class Coupon(models.Model):
 	def is_valid_coupon(self):
 		return self.expiration_date > timezone.now()
 
-class WholeSaleCoffee(Timestamp):
-	name = models.CharField(max_length=32)
-	roast = models.ForeignKey(CoffeeRoast)
-	grinds = models.ManyToManyField(CoffeeGrind)
-	sizes = models.ManyToManyField(CoffeeVolume)
-	description = models.TextField()
-	price_factor = models.SmallIntegerField('Increase or decrease the base price by the following percentage.  Use negative values to decrease price.', default=0)
-	image_url = models.URLField()
-	featured = models.ForeignKey('ProductPromotion', verbose_name="To feature this product, select a promotional deal.", blank=True, null=True, on_delete=models.SET_NULL, limit_choices_to = {'expired' : False})
-
-	class Meta:
-		verbose_name_plural = "Coffees - Wholesale"
-		verbose_name = "Coffee - Wholesale"
-
-	def __str__(self):
-		return "%s %s" % (self.name, self.roast)
-
 class Coffee(Timestamp):
 
 	name = models.CharField(max_length=24)
 	roast = models.ForeignKey(CoffeeRoast)
+	wholesale = models.BooleanField(default=False, help_text="Check this if coffee is only sold in wholesale volumes.")
 	grinds = models.ManyToManyField(CoffeeGrind)
 	sizes = models.ManyToManyField(CoffeeVolume)
-	description = models.TextField()
-	image_url = models.URLField()
+	description = models.TextField(blank=True)
+	image_url = models.URLField(blank=True)
 	price_factor = models.SmallIntegerField('Increase or decrease the base price by the following percentage.  Use negative values to decrease price.', default=0)
 	featured = models.ForeignKey('ProductPromotion', verbose_name="To feature this product, select a promotional deal.", blank=True, null=True, on_delete=models.SET_NULL, limit_choices_to = {'expired' : False})
+	
 
 	def __str__(self):
-		return '%s %s' % (self.name, self.roast)
+		return self.name
 
 class Subscription(Timestamp):
 
-	frequency = models.PositiveSmallIntegerField('Number of weeks between each shipment')
+	frequency = models.PositiveSmallIntegerField('Number of weeks between each shipment', unique=True)
 	coffees = models.ManyToManyField(Coffee, blank=True)
-	wholesale_coffees = models.ManyToManyField(WholeSaleCoffee, blank=True)
-	image_url = models.URLField()
-	price = models.DecimalField(max_digits=5, decimal_places=2)
-	stripe_id = models.CharField(max_length=32, blank=True, help_text="Ignore this field. Data is be added after plan is created.")
-
-	class Meta:
-		unique_together = ('frequency', 'price', 'stripe_id')
+	description = models.TextField(blank=True)
+	image_url = models.URLField(blank=True)
 
 	def __str__(self):
 		return '%s Week Subscription' % (self.frequency,)
-
-	def delete(self, *args, **kwargs):
-		stripe_id = self.stripe_id
-
-		super(Subscription, self).delete(*args, **kwargs)
-
-		try:
-			plan = stripe.Plan.retrieve(stripe_id)
-			plan.delete()
-		except Exception as e:
-			print e.args
 
 
 
 class Merchandise(Timestamp):
 
 	name = models.CharField(max_length=24)
-	description = models.TextField()
-	image_url = models.URLField()
+	description = models.TextField(blank=True)
+	image_url = models.URLField(blank=True)
 	sizes = models.ManyToManyField(ShirtSize, verbose_name='Shirt Sizes available (if applicable)', blank=True)
 	price = models.DecimalField(max_digits=5, decimal_places=2)
 	featured = models.ForeignKey('ProductPromotion', verbose_name="To feature this product, select a promotional deal.", blank=True, null=True, on_delete=models.SET_NULL, limit_choices_to = {'expired' : False})
@@ -103,8 +72,8 @@ class Merchandise(Timestamp):
 
 class VarietyPack(Timestamp):
 	name = models.CharField(max_length=24)
-	description = models.TextField()
-	image_url = models.URLField()
+	description = models.TextField(blank=True)
+	image_url = models.URLField(blank=True)
 	coffee_qty = models.PositiveSmallIntegerField('Number of bags of coffee in variety pack (if applicable)', default=0)
 	coffees = models.ManyToManyField(Coffee, verbose_name='Coffees in variety pack (if applicable)', blank=True)
 	merchandise = models.ManyToManyField('Merchandise', verbose_name='Merchandise in variety pack (if applicable)', blank=True)
@@ -119,11 +88,12 @@ class ProductPromotion(PriceTimestamp):
 
 	description = models.CharField(max_length=64)
 	discount = models.PositiveSmallIntegerField('Percent discount', default=15, help_text='Positive, whole numbers only')
+	display = models.BooleanField('Display in Featured Section?', default=True, help_text="If this is unchecked, products under this promotion will not be displayed in the featured products section.")
 	expiration_date = models.DateTimeField('Date and time that promotion ends', help_text='Server timezone is UTC (Coordinated Universal Time)')
 	expired = models.BooleanField(default=False)
 
 	def __str__(self):
-		return '%s (%s percent)' % (self.description, self.discount)
+		return self.description
 
 
 

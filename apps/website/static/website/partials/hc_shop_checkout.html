@@ -75,6 +75,10 @@
 							<td class="price">[[currentCart.coupon.code]]</td>
 							<td class="amount">[[currentCart.coupon.discount | number : 0]]%</td>
 						</tr>
+						<tr ng-if="currentCart.coupon.valid">										
+							<td class="total-quantity" colspan="3">Subtotal after coupon</td>
+							<td class="amount">[[currentCart.discountPrice | currency : symbol : fractionSize]]</td>
+						</tr>
 						<tr ng-if="!currentCart.coupon.valid && !currentCart.subscriptions.length">						
 							<td class="total-quantity" colspan="2">Discount Coupon</td>
 							<td class="amount" colspan="2"><a href="#/cart">Add Coupon Code</a></td>
@@ -82,7 +86,7 @@
 						<tr>
 							<td class="total-quantity" colspan="3" ng-if="!currentCart.subscriptions.length">Total [[currentCart.totalItems]] Item<span ng-hide="currentCart.totalItems === 1">s</span></td>
 							<td class="total-quantity" colspan="3" ng-if="currentCart.subscriptions.length">Total Due Today<span ng-hide="currentCart.totalItems === 1">s</span></td>
-							<td class="total-amount">[[currentCart.totalPrice * (1 - (currentCart.coupon.discount / 100)) | currency : symbol : fractonSize]]</td>
+							<td class="total-amount">[[(currentCart.totalPrice * 100) * (1 - (currentCart.coupon.discount / 100)) / 100 | currency : symbol : fractonSize]]</td>
 						</tr>
 					</tbody>
 				</table>

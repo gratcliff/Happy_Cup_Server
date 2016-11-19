@@ -3,7 +3,7 @@ from django.contrib import admin
 from ..products.forms import VarietyPackForm, SubscriptionForm
 
 from ..product_options.models import CoffeeVolume, CoffeeGrind, CoffeeRoast, ShirtSize
-from ..products.models import Coffee, Subscription, Merchandise, VarietyPack, ProductPromotion, Coupon, WholeSaleCoffee
+from ..products.models import Coffee, Subscription, Merchandise, VarietyPack, ProductPromotion, Coupon
 
 from django.db import connection
 
@@ -13,8 +13,10 @@ from django.utils import timezone
 
 class CoffeeAdmin(admin.ModelAdmin):
 	filter_horizontal = ('grinds', 'sizes')
-	list_display = ('__str__','base_price_smallest','featured')
+	list_display = ('name','roast','base_price_smallest','featured')
 	list_editable = ('featured',)
+	list_filter = ('roast__origin','roast__name')
+	search_fields = ['name', 'roast__name', 'roast__origin']
 
 	def base_price_smallest(self, obj):
 		price = float(obj.sizes.all()[0].base_price)
@@ -29,12 +31,8 @@ class CoffeeAdmin(admin.ModelAdmin):
 		coffee = coffee.select_related('roast', 'featured').prefetch_related('sizes')
 		return coffee
 
-class WholeSaleCoffeeAdmin(admin.ModelAdmin):
-	filter_horizontal = ('grinds', )
-	list_display = ('__str__', )
-
 class ProductPromotionAdmin(admin.ModelAdmin):
-	list_display = ('__str__', 'expired')
+	list_display = ('description', 'discount', 'expired')
 
 	def get_queryset(self, request):
 		promotions = super(ProductPromotionAdmin, self).get_queryset(request)
@@ -61,20 +59,15 @@ class ProductPromotionAdmin(admin.ModelAdmin):
 					obj.varietypack_set = []
 					obj.save()
 				
-				return ('description', 'discount', 'expiration_date', 'expired')
+				return ('description', 'discount', 'expiration_date', 'expired', 'display')
 		
 		return ('expired',)
 
 
 class SubscriptionAdmin(admin.ModelAdmin):
 	form = SubscriptionForm
-	list_display = ('__str__', 'price', 'stripe_id')
-	filter_horizontal = ('coffees', 'wholesale_coffees')
-
-	def get_readonly_fields(self, request, obj=None):
-		if obj:
-			return ['frequency', 'price', 'stripe_id']
-		return []
+	list_display = ('__str__',)
+	filter_horizontal = ('coffees',)
 
 class MerchandiseAdmin(admin.ModelAdmin):
 	filter_horizontal = ('sizes',)
@@ -97,7 +90,6 @@ class CouponAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Coffee, CoffeeAdmin)
-admin.site.register(WholeSaleCoffee, WholeSaleCoffeeAdmin)
 admin.site.register(Subscription, SubscriptionAdmin)
 admin.site.register(Merchandise, MerchandiseAdmin)
 admin.site.register(VarietyPack, VarietyPackAdmin)

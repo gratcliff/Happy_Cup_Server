@@ -13,6 +13,9 @@ class WholesalePrice(models.Model):
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
 
+	class Meta:
+		verbose_name = 'Wholesale Price Discount'
+
 	def __str__(self):
 		return "%s percent" % (str(self.discount_rate),)
 

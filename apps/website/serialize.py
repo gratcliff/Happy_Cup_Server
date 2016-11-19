@@ -18,9 +18,7 @@ class JsonSerializer:
 	def featured_product_expiration(self, expired_promotions):
 
 		global db_modified
-
 		for promotion in expired_promotions:
-			
 			if not promotion.expired:
 				promotion.coffee_set = []
 				promotion.merchandise_set = []
@@ -29,33 +27,7 @@ class JsonSerializer:
 				promotion.save()
 
 
-	def serialize_wholeSaleCoffee(self, coffees):
-		global db_modified
-
-		data = []
-
-		for coffee in coffees:
-
-			obj = {
-			'id' : coffee.id,
-			'name' : coffee.name,
-			'roast' : { 'id' : coffee.roast.id, 'name' : str(coffee.roast) },
-			'grinds' : self.serialize_grinds(coffee.grinds.all()),
-			'description' : coffee.description,
-			'price_per_pound' : coffee.price_per_pound,
-			'image_url' : coffee.image_url,
-			'type' : 'wholesale'
-
-			}
-
-			data.append(obj)
-
-		db_modified = False
-
-		return data
-
-
-	def serialize_coffee(self, coffees, wholesale=False, check_featured=True):
+	def serialize_coffee(self, coffees, check_featured=True, variety_pack=False):
 
 		global db_modified
 
@@ -67,27 +39,26 @@ class JsonSerializer:
 			obj = {
 				'id' : coffee.id,
 				'name' : coffee.name,
-				'roast' : { 'id' : coffee.roast.id, 'name' : str(coffee.roast) },
+				'roast' : { 'id' : coffee.roast.id, 'name' : str(coffee.roast), 'origin': coffee.roast.origin } if not variety_pack else None,
 				'grinds' : self.serialize_grinds(coffee.grinds.all()),
-				'sizes' : self.serialize_sizes(coffee.sizes.all(), coffee),
+				'sizes' : self.serialize_sizes(coffee.sizes.all(), coffee, check_featured) if not variety_pack else None,
 				'description' : coffee.description,
 				'image_url' : coffee.image_url,
 				'price_factor' : coffee.price_factor,
-				'type' : 'coffee' if not wholesale else 'wholesale'
+				'type' : 'coffee' if not coffee.wholesale else 'wholesale'
 			}
 
+			if check_featured:
+				if coffee.featured is not None:
 
-			if coffee.featured is not None and check_featured:
-
-
-				obj['featured'] = {
-						'id' : coffee.featured.id,
-						'description': coffee.featured.description,
-						'discount' : coffee.featured.discount, 
-						'expiration_date' : coffee.featured.expiration_date
-					}
-
-				featured.append(obj)
+					obj['featured'] = {
+							'id' : coffee.featured.id,
+							'description': coffee.featured.description,
+							'discount' : coffee.featured.discount, 
+							'expiration_date' : coffee.featured.expiration_date,
+						}
+					if coffee.featured.display and obj['image_url']:
+						featured.append(obj)
 
 			data.append(obj)
 
@@ -111,18 +82,19 @@ class JsonSerializer:
 		return data
 
 
-	def serialize_sizes(self, sizes, coffee):
+	def serialize_sizes(self, sizes, coffee, check_featured):
 		data = []
 
-		featured_discount = 0 if coffee.featured is None else coffee.featured.discount
-		featured_price_factor = (100 + float(coffee.price_factor) - featured_discount) / 100
+		if check_featured:
+			featured_discount = 0 if coffee.featured is None else coffee.featured.discount
+			featured_price_factor = (100 + float(coffee.price_factor) - featured_discount) / 100
 
 		for size in sizes:
 			obj = {
 				'id' : size.id,
 				'qty' : str(size),
 				'ship_wt' : size.qty if size.unit == 'lbs' else float("{0:.2f}".format(size.qty / 16.0)),
-				'base_price' : float("{0:.2f}".format(float(size.base_price) * featured_price_factor)),
+				'base_price' : None if not check_featured else float("{0:.2f}".format(float(size.base_price) * featured_price_factor)),
 				'base_price_plan' : float("{0:.2f}".format(float(size.base_price_plan) * ((100+coffee.price_factor)/100.0))),
 			}
 
@@ -138,23 +110,14 @@ class JsonSerializer:
 
 			name = str(sub).split(' ')[:2]
 
-			plan_type = 'retail' if 'Retail' in str(sub) else 'wholesale'
-
 			obj = {
 				'id' : sub.id,
 				'name' : ' '.join(name),
 				'frequency' : sub.frequency,
 				'coffees' : self.serialize_coffee(sub.coffees.all(), False, False)[0],
-				'wholesale_coffees' : self.serialize_coffee(sub.wholesale_coffees.all(), True, False)[0],
 				'image_url' : sub.image_url,
-				'price' : float(sub.price),
-				'stripe_id' : sub.stripe_id,
 				'type' : 'subscription',
-				'plan_type' : plan_type
 			}
-
-			obj['coffees'].extend(obj['wholesale_coffees'])
-			del obj['wholesale_coffees']
 
 			data.append(obj)
 
@@ -163,7 +126,7 @@ class JsonSerializer:
 		return data
 
 
-	def serialize_merch(self, products):
+	def serialize_merch(self, products, check_featured=True):
 		global db_modified
 
 		data = []
@@ -182,7 +145,7 @@ class JsonSerializer:
 				'ship_wt' : float(merch.ship_wt)
 			}
 
-			if merch.featured is not None:
+			if merch.featured is not None and check_featured:
 
 
 				obj['featured'] = {
@@ -191,10 +154,13 @@ class JsonSerializer:
 						'discount' : merch.featured.discount, 
 						'expiration_date' : merch.featured.expiration_date
 					}
+
 				obj['price'] *= (100-merch.featured.discount) / 100.0
 				obj['price'] = float("{0:.2f}".format(obj['price']))
 
-				featured.append(obj)
+
+				if merch.featured.display and merch.image_url:
+					featured.append(obj)
 
 			data.append(obj)
 
@@ -232,8 +198,8 @@ class JsonSerializer:
 				'description' : pack.description,
 				'image_url' : pack.image_url,
 				'coffee_qty' : pack.coffee_qty,
-				'coffees' : self.serialize_coffee(pack.coffees.all(), False, False)[0],
-				'merchandise' : self.serialize_merch(pack.merchandise.all())[0],
+				'coffees' : self.serialize_coffee(pack.coffees.all(), False, True)[0],
+				'merchandise' : self.serialize_merch(pack.merchandise.all(), False)[0],
 				'price' : float(pack.price),
 				'type' : 'variety',
 				'ship_wt' : float(pack.ship_wt)
@@ -252,7 +218,8 @@ class JsonSerializer:
 				obj['price'] *= (100-pack.featured.discount) / 100.0
 				obj['price'] = float("{0:.2f}".format(obj['price']))
 
-				featured.append(obj)
+				if pack.featured.display and pack.image_url:
+					featured.append(obj)
 
 			data.append(obj)
 

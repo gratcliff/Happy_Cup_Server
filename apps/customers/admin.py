@@ -12,13 +12,16 @@ class CustomerAdmin(admin.ModelAdmin):
 	list_filter = ('registered',)
 	search_fields = ['user__email', 'id', 'user__first_name', 'user__last_name', 'name', 'email']
 
+
 	def get_readonly_fields(self, request, obj):
 		if obj is None:
 			return ['id', 'stripe_id', 'name', 'email', 'phone_number', 'address', 'address2', 'city', 'state', 'zipcode']
 		return ['id', 'registered', 'stripe_id', 'user', 'name', 'email', 'phone_number', 'address', 'address2', 'city', 'state', 'zipcode']
 
-	# def has_add_permission (self, request):
-	# 	return False
+	def has_add_permission (self, request):
+		return False
+
+
 
 	
 admin.site.register(Customer, CustomerAdmin)

@@ -111,13 +111,13 @@
 									<small>{{coffee.roast.name}} - {{coffee.grind.name}}</small>
 								</td>
 								<td>
-									{{coffee.size.base_price|floatformat:2}}
+									${{coffee.size.base_price|floatformat:2}}
 								</td>
 								<td>
 									{{coffee.size.qty}}
 								</td>
 								<td>
-									{{coffee.subtotal|floatformat:2}}
+									${{coffee.subtotal|floatformat:2}}
 								</td>
 							</tr>
 						{% endfor %}
@@ -145,13 +145,13 @@
 									</small>
 								</td>
 								<td>
-									{{merch.price|floatformat:2}}
+									${{merch.price|floatformat:2}}
 								</td>
 								<td>
 									{{merch.qty}}
 								</td>
 								<td>
-									{{merch.subtotal|floatformat:2}}
+									${{merch.subtotal|floatformat:2}}
 								</td>
 							</tr>
 						{% endfor %}
@@ -169,38 +169,42 @@
 									<small>{{sub.coffee.name}} - {{sub.grind.name}}</small>
 								</td>
 								<td>
-									{{sub.price|floatformat:2}}
+									${{sub.price|floatformat:2}}
 								</td>
 								<td>
 									{{sub.qty}}
 								</td>
 								<td>
-									{{sub.subtotal | floatformat:2}}
+									${{sub.subtotal | floatformat:2}}
 								</td>
 							</tr>
 						{% endfor %}
+						<tr style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: left;">
+							<td colspan="3">Subtotal</td>
+							<td>${{order.subTotalPrice | floatformat:2}}</td>
+						</tr>
 						{% if order.coupon %}
 							<tr style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: left;">										
 								<td colspan="2">Discount Coupon</td>
 								<td>{{order.coupon.code}}</td>
 								<td>{{order.coupon.discount|floatformat:0}}%</td>
 							</tr>
+							<tr style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: left;">										
+								<td colspan="3">Subtotal after coupon</td>
+								<td>${{order.priceAfterCoupon | floatformat:2}}</td>
+							</tr>
 						{% endif %}
-						<tr style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: left;">
-							<td colspan="3">Subtotal</td>
-							<td>{{order.totalPrice | floatformat:2}}</td>
-						</tr>
 						<tr style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: left;">
 							<td colspan="3">Tax</td>
 							<td>$0.00</td>
 						</tr>
 						<tr style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: left;">
 							<td colspan="3">Shipping</td>
-							<td>$0.00</td>
+							<td>${{order.shipping_fee | floatformat:2}}</td>
 						</tr>
 						<tr style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: left;">
 							<td colspan="3">Total Items: {{order.totalItems}}</td>
-							<td>{{order.totalPrice|floatformat:2}}</td>
+							<td>${{order.totalPrice | floatformat:2}}</td>
 						</tr>
 					</table>
 					<table align="center" border="0" cellpadding="0" cellspacing="0" width="960" style="border-collapse: collapse; margin-top: 15px;">

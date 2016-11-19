@@ -105,6 +105,7 @@ class GetCurrentUser(View):
 
 def logout_user(request):
 	logout(request)
+	request.session['authorizedUser'] = True
 	return JsonResponse({'status':True})
 
 		

@@ -8,7 +8,7 @@ happy_cup.factory('content_factory', function($http, $interval){
 
 			$http.get('content/').then(function(response){
 				content.home = response.data.home;
-				// console.log(content.home);
+				console.log(content.home.products);
 				content.about = response.data.about;
 				content.locations = response.data.locations;
 				content.blog = response.data.blogPosts;

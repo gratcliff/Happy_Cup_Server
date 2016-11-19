@@ -10,13 +10,14 @@ from ..customers.forms import CustomerShippingForm
 
 from ..products.models import Coupon
 
-from .models import CustomerOrder
+from .models import CustomerOrder, ShippingFee
 
 
 import json
 import os
 import stripe
 import time
+import math
 
 
 
@@ -108,6 +109,9 @@ class CheckShippingAddress(View):
 
 
 			shoppingCart['checkoutStatus']['payment'] = True
+			weight = math.ceil(shoppingCart['totalWeight'])
+			shipping_fee = ShippingFee.objects.filter(min_weight__lte=int(weight), max_weight__gte=int(weight))
+			shoppingCart['shippingFee'] = shipping_fee[0].price
 			request.session["shoppingCart"] = shoppingCart
 
 			return JsonResponse({"status": True, 'shoppingCart': request.session["shoppingCart"]})
@@ -121,9 +125,8 @@ class ProcessPayment(View):
 	def post(self, request):
 		post_data = json.loads(request.body)
 		shoppingCart = request.session.get('shoppingCart')
-		if len(shoppingCart['wholeSaleCoffee']):
-			shoppingCart['coffee'].extend(shoppingCart['wholeSaleCoffee'])
-		amount = int(shoppingCart['totalPrice']*100)
+
+		shoppingCart['subTotalPrice'] = shoppingCart['totalPrice']
 		
 		source = post_data.get('token')
 		receipt_email = post_data.get('email')
@@ -139,7 +142,9 @@ class ProcessPayment(View):
 			if shoppingCart['coupon'].get('code'):
 				coupon = Coupon.objects.get(code__iexact=shoppingCart['coupon']['code'])
 				if coupon.is_valid_coupon():
-					shoppingCart['totalPrice'] = float("{0:.2f}".format(shoppingCart['totalPrice'] * (1-(coupon.discount/100.0)),))
+					shoppingCart['totalPrice'] *= 100
+					shoppingCart['totalPrice'] = round(shoppingCart['totalPrice'] * (1-(coupon.discount/100.0))) 
+					shoppingCart['totalPrice'] = int(shoppingCart['totalPrice']) / 100.0
 				else:
 					return JsonResponse({'coupon_error': 'Your order could not be completed. The coupon code used is no longer valid and has been removed. Please try again.'})
 		except Exception as e:
@@ -147,9 +152,8 @@ class ProcessPayment(View):
 			return JsonResponse({'coupon_error': 'Your order could not be completed. The coupon code used is not valid and has been removed. Please try again.'})
 
 		try:
-			amount = int(shoppingCart['totalPrice']*100)
+			amount = int((shoppingCart['totalPrice']+shoppingCart['shippingFee'])*100)
 			description = '%s items' % (str(shoppingCart['totalItems']),)
-
 			if user.is_authenticated:
 
 				charge = stripe_charge(amount, source, description, receipt_email)

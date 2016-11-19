@@ -134,7 +134,7 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 			$timeout(function() {
 				
 				$window.location = '/'
-			}, 100);
+			}, 1000);
 
 
 		});
@@ -391,6 +391,17 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 
 	$scope.dismissModal = function(modal) {
 		$(modal).modal('hide')
+	}
+
+	$scope.scrollToShop = function() {
+		var waitForLoad = $interval(function(){
+			try {
+				$("body").animate({scrollTop: $('#product-tabs').offset().top-83}, "slow");
+				$interval.cancel(waitForLoad);
+			} catch (err) {
+				console.log('test')
+			}
+		});
 	}
 
 	
