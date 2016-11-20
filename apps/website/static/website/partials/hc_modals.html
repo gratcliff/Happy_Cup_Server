@@ -168,7 +168,7 @@
 								<div class="form-group">
 									<p for = 'price' class = 'col-sm-2 control-label'>Price: </p>
 									<div class="col-sm-8">
-										<input type="text" class="form-control" value="[[coffeeOrder.size.base_price | currency : symbol : fractionSize]]" disabled>
+										<input type="text" class="form-control form-control-no-style" value="[[coffeeOrder.size.base_price | currency : symbol : fractionSize]]" disabled>
 									</div>
 								</div>
 								<div class = 'form-group has-feedback'>
@@ -230,9 +230,9 @@
 								<form class = 'form-horizontal' role = 'form'>
 									<div class="form-group margin-clear">
 										<p for = 'price' class = 'col-sm-2 text-right'>Price: </p>
-										<div class="col-sm-8">
-											<p>[[modalOrder.size.base_price_plan | currency : symbol : fractionSize]]</p>
-										</div>
+									<div class="col-sm-8">
+										<input type="text" class="form-control form-control-no-style" value="[[coffeeOrder.size.base_price | currency : symbol : fractionSize]]" disabled>
+									</div>
 									</div>
 									<div class = 'form-group has-feedback'>
 										<label for ='size' class = 'col-sm-2 control-label'> Coffee:</label>
@@ -294,9 +294,9 @@
 								<form class = 'form-horizontal' role = 'form'>
 									<div class="form-group margin-clear">
 										<p for = 'price' class = 'col-sm-2 text-right'>Price: </p>
-										<div class="col-sm-8">
-											<p>[[merchandiseModal.price | currency : symbol : fractionSize]]</p>
-										</div>
+									<div class="col-sm-8">
+										<input type="text" class="form-control form-control-no-style" value="[[coffeeOrder.size.base_price | currency : symbol : fractionSize]]" disabled>
+									</div>
 									</div>
 									<div ng-if = 'merchandiseModal.coffees' class = 'form-group has-feedback'>
 										<label for ='size' class = 'col-sm-3 control-label'>Coffee:</label>

@@ -8,6 +8,15 @@ License URI:http://support.wrapbootstrap.com/
 File Description: Place here your custom CSS styles
 */
 
+.form-control-no-style {
+	background-color: inherit !important;
+	border: 0 !important;
+	opacity: 1 !important;
+	box-shadow: inherit !important;
+	cursor: default !important;
+	padding-left: 0;
+}
+
 #full-width-header {
 	width: 100%;
 }
