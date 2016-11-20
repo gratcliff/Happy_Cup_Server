@@ -29,6 +29,9 @@ happy_cup.config(function($routeProvider, $interpolateProvider, $httpProvider){
 		.when('/contact',{
 			templateUrl: staticURL+'website/partials/hc_contact.html',
 		})
+		.when('/profile',{
+			templateUrl: staticURL+'website/partials/hc_profile.html',
+		})
 		.when('/cart',{
 			templateUrl: staticURL+'website/partials/hc_shop_cart.html',
 		})

@@ -30,6 +30,19 @@ happy_cup.factory('user_factory',function($http){
 		
 	};
 
+	factory.editUser = function(userData, callback){
+
+		$http.post('/customers/edit/',userData).then(function(response){
+			if (response.data.errors) {
+				callback(response.data);
+			} else {
+				currentUser = response.data.user
+				callback(response.data.user);
+			}
+
+		});
+	}
+
 	factory.loginUser = function(userData, callback) {
 		if (currentUser === 'None') {
 			currentUser = {};

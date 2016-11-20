@@ -1,0 +1,59 @@
+<div ng-controller = 'profile_controller'>
+	<div class="container" ng-show="userAllowedInView">
+		<div class="col-md-10 col-sm-12 col-xs-12 col-md-offset-1" ng-show="!changePassword">
+			<h3><b>Personal Info</b></h3>
+			<table class="table-profile table table-hover table-borderless">
+				<tbody>
+					<tr>
+						<td><label class="control-label">Username:</label></td>
+						<td ng-show="!userEdit">[[currentUser.username]]</td>
+						<td ng-show="userEdit"><input class="form-control" type="text" placeholder="[[currentUser.username]]" ng-model=forms.profileEdit.username></td>
+					</tr>
+					<tr>
+						<td><label class="control-label">First Name:</label></td>
+						<td ng-show="!userEdit">[[currentUser.first_name]]</td>
+						<td ng-show="userEdit"><input class="form-control" type="text" placeholder="[[currentUser.first_name]]" ng-model=forms.profileEdit.first_name></td>
+					</tr>
+					<tr>
+						<td><label class="control-label">Last Name:</label></td>
+						<td ng-show="!userEdit">[[currentUser.last_name]]</td>
+						<td ng-show="userEdit"><input class="form-control" type="text" placeholder="[[currentUser.last_name]]" ng-model=profileEdit.last_name></td>
+					</tr>
+					<tr>
+						<td><label class="control-label">Email:</label></td>
+						<td ng-show="!userEdit">[[currentUser.email]]</td>
+						<td ng-show="userEdit"><input class="form-control" type="text" placeholder="[[currentUser.email]]" ng-model=profileEdit.email></td>
+					</tr>
+				</tbody>
+			</table>
+			<a class="pull-left btn btn-default btn-sm" ng-click="toggleForm([[currentUser.username]])" role="button" ng-show="!userEdit">Edit</a>
+			<a class="pull-left btn btn-default btn-sm" ng-click="toggleForm([[currentUser.email]])" role="button" ng-show="!userEdit">Change Password</a>
+			<a class="pull-left btn btn-default btn-sm" ng-click="toggleForm()" role="button" ng-show="userEdit">Save</a>
+			<a class="pull-left btn btn-default btn-sm" ng-click="cancelEdit()" role="button" ng-show="userEdit">Cancel</a>
+		</div>
+		<div class="col-md-10 col-sm-12 col-xs-12 col-md-offset-1" ng-show="changePassword">	
+			<h3><b>Change Password</b></h3>
+			<table class="table-profile table table-hover table-borderless">
+				<tbody>
+					<tr>
+						<td><label class="control-label">Old Password:</label></td>
+						<td><input class="form-control" type="password" placeholder="Old password" ng-model=forms.profileEdit.oldPassword></td>
+					</tr>
+					<tr>
+						<td><label class="control-label">Password:</label></td>
+						<td><input class="form-control" type="password" placeholder="New password" ng-model=forms.profileEdit.password></td>
+					</tr>
+					<tr>
+						<td><label class="control-label">Repeat Password:</label></td>
+						<td><input class="form-control" type="password" placeholder="Repeat password" ng-model=forms.profileEdit.repeatPassword></td>
+					</tr>
+				</tbody>
+			</table>
+			<a class="pull-left btn btn-default btn-sm" ng-click="toggleForm()" role="button">Save</a>
+			<a class="pull-left btn btn-default btn-sm" ng-click="cancelEdit()" role="button">Cancel</a>
+		</div>
+
+
+			
+	</div>
+</div>

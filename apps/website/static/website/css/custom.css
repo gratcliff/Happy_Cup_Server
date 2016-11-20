@@ -522,6 +522,29 @@ fieldset legend {
 	overflow: visible;
 }
 
+/*profile page*/
+.table-borderless tbody tr td,
+.table-borderless tbody tr th,
+.table-borderless thead tr th,
+.table-borderless thead tr td,
+.table-borderless tfoot tr th,
+.table-borderless tfoot tr td {
+    border: none;
+}
+
+.table-profile {
+	position: relative;
+}
+
+.hover-btn {   
+     display: none;
+}
+
+.table-profile tr:hover .hover-btn {
+     display: block;
+}
+
+
 /* media queries  */
 
 @media (min-width: 1199px) {
