@@ -5,7 +5,22 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 			if ($scope.products.featured) {
 				$('#carousel-featured-products').carousel();
 			}
-			console.log(content)
+			$scope.singleOrigins = []
+			angular.forEach($scope.products.coffee, function(coffee, idx){
+
+				if (coffee.roast.origin) {
+
+					var origin = coffee.roast.origin;
+					if ($scope.singleOrigins.indexOf(origin) == -1) {
+						$scope.singleOrigins.push(origin);
+
+					}
+
+				}
+
+				
+			});
+			$scope.singleOrigins.sort();
 			
 	});
 

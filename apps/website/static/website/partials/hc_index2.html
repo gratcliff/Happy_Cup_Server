@@ -110,8 +110,11 @@
 					<table id ="coffee-products-table" class = 'table table-hover brown-border'>
 						<caption>
 							<div class="col-sm-4 col-md-2 col-sm-offset-4 col-md-offset-5 input-group">
-								<input class="form-control" ng-model="filter.key" placeholder="Country of Origin">
+								<input class="form-control" ng-model="filter.key" placeholder="Country of Origin" list="singleOrigins" style="padding-right:0;">
 								<div class="input-group-addon" style="background-color: #69321f;"><i class="icon-search" style="color: white;"></i></div>
+								<datalist id="singleOrigins">
+									<option ng-repeat="origin in singleOrigins | orderBy:'origin'" value="[[origin]]"></option>
+								</datalist>
 							</div>
 						</caption>
 						<thead>
