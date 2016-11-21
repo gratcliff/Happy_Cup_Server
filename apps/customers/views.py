@@ -41,6 +41,13 @@ class RegisterUser(View):
 		else:
 			return JsonResponse({'status': False, 'errors': form.errors.as_json()})
 
+class EditUser(View):
+
+	def post(self, request):
+
+		form = UserRegisterForm(json.loads(request.body))
+
+
 class LoginUser(View):
 
 	def post(self, request):
