@@ -27,7 +27,7 @@
 				</tbody>
 			</table>
 			<a class="pull-left btn btn-default btn-sm" ng-click="toggleForm([[currentUser.username]])" role="button" ng-show="!userEdit">Edit</a>
-			<a class="pull-left btn btn-default btn-sm" ng-click="toggleForm([[currentUser.email]])" role="button" ng-show="!userEdit">Change Password</a>
+			<a href="/customers/password_change/" class="pull-left btn btn-default btn-sm" ng-show="!userEdit">Change Password</a>
 			<a class="pull-left btn btn-default btn-sm" ng-click="toggleForm()" role="button" ng-show="userEdit">Save</a>
 			<a class="pull-left btn btn-default btn-sm" ng-click="cancelEdit()" role="button" ng-show="userEdit">Cancel</a>
 		</div>
