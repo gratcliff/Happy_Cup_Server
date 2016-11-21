@@ -25,7 +25,7 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 					if ($scope.currentUser !== 'None') {
 						$scope.shoppingCart.user = $scope.currentUser;
 					}
-					console.log($scope.shoppingCart)
+					// console.log($scope.shoppingCart)
 				});
 
 			});
