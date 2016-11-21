@@ -48,6 +48,7 @@ class ProvideContent(View):
 		self.content.populate_aboutPage()
 		self.content.populate_locations()
 		self.content.populate_news()
+		self.content.populate_cafe()
 
 		self.context = {
 			'home' : {
@@ -65,6 +66,11 @@ class ProvideContent(View):
 			},
 			'locations': self.content.locations,
 			'blogPosts': self.content.blogPosts,
+			'cafe' : {
+				'carousel' : self.content.cafeCarousel,
+				'hours' : self.content.cafeHours,
+				'content' : self.content.cafeContent
+			},
 			'stripe_public_key' : os.environ.get('STRIPE_PUB_TEST')
 		}
 

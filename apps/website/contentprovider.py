@@ -19,6 +19,9 @@ class ContentProvider(object):
 		self.about_staffMemberEntry = []
 		self.locations = []
 		self.blogPosts = []
+		self.cafeCarousel = []
+		self.cafeHours = []
+		self.cafeContent = []
 
 
 	def populate_products(self):
@@ -50,6 +53,11 @@ class ContentProvider(object):
 
 	def populate_news(self):
 		self.blogPosts = self.json_serializer.serialize_blogPosts(self.query_set.blogPost)
+
+	def populate_cafe(self):
+		self.cafeCarousel = self.json_serializer.serialize_carousel(self.query_set.cafeCarousel)
+		self.cafeHours = self.json_serializer.serialize_hours(self.query_set.cafeHours)
+		self.cafeContent = self.json_serializer.serialize_cafeContent(self.query_set.cafeContent)
 
 	def expired_promotion_check(self):
 		self.json_serializer.featured_product_expiration(self.query_set.expired_promotions)

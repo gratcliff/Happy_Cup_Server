@@ -297,6 +297,70 @@ class JsonSerializer:
 		db_modified = False
 		return data if len(data) > 0 else None
 
+	def serialize_carousel(self, images):
+		global db_modified
+		data = []
+
+		for slide in images:
+			obj = {
+				'id' : slide.id,
+				'image_url' : slide.image_url,
+				'image_alternate_text' : slide.image_alternate_text
+			}
+			data.append(obj)
+
+		db_modified = False
+		return data if len(data) > 0 else None
+
+	def serialize_hours(self, hours):
+		global db_modified
+		data = []
+
+		for day in hours:
+			obj = {
+				'id' : day.id,
+				'monday_open' : day.monday_open,
+				'monday_close' : day.monday_close,
+				'tuesday_open' : day.tuesday_open,
+				'tuesday_close' : day.tuesday_close,
+				'wednesday_open' : day.wednesday_open,
+				'wednesday_close' : day.wednesday_close,
+				'thursday_open' : day.thursday_open,
+				'thursday_close' : day.thursday_close,
+				'friday_open' : day.friday_open,
+				'friday_close' : day.friday_close,
+			}
+			if day.saturday_open and day.saturday_close:
+				obj['saturday_open'] = day.saturday_open
+				obj['saturday_close'] = day.saturday_close
+
+			if day.sunday_open and day.sunday_close:
+				obj['sunday_open'] = day.sunday_open
+				obj['sunday_close'] = day.sunday_close
+
+			data.append(obj)
+
+		db_modified = False
+		return data if len(data) > 0 else None
+
+	def serialize_cafeContent(self, content):
+		global db_modified
+		data = []
+
+		for cafe in content:
+			obj = {
+				'id' : cafe.id,
+				'header' : cafe.header,
+				'description' : cafe.description,
+				'address' : cafe.address,
+				'phone_number' : cafe.phone_number,
+				'link_text' : cafe.link_text,
+				'link_url' : cafe.link_url
+			}
+			data.append(obj)
+
+		db_modified = False
+		return data if len(data) > 0 else None
 
 	def serialize_user(self, user):
 
