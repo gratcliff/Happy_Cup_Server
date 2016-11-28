@@ -12,6 +12,7 @@ class ShoppingCart(object):
 			'review' : False,
 
 		}
+		self.shippingFee = 0
 		self.totalItems = 0
 		self.totalPrice = 0
 		self.totalWeight = 0
@@ -25,6 +26,7 @@ class ShoppingCart(object):
 				"unsavedChanges" : self.unsavedChanges,
 				"coupon" : self.coupon,
 				"checkoutStatus" : self.checkoutStatus,
+				"shippingFee" : self.shippingFee,
 				"totalItems" : self.totalItems,
 				"totalPrice": self.totalPrice,
 				"totalWeight": self.totalWeight
@@ -38,9 +40,11 @@ class ShoppingCart(object):
 		self.unsavedChanges = data['unsavedChanges']
 		self.coupon = data['coupon']
 		self.checkoutStatus = data['checkoutStatus']
+		self.shippingFee = data['shippingFee']
 		self.totalItems = data['totalItems']
 		self.totalPrice = data['totalPrice']
 		self.totalWeight = data['totalWeight']
+
 
 		return self
 

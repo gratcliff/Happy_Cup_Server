@@ -111,7 +111,7 @@ happy_cup.controller('payment_controller', function ($scope, $location, $timeout
 			return
 
 		}
-		$scope.$emit('reviewOrder', {'stripe' : response, billingInfo: $scope.billingInfo});
+		$scope.$emit('reviewOrder', {stripe : response, billingInfo: $scope.billingInfo});
 
 
 	}

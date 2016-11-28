@@ -1,21 +1,7 @@
 <div ng-controller = 'cafe_controller' class="container clearfix">
-	<script>
-	$(document).ready(function(){
-		$('.cafe_slideshow').slick({
-			accessibility: false,
-			autoplay: true,
-			autoplaySpeed: 5000,
-			arrows: false,
-			fade: true,
-			mobileFirst: true,
-			speed: 1000,
-		});
-	});
-		
-	</script>
 	<div class = 'row'>
 		<div class = 'cafe_slideshow col-sm-10 col-sm-offset-1'>
-			<div>
+<!-- 			<div>
 				<img src = '/static/website/resources/images/cafe/cafe1.jpg'>
 			</div>
 			<div>
@@ -29,11 +15,11 @@
 			</div>
 			<div>
 				<img src = '/static/website/resources/images/cafe/cafe5.jpg'>
-			</div>
-			<!-- <div ng-repeat = 'image in carousel'>
+			</div> -->
+			 <div ng-repeat = 'image in carousel'>
 				<img ng-src = '[[image.image_url]]' alt= '[[image.image_alternate_text]]'>
 			</div>
-			-->
+			
 		</div>
 	</div>
 	<div class ='row'>

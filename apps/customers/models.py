@@ -4,6 +4,9 @@ from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 
+import stripe
+import time
+
 
 
 
@@ -21,7 +24,7 @@ class WholesalePrice(models.Model):
 
 class Customer(models.Model):
 	user = models.OneToOneField(User, blank = True, null = True, limit_choices_to={'is_staff':False, 'customer': None})
-	stripe_id = models.CharField(max_length=128, blank=True)
+	stripe_id = models.TextField(blank=True)
 	wholesale_price = models.ForeignKey(WholesalePrice, blank = True, null = True, on_delete = models.SET_NULL, help_text="Leave blank to use default price")
 	name = models.CharField(max_length=64, blank=True)
 	email = models.EmailField(max_length = 128, blank=True)
@@ -42,6 +45,53 @@ class Customer(models.Model):
 		if self.user is None:
 			return 'Customer ID: %s' % self.id
 		return '%s %s (%s), Customer ID: %s' % (self.user.first_name, self.user.last_name, self.user.email, self.id)
+
+	def create_or_retreive_customer(self, source, user):
+		new_customer = False
+		if self.stripe_id:
+			try:
+				id_list = self.stripe_id.split(', ')
+				for cust_id in id_list:
+					if len(id_list) > 1:
+						time.sleep(0.25)
+					customer = stripe.Customer.retrieve(cust_id)
+					for key in customer.sources.get('data'):
+						if key['last4'] != source['card']['last4']:
+							new_customer = True
+						if key['exp_month'] != source['card']['exp_month']:
+							new_customer = True
+						if key['exp_year'] != source['card']['exp_year']:
+							new_customer = True
+						if key['address_zip'] != source['card']['address_zip']:
+							new_customer = True
+
+				if not new_customer:
+					return customer
+			except stripe.error.InvalidRequestError as e:
+				print 'invalid request'
+				print e.json_body
+			except stripe.error.APIConnectionError as e:
+				return {'api_error': e.json_body['error']['message']}
+			except Exception as e:
+				print e.args
+				return {'api_error': str(e)}
+
+		try:
+			customer = stripe.Customer.create(
+				source=source['id'],
+				email=user.email,
+				description="Customer record for %s %s" % (user.first_name, user.last_name)
+			)
+			if new_customer:
+				self.stripe_id = "%s, %s" % (self.stripe_id, customer['id'])
+			else :
+				self.stripe_id = customer['id']
+			self.save()
+			return customer
+		except Exception as e:
+			print e.args
+			return {'api_error': str(e)}
+
 
 	def shipping_address(self, no_html=False, as_json=False):
 		if no_html:

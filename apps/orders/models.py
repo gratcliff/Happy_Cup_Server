@@ -8,6 +8,8 @@ from ..customers.models import Customer
 from ..products.models import Coffee, Merchandise, Subscription, VarietyPack, Coupon
 
 import json
+import math
+import stripe
 
 
 # Create your models here.
@@ -217,7 +219,129 @@ class CustomerOrder(models.Model):
 
 
 
+class SubscriptionOrder(models.Model):
 
+	stripe_id = models.CharField(max_length=40)
+	customer = models.ForeignKey(Customer)
+	subscription = models.ForeignKey(Subscription)
+	coffee = models.TextField(max_length=24)
+	grind = models.CharField(max_length=24)
+	size = models.CharField(max_length=8)
+	quantity = models.PositiveSmallIntegerField(default=1)
+	status = models.CharField(max_length=40, default="active")
+	shipping_address = models.TextField(blank=True)
+	shipping_fee = models.PositiveSmallIntegerField(default=0)
+	subTotalPrice = models.FloatField('Price before shipping', default=0)
+	totalPrice = models.FloatField('Total Price')
+	other_info = models.TextField(blank=True)
+	created_at = models.DateTimeField(auto_now_add=True)
+	updated_at = models.DateTimeField(auto_now=True)
+
+	def create_stripe_subscription(self, customer_id, plan_id, quantity):
+		try:
+			sub = stripe.Subscription.create(
+				customer=customer_id,
+				plan=plan_id,
+				quantity=quantity
+			)
+			return sub
+		except Exception as e:
+			return {'api_error': str(e)}
+
+
+	def parse_shipping_address(self, no_html=False, as_json=False):
+
+		address_json = json.loads(self.shipping_address)
+
+		if no_html:
+			if address_json['address']['line2']:
+				return "%s : %s %s, %s, %s %s" % (address_json['name'], address_json['address']['line1'], address_json['address']['line2'], address_json['address']['city'], address_json['address']['state'], address_json['address']['postal_code'])
+
+			return "%s : %s, %s, %s %s" % (address_json['name'], address_json['address']['line1'], address_json['address']['city'], address_json['address']['state'], address_json['address']['postal_code'])
+
+
+
+		if as_json:
+			return address_json
+
+
+		if address_json['address']['line2']:
+			return "%s<br>%s %s<br>%s, %s %s" % (address_json['name'], address_json['address']['line1'], address_json['address']['line2'], address_json['address']['city'], address_json['address']['state'], address_json['address']['postal_code'])
+
+		return "%s<br>%s<br>%s, %s %s" % (address_json['name'], address_json['address']['line1'], address_json['address']['city'], address_json['address']['state'], address_json['address']['postal_code'])
+
+
+	def migrate_data(self, stripe_id, subscription, customer, shipping_address, other_info):
+		# weight = math.ceil(subscription['ship_wt'])
+		# shipping_fee = ShippingFee.objects.filter(min_weight__lte=int(weight), max_weight__gte=int(weight))[0].price
+
+		self.stripe_id = stripe_id
+		self.subscription = Subscription.objects.get(id=subscription['id'])
+		self.coffee = subscription['coffee']['name']
+		self.grind = subscription['grind']['name']
+		self.size = subscription['size']['qty']
+		self.quantity = subscription['qty']
+		self.customer = customer
+		self.shipping_address = json.dumps(shipping_address(False, True))
+		self.subTotalPrice = subscription['subtotal']
+		self.shipping_fee = subscription['shipping_fee'] * self.quantity
+		self.totalPrice = subscription['subtotal'] + self.shipping_fee
+		self.other_info = other_info
+
+	def serialize_model(self):
+
+		obj = {
+			'subscription' : str(self.subscription),
+			'coffee' : self.coffee,
+			'grind' : self.grind,
+			'size' : self.size,
+			'quantity' : self.quantity,
+			'customer' : self.customer.id,
+			'shipping_address' : self.parse_shipping_address(False, True),
+			'id' : self.id,
+			'created_at' : self.created_at,
+			'subTotalPrice' : self.subTotalPrice,
+			'shipping_fee' : self.shipping_fee,
+			'totalPrice' : self.totalPrice,
+			'other_info' : self.other_info
+		}
+
+		return obj
+
+	def send_email_confirmation(self, subscription):
+
+		# build_context = {'charge':{'shipping': self.parse_shipping_address(False, True), 'source': charge['source']}}
+		# build_context['charge']['source']['phone_number'] = charge['metadata'].get('billing_phone')
+		# build_context['charge']['source']['email'] = charge.get('receipt_email')
+		# build_context['order'] = self.serialize_model(True)
+
+		# message_context = {
+		# 	'shipping': build_context['order']['shipping_address'],
+		# 	'billing' : build_context['charge']['source'],
+		# 	'order': build_context['order']
+		# }
+
+		subject = "Your Happy Cup Coffee Subscription"
+		recipient = [ subscription['billing'][0]['email'] ]
+		from_email = ''
+		message = """
+
+		Dear %s,
+		
+		Thank you for subscribing to our %s.
+		Subscription # : %s
+		Coffee : %s (%s)
+		Grind : %s
+
+		Every %s weeks, %s of these bag(s) will be shipped to the following address:
+
+		%s
+
+		
+
+		 """ % (subscription['billing'][0]['name'], str(self.subscription), self.id, self.coffee, self.size, self.grind, self.subscription.frequency, self.quantity, self.size, self.coffee, self.grind, self.parse_shipping_address(True))
+
+		send_mail(subject,message,from_email,recipient)
 
 
 

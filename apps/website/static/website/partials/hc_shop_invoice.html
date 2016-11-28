@@ -15,7 +15,8 @@
 
 				<!-- page-title start -->
 				<!-- ================ -->
-				<h1 class="page-title">Invoice: Order #[[order.id]] - [[order.created_at | date: mediumDate]]</h1>
+				<h1 class="page-title" ng-if="order">Invoice: Order #[[order.id]] - [[order.created_at | date: mediumDate]]</h1>
+				<h1 class="page-title" ng-if="subscriptions">Subcription Invoice: [[subscriptions[0].order.created_at | date: mediumDate]]</h1>
 				<div class="separator-2"></div>
 				<!-- page-title end -->
 
@@ -56,13 +57,15 @@
 					<table class="table cart">
 					<thead>
 						<tr>
+							<th ng-if="subscriptions">Subscription #</th>
 							<th>Product </th>
 							<th>Price </th>
 							<th>Quantity</th>
+							<th ng-if="subscriptions">Shipping</th>
 							<th class="amount">Total </th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody ng-if="order">
 						<tr ng-if="order.coffee.length" >
 							<th colspan="5">Coffee</th>
 						</tr>
@@ -71,15 +74,6 @@
 							<td class="price">[[coffee.size.base_price | currency : symbol : fractonSize]]</td>
 							<td class="quantity">[[coffee.qty]]</td>
 							<td class="amount">[[coffee.subtotal | currency : symbol : fractonSize]] </td>
-						</tr>
-						<tr ng-if="order.subscriptions.length">
-							<th colspan="5">Subscriptions</th>
-						</tr>
-						<tr ng-repeat="sub in order.subscriptions track by $index">
-							<td class="product">[[sub.name]] <small>[[sub.coffee.name]] - [[sub.grind.name]]</small></td>
-							<td class="price">[[sub.price | currency : symbol : fractonSize]]</td>
-							<td class="quantity">[[sub.qty]]</td>
-							<td class="amount">[[sub.subtotal | currency : symbol : fractonSize]] </td>
 						</tr>
 						<tr ng-if="order.merch.length">
 							<th colspan="5">Merchandise</th>
@@ -120,6 +114,20 @@
 						<tr>
 							<td class="total-quantity" colspan="3">Total [[order.totalItems]] Item<span ng-hide="order.totalItems === 1">s</span></td>
 							<td class="total-amount">[[order.totalPrice | currency : symbol : fractonSize]]</td>
+						</tr>
+					</tbody>
+					<tbody ng-if="subscriptions">
+						<tr ng-repeat="sub in subscriptions track by $index">
+							<td class="product">[[sub.order.id]]</td>
+							<td class="product">[[sub.order.subscription]] ([[sub.order.size]]) <small>[[sub.order.coffee]] - [[sub.order.grind]]</small></td>
+							<td class="price">[[sub.order.subTotalPrice / sub.order.quantity | currency : symbol : fractonSize]]</td>
+							<td class="quantity">[[sub.order.quantity]]</td>
+							<td class="price">[[sub.order.shipping_fee | currency : symbol : fractonSize]]</td>
+							<td class="amount">[[sub.order.totalPrice | currency : symbol : fractonSize]] / shipment</td>
+						</tr>
+						<tr>
+							<td class="total-quantity" colspan="5">Total Due Today</td>
+							<td class="total-amount">[[totalPrice | currency : symbol : fractionSize]]</td>
 						</tr>
 					</tbody>
 				</table>

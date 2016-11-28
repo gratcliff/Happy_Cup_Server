@@ -22,6 +22,7 @@
 							<th>Product </th>
 							<th>Price </th>
 							<th>Quantity</th>
+							<th ng-if="currentCart.subscriptions.length">Shipping</th>
 							<th class="amount">Total </th>
 						</tr>
 					</thead>
@@ -35,20 +36,15 @@
 							<td class="quantity">[[coffee.qty]]</td>
 							<td class="amount">[[coffee.subtotal | currency : symbol : fractonSize]] </td>
 						</tr>
-						<tr ng-repeat="wholesale in currentCart.wholeSaleCoffee track by $index">
-							<td class="product">[[wholesale.name]] ([[wholesale.size.qty]]) <small>[[wholesale.roast.name]] - [[wholesale.grind.name]]</small></td>
-							<td class="price">[[wholesale.price | currency : symbol : fractonSize]]</td>
-							<td class="quantity">[[wholesale.qty]]</td>
-							<td class="amount">[[wholesale.subtotal | currency : symbol : fractonSize]] </td>
-						</tr>
 						<tr ng-if="currentCart.subscriptions.length">
 							<th colspan="5">Subscriptions</th>
 						</tr>
 						<tr ng-repeat="sub in currentCart.subscriptions track by $index">
-							<td class="product">[[sub.name]] <small>[[sub.coffee.name]] - [[sub.grind.name]]</small></td>
+							<td class="product">[[sub.name]] Plan ([[sub.size.qty]]) <small>[[sub.coffee.name]] - [[sub.grind.name]]</small></td>
 							<td class="price">[[sub.price | currency : symbol : fractonSize]]</td>
 							<td class="quantity">[[sub.qty]]</td>
-							<td class="amount">[[sub.subtotal | currency : symbol : fractonSize]] </td>
+							<td class="price">[[sub.shipping_fee * sub.qty | currency : symbol : fractonSize]]</td>
+							<td class="amount">[[sub.subtotal + sub.shipping_fee * sub.qty | currency : symbol : fractonSize]] / shipment</td>
 						</tr>
 						<tr ng-if="currentCart.merch.length">
 							<th colspan="5">Merchandise</th>
@@ -65,8 +61,9 @@
 							<td class="quantity">[[merch.qty]]</td>
 							<td class="amount">[[merch.subtotal | currency : symbol : fractonSize]] </td>
 						</tr>
-						<tr>
+						<tr ng-if="!currentCart.subscriptions.length">
 							<td class="total-quantity" colspan="3">Subtotal</td>
+							<td ng-if="currentCart.subscriptions.length"></td>
 							<td class="amount">[[currentCart.totalPrice | currency : symbol : fractonSize]]</td>
 						</tr>
 						<tr ng-if="currentCart.coupon.valid">										
@@ -80,70 +77,21 @@
 						</tr>
 						<tr>
 							<td class="total-quantity" colspan="3">Tax</td>
+							<td ng-if="currentCart.subscriptions.length"></td>
 							<td class="amount">$0.00</td>
 						</tr>
-						<tr>
+						<tr ng-if="!currentCart.subscriptions.length">
 							<td class="total-quantity" colspan="3">Shipping</td>
 							<td class="amount">[[currentCart.shippingFee | currency : symbol : fractionSize]]</td>
 						</tr>
 						<tr>
-							<td class="total-quantity" colspan="3">Total [[currentCart.totalItems]] Item<span ng-hide="currentCart.totalItems === 1">s</span></td>
+							<td class="total-quantity" colspan="3" ng-if="!currentCart.subscriptions.length">Total [[currentCart.totalItems]] Item<span ng-hide="currentCart.totalItems === 1">s</span></td>
+							<td class="total-quantity" colspan="3" ng-if="currentCart.subscriptions.length">Total Due Today</td>
+							<td ng-if="currentCart.subscriptions.length"></td>
 							<td class="total-amount">[[currentCart.totalPrice * (1 - (currentCart.coupon.discount / 100)) + currentCart.shippingFee | currency : symbol : fractonSize]]</td>
 						</tr>
 					</tbody>
 				</table>
-				<!-- <table class="table cart">
-					<thead>
-						<tr>
-							<th>Product </th>
-							<th>Price </th>
-							<th>Quantity</th>
-							<th class="amount">Total </th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td class="product"><a href="shop-product.html">Product Title 1</a> <small>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas inventore modi.</small></td>
-							<td class="price">$99.50 </td>
-							<td class="quantity">2</td>
-							<td class="amount">$199.00 </td>
-						</tr>
-						<tr>
-							<td class="product"><a href="shop-product.html">Product Title 2</a> <small>Quas inventore modi</small></td>
-							<td class="price"> $99.66 </td>
-							<td class="quantity">3</td>
-							<td class="amount">$299.00 </td>
-						</tr>
-						<tr>
-							<td class="product"><a href="shop-product.html">Product Title 3</a> <small>Fugiat nemo enim officiis repellendus</small></td>
-							<td class="price"> $499.66 </td>
-							<td class="quantity">3</td>
-							<td class="amount">$1499.00 </td>
-						</tr>
-						<tr>
-							<td class="total-quantity" colspan="3">Subtotal</td>
-							<td class="amount">$1997.00</td>
-						</tr>
-						<tr>										
-							<td class="total-quantity" colspan="2">Discount Coupon</td>
-							<td class="price">TheProject25672</td>
-							<td class="amount">-20%</td>
-						</tr>
-						<tr>
-							<td class="total-quantity" colspan="2">Sales Tax</td>
-							<td class="price">+10%</td>
-							<td class="amount">$159.76</td>
-						</tr>
-						<tr>
-							<td class="total-quantity" colspan="3">Shipping</td>
-							<td class="amount">$12.00</td>
-						</tr>
-						<tr>
-							<td class="total-quantity" colspan="3">Total 8 Items</td>
-							<td class="total-amount">$1597.00</td>
-						</tr>
-					</tbody>
-				</table> -->
 				<div class="space-bottom"></div>
 				<table class="table">
 					<thead>

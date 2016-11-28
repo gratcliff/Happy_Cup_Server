@@ -294,7 +294,20 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 			$scope.shoppingCart = cart;
 			$scope.orderCompleted = true;
 			$scope.order_id = data.order_id;
-			$scope.customer_id = data.customer_id
+			$scope.customer_id = data.customer_id;
+			if ($scope.currentUser !== 'None') {
+				$scope.shoppingCart.user = $scope.currentUser;
+			}
+			$location.url('/cart/completed');
+		});
+	})
+
+	$scope.$on('subscriptionSubmitted', function(event, data){
+		shop_factory.getShoppingCart(function(cart){
+			$scope.shoppingCart = cart;
+			$scope.orderCompleted = true;
+			$scope.subOrders = data.subscriptions;
+			$scope.customer_id = data.customer_id;
 			if ($scope.currentUser !== 'None') {
 				$scope.shoppingCart.user = $scope.currentUser;
 			}
@@ -312,18 +325,30 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 	});
 
 	$scope.$on('sendEmailConfirmation', function(event){
-		shop_factory.sendEmailConfirmation({order_id: $scope.order_id, customer_id: $scope.customer_id}, function(response){
-		});
+		if ($scope.subOrders) {
+			shop_factory.sendEmailConfirmation({subscriptions: $scope.subOrders, customer_id: $scope.customer_id}, function(response){
+			});
+		} else {
+			shop_factory.sendEmailConfirmation({order_id: [$scope.order_id], customer_id: $scope.customer_id}, function(response){
+			});
+		}
+
 	})
 
 
 
 	$scope.$on('viewInvoice', function(event, callback){
-		callback({invoiceAvailable:$scope.invoiceAvailable, order_id:$scope.order_id, customer_id:$scope.customer_id})
+		if ($scope.subOrders) {
+			callback({invoiceAvailable:$scope.invoiceAvailable, subOrders:$scope.subOrders, customer_id:$scope.customer_id})
+		} else {
+			callback({invoiceAvailable:$scope.invoiceAvailable, order_id:$scope.order_id, customer_id:$scope.customer_id})
+		}
+		
 		// user can only view page once per order submission
 		$scope.invoiceAvailable = undefined;
 		$scope.order_id = undefined;
 		$scope.customer_id = undefined;
+		$scope.subOrders = undefined;
 	});
 
 	// end of event listeners

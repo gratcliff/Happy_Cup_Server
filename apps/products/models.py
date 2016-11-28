@@ -50,7 +50,32 @@ class Subscription(Timestamp):
 	image_url = models.URLField(blank=True)
 
 	def __str__(self):
-		return '%s Week Subscription' % (self.frequency,)
+		return '%s Week Plan' % (self.frequency,)
+
+	def create_or_retreive_plan(self, price, shipping_fee):
+		price_int = int(price*100) + int(shipping_fee*100)
+		plan_id = "%s-week-plan-%s" % (self.frequency, str(price_int))
+
+
+		try:
+			plan = stripe.Plan.retrieve(plan_id)
+			return plan
+		except Exception as e:
+			print e.args, 'line 64 products models'
+
+			try:
+				plan = stripe.Plan.create(
+					amount = price_int,
+					name = "%s Week Plan at $%s" % (self.frequency, str(price_int/100.0)),
+					interval = 'week',
+					interval_count = self.frequency,
+					currency = 'usd',
+					id = plan_id
+				)
+				return plan
+			except Exception as e:
+				print e.args, 'line76 products models'
+				return {'api_error': str(e)}
 
 
 

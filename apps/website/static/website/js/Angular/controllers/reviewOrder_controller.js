@@ -16,6 +16,7 @@ happy_cup.controller('reviewOrder_controller', function($scope, $location, $time
 		} else {
 			$scope.userAllowedInView = true;
 			$scope.currentCart = cart;
+			console.log(cart);
 		}
 
 	});
@@ -24,6 +25,7 @@ happy_cup.controller('reviewOrder_controller', function($scope, $location, $time
 		if (data.stripe) {
 			$scope.stripe = data.stripe;
 			$scope.billingInfo = data.billingInfo;
+			console.log($scope.stripe)
 		} else {
 			$scope.userAllowedInView = false;
 			$location.url('/cart/payment');
@@ -37,8 +39,9 @@ happy_cup.controller('reviewOrder_controller', function($scope, $location, $time
 
 			$scope.submittingOrder = true;
 			$scope.invalidBillingForm = undefined;
+			var token = $scope.currentCart.subscriptions.length > 0 ? $scope.stripe : $scope.stripe.id 
 
-			shop_factory.processPayment({token:$scope.stripe.id, email:$scope.billingInfo.email, phone_number:$scope.billingInfo.phone_number}, function(res) {
+			shop_factory.processPayment({token:token, email:$scope.billingInfo.email, phone_number:$scope.billingInfo.phone_number}, function(res) {
 				if (res.data.error) {
 					$scope.invalidBillingForm = res.data.error.message;
 					$scope.submittingOrder = false;
@@ -55,7 +58,14 @@ happy_cup.controller('reviewOrder_controller', function($scope, $location, $time
 					});
 					
 				} else {
-					$scope.$emit('orderSubmitted', {order_id:res.data.order_id, customer_id:res.data.customer_id});
+
+					if (res.data.order_id) {
+						$scope.$emit('orderSubmitted', {order_id:res.data.order_id, customer_id:res.data.customer_id});
+					} else {
+						$scope.$emit('subscriptionSubmitted', {subscriptions:res.data.subscription_list, customer_id:res.data.customer_id});
+					}
+
+					
 				}
 				
 

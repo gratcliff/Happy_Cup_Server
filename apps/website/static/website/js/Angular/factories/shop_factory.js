@@ -18,6 +18,7 @@ happy_cup.factory('shop_factory', function($http){
 					payment : false,
 					review : false,
 				}
+				shoppingCart.shippingFee = 0;
 
 
 			} else {
@@ -43,6 +44,7 @@ happy_cup.factory('shop_factory', function($http){
 					totalItems += this.subscriptions[idx].qty;
 					totalPrice = roundPrice(totalPrice,this.subscriptions[idx].subtotal);
 					totalWeight += this.subscriptions[idx].ship_wt;
+					console.log(totalWeight)
 				}
 
 				this.totalItems = totalItems;
@@ -105,7 +107,7 @@ happy_cup.factory('shop_factory', function($http){
 
 				shoppingCart.subscriptions[idx].qty += order.qty;
 				shoppingCart.subscriptions[idx].subtotal = roundPrice(shoppingCart.subscriptions[idx].subtotal,order.subtotal);
-				shoppingCart.subscriptions[idx].ship_wt = order.ship_wt;
+				shoppingCart.subscriptions[idx].ship_wt += order.ship_wt;
 				identicalProduct = true;
 				break;
 			}
@@ -263,8 +265,10 @@ happy_cup.factory('shop_factory', function($http){
 		$http.post('orders/address/', addressInfo).then(function(response){
 			
 			if (response.data.status === true) {
+				console.log(response.data.shoppingCart)
 				shoppingCart.shipping = response.data.shoppingCart.shipping;
 				shoppingCart.shippingFee = response.data.shoppingCart.shippingFee
+				shoppingCart.subscriptions = response.data.shoppingCart.subscriptions
 				shoppingCart.checkoutStatus.payment = true;
 				callback(shoppingCart);
 			} else {
@@ -278,12 +282,24 @@ happy_cup.factory('shop_factory', function($http){
 	};
 
 	factory.processPayment = function(token, callback) {
-		$http.post('orders/payment/', token).then(function(response){
-			callback(response)
-		});
+		if (!shoppingCart.subscriptions.length) {
+			$http.post('orders/payment/', token).then(function(response){
+				callback(response);
+			});
+		} else {
+			$http.post('orders/subscribe/', token).then(function(response){
+				callback(response);
+			});
+		}
 	};
 
 	factory.sendEmailConfirmation = function(data, callback) {
+		if (data.subscriptions) {
+			data.order_id = [];
+			angular.forEach(data.subscriptions, function(sub, idx){
+				data.order_id.push(sub.order.id);
+			});
+		}
 		$http.post('orders/confirmation/', data).then(function(response){
 			callback()
 		});

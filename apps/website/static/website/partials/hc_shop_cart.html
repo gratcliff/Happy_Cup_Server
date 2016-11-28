@@ -60,8 +60,8 @@
 							<th colspan = "5">Subscriptions</th>
 						</tr>
 						<tr ng-repeat="sub in currentCart.subscriptions track by $index">
-							<td class="product">[[sub.size.qty]] shipment every [[sub.name]]s <small>[[sub.coffee.name]] - [[sub.grind.name]]</small></td>
-							<td class="price">[[sub.price | currency : symbol : fractonSize]] / shipment</td>
+							<td class="product">[[sub.name]] Plan ([[sub.size.qty]] shipment every [[sub.name]]s) <small>[[sub.coffee.name]] - [[sub.grind.name]]</small></td>
+							<td class="price">[[sub.price | currency : symbol : fractonSize]]</td>
 							<td class="quantity">
 								<div class="form-group">
 									<input type="number" class="form-control" ng-model="sub.qty" ng-change="currentCart.unsavedChanges=true; sub.subtotal = sub.price * sub.qty; currentCart.countTotals();" min="0">
@@ -116,8 +116,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td class="total-quantity" colspan="4" ng-if="!currentCart.subscriptions.length">Total [[currentCart.totalItems]] Items</td>
-							<td class="total-quantity" colspan="4" ng-if="currentCart.subscriptions.length">Total Due Today</td>
+							<td class="total-quantity" colspan="4">Total [[currentCart.totalItems]] Items</td>
 							<td class="total-amount">[[currentCart.totalPrice | currency : symbol : fractonSize]]</td>
 						</tr>
 					</tbody>

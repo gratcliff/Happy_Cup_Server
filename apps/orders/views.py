@@ -8,9 +8,9 @@ from django.utils import timezone
 from ..customers.models import Customer, ShippingAddress
 from ..customers.forms import CustomerShippingForm
 
-from ..products.models import Coupon
+from ..products.models import Coupon, Subscription
 
-from .models import CustomerOrder, ShippingFee
+from .models import CustomerOrder, SubscriptionOrder, ShippingFee
 
 
 import json
@@ -60,6 +60,7 @@ class CheckShippingAddress(View):
 			shoppingCart = request.session["shoppingCart"]
 
 			shoppingCart["shipping"] = loadJson
+			shoppingCart['shippingFee'] = 0
 
 			try:
 				shoppingCart['shipping']['address'] = "%s %s" % (form.cleaned_data['verify_address']['number'], form.cleaned_data['verify_address']['street'])
@@ -107,12 +108,25 @@ class CheckShippingAddress(View):
 				else:
 					print e.args
 
+			if len(shoppingCart.get('subscriptions')) > 0:
 
-			shoppingCart['checkoutStatus']['payment'] = True
-			weight = math.ceil(shoppingCart['totalWeight'])
-			shipping_fee = ShippingFee.objects.filter(min_weight__lte=int(weight), max_weight__gte=int(weight))
-			shoppingCart['shippingFee'] = shipping_fee[0].price
+				for sub in shoppingCart.get('subscriptions'):
+					weight = math.ceil(sub['ship_wt'])
+					shipping_fee = ShippingFee.objects.filter(min_weight__lte=int(weight), max_weight__gte=int(weight))[0].price
+					shipping_fee = round((shipping_fee*100 / sub['qty'])) / 100
+					sub['shipping_fee'] = shipping_fee
+					
+					shoppingCart['shippingFee'] += shipping_fee * sub['qty']
+			else :
+
+				weight = math.ceil(shoppingCart['totalWeight'])
+				shipping_fee = ShippingFee.objects.filter(min_weight__lte=int(weight), max_weight__gte=int(weight))
+				shoppingCart['shippingFee'] = shipping_fee[0].price
+			
+			shoppingCart['checkoutStatus']['payment'] = True	
 			request.session["shoppingCart"] = shoppingCart
+
+
 
 			return JsonResponse({"status": True, 'shoppingCart': request.session["shoppingCart"]})
 
@@ -240,16 +254,104 @@ class SendEmailConfirmation(View):
 	def post(self, request):
 		try:
 			data = json.loads(request.body)
+			print data
 			order_id = data.get('order_id')
 			cust_id = data.get('customer_id')
-			order = CustomerOrder.objects.select_related('customer', 'coupon', 'customer__wholesale_price').get(id=int(order_id), customer_id=int(cust_id))
-			charge = stripe.Charge.retrieve(order.charge_id)
+			if data.get('subscriptions'):
+				orders = SubscriptionOrder.objects.select_related('customer', 'subscription').filter(pk__in=order_id)
+				for order in orders:
+					order.send_email_confirmation(data['subscriptions'][0])
+					if len(orders) > 1:
+						time.sleep(0.5)
+			else:
+				order = CustomerOrder.objects.select_related('customer', 'coupon', 'customer__wholesale_price').filter(pk__in=order_id, customer_id=int(cust_id))[0]
+				charge = stripe.Charge.retrieve(order.charge_id)
 
-			order.send_email_confirmation(charge)
+				order.send_email_confirmation(charge)
 		except Exception as e:
 			print e.args
 
 		return JsonResponse({'status': True})
+
+class ProcessSubscription(View):
+
+	def post(self, request):
+		post_data = json.loads(request.body)
+		shoppingCart = request.session.get('shoppingCart')
+
+		shoppingCart['subTotalPrice'] = shoppingCart['totalPrice']
+		
+		source = post_data.get('token')
+		receipt_email = post_data.get('email')
+		phone_number = post_data.get('phone_number')
+		subscription_list = list(shoppingCart['subscriptions'])
+		
+		subscription = None
+		customer = None
+		charge = None
+		user = request.user
+
+		plans = []
+		for sub in subscription_list:
+			query = Subscription.objects.get(id=sub['id'])
+			plan = query.create_or_retreive_plan(sub['price'], sub['shipping_fee'])
+
+			if plan.get('api_error'):
+				return JsonResponse({'error': {'message':'Your online order could not be processed at this time.  Please try again later.'}})
+
+			plans.append({'plan':plan, 'subscription':sub})
+			if len(subscription_list) > 1:
+				time.sleep(0.25)
+
+
+		customer = Customer.objects.get(user=user)
+		stripe_customer = customer.create_or_retreive_customer(source, user)
+
+		if stripe_customer.get('api_error'):
+			return JsonResponse({'error': {'message':'Your online order could not be processed at this time.  Please try again later.'}})
+
+		subscription_list = []
+		for plan in plans:
+			plan_id = plan['plan']['id']
+			customer_id = stripe_customer['id']
+			quantity = plan['subscription']['qty']
+
+			order = SubscriptionOrder()
+			stripe_sub = order.create_stripe_subscription(customer_id, plan_id, quantity)
+
+			if stripe_sub.get('api_error'):
+				return JsonResponse({'error': {'message':'Your online order could not be processed at this time.  Please try again later.'}})
+
+
+			shippingAddress = ShippingAddress()
+			shippingAddress.migrate_data(shoppingCart)
+
+			order.migrate_data(stripe_sub['id'], plan['subscription'], customer, shippingAddress.shipping_address, shoppingCart['shipping'].get('message',''))
+			order.save()
+
+			stripe_sub.metadata = {
+				'HC_subscription_id': order.id,
+				'shipping_address': order.parse_shipping_address(True),
+				'billing_phone' : phone_number,
+				'billing_email' : receipt_email,
+				'coffee' : order.coffee,
+				'grind' : order.grind,
+				'size' : order.size,
+			}
+
+			stripe_sub.save()
+			stripe_customer['sources']['data'][0]['phone_number'] = phone_number
+			stripe_customer['sources']['data'][0]['email'] = receipt_email
+
+
+			subscription_list.append({'order': order.serialize_model(), 'billing': stripe_customer['sources']['data']})
+
+			if len(plans) > 1:
+				time.sleep(0.25)
+
+		del request.session['shoppingCart']
+		return JsonResponse({'status':True, 'subscription_list':subscription_list, 'customer_id': customer.id})
+		
 
 
 
@@ -273,6 +375,10 @@ class ProvideInvoice(View):
 		except Exception as e:
 			print e
 			return JsonResponse({'status': False})
+
+def webhooks(request):
+
+	print request.body
 
 
 def stripe_charge(amount, source, description, receipt_email):

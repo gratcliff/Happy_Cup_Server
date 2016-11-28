@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from .models import CustomerOrder, ShippingFee
+from .models import CustomerOrder, ShippingFee, SubscriptionOrder
 from .forms import ShippingFeeForm
 
 import datetime
@@ -61,3 +61,4 @@ class CustomerOrderAdmin(admin.ModelAdmin):
 
 admin.site.register(CustomerOrder, CustomerOrderAdmin)
 admin.site.register(ShippingFee, ShippingFeeAdmin)
+admin.site.register(SubscriptionOrder)
