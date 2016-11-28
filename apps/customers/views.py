@@ -1,9 +1,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.generic import View
-from django.contrib.auth.models import User
-
-from .forms import UserRegisterForm
+from django.contrib.auth.models import User 
+from .forms import UserRegisterForm, UserEditForm
 
 from django.contrib.auth import authenticate, login, logout
 
@@ -44,8 +43,27 @@ class RegisterUser(View):
 class EditUser(View):
 
 	def post(self, request):
+		print "user is being edited"
+		form = UserEditForm(json.loads(request.body))
 
-		form = UserRegisterForm(json.loads(request.body))
+		if form.is_valid():
+			prev_username = json.loads(request.body)["prev_username"]
+			username = form.cleaned_data['username']
+			first_name = form.cleaned_data['first_name']
+			last_name = form.cleaned_data['last_name']
+			email = form.cleaned_data['email']
+			user = User.objects.get(username=prev_username)
+			user.username = username
+			user.first_name = first_name
+			user.last_name = last_name
+			user.email = email
+			user.save()
+
+			# Customer.objects.filter(email=email).update(username=username,first_name=first_name,last_name=last_name, email=email)
+			user_json = serialize.serialize_user(user)
+
+		else:
+			return JsonResponse({'status': False, 'errors': form.errors.as_json()})
 
 
 class LoginUser(View):

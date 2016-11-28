@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from .models import Customer
 from ..locations.mapsapi import validate_address
@@ -27,6 +27,18 @@ class UserRegisterForm(UserCreationForm):
 		if commit:
 			user.save()
 			return user
+
+class UserEditForm(forms.ModelForm):
+
+	class Meta:
+
+		model = User
+		fields = ('username', 'first_name', 'last_name', 'email')
+
+	def clean(self):
+		cleaned_data = super(UserEditForm, self).clean()
+		if self.errors:
+			return
 
 
 class CustomerShippingForm(forms.ModelForm):

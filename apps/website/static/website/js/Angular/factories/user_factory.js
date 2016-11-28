@@ -31,8 +31,8 @@ happy_cup.factory('user_factory',function($http){
 	};
 
 	factory.editUser = function(userData, callback){
-
-		$http.post('/customers/edit/',userData).then(function(response){
+		console.log(userData);
+		$http.post('customers/edit/',userData).then(function(response){
 			if (response.data.errors) {
 				callback(response.data);
 			} else {
