@@ -111,7 +111,7 @@ class Customer(models.Model):
 				},
 				'name': self.name,
 				'phone': self.phone_number,
-				'email': self.email
+				'email': self.email,
 			}
 
 
@@ -177,7 +177,8 @@ class ShippingAddress(models.Model):
 				},
 				'name': self.name,
 				'phone': self.phone_number,
-				'email': self.email
+				'email': self.email,
+				'id' : self.id
 			}
 
 

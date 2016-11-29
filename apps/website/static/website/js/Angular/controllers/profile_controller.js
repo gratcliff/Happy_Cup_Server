@@ -1,22 +1,23 @@
 happy_cup.controller('profile_controller', function($scope, $location, user_factory){
 
-	$scope.userAllowedInView = true;
-	$scope.userEdit = false;
-	$scope.profileEditForm = {};
+	$scope.$emit('userProfileView', function(currentUser) {
+		if (currentUser === 'None') {
+			$location.url('/');
+		} else {
+			
+			$scope.userEdit = false;
+			$scope.profileEditForm = {};
 
-	user_factory.getCurrentUser(function(currentUser){
-		$scope.currentUser = currentUser;
-		$scope.profileEditForm.prev_username = currentUser.username;
+			user_factory.getOrderHistory(function(orders){
+				$scope.orders = orders.orders;
+				$scope.subscriptions = orders.subscriptions;
+				$scope.userAllowedInView = true;
+			});
+
+			
+		}
 	});
 
-	$scope.toggleForm = function(formType) {
-		editMode($scope.currentUser);
-		$scope.userEdit = true;	
-	}
-
-	$scope.cancelEdit = function() {
-		$scope.userEdit = false;
-	}
 
 	$scope.editUser = function(){
 
@@ -33,21 +34,28 @@ happy_cup.controller('profile_controller', function($scope, $location, user_fact
 						}
 					});
 					$scope.backendErrors = errorList;
-					console.log($scope.backendErrors);
 					return
 				}
+				$scope.userEdit = false;
+				$scope.$emit('userProfileChange', response);
+
 			})
 		// }
 	}
 
-	function editMode() {
-		user_factory.getCurrentUser(function(currentUser){
+	$scope.editMode = function(currentUser) {
+		$scope.userEdit = true;
+		$scope.backendErrors = undefined;	
+		$scope.profileEditForm.username = currentUser.username;
+		$scope.profileEditForm.first_name = currentUser.first_name;
+		$scope.profileEditForm.last_name = currentUser.last_name;
+		$scope.profileEditForm.email = currentUser.email;
 
-			$scope.profileEditForm.username = currentUser.username;
-			$scope.profileEditForm.first_name = currentUser.first_name;
-			$scope.profileEditForm.last_name = currentUser.last_name;
-			$scope.profileEditForm.email = currentUser.email;
+	}
 
+	$scope.removeSavedAddress = function(id) {
+		user_factory.removeSavedAddress(id, function(currentUser) {
+			$scope.$emit('userProfileChange', currentUser);
 		});
 	}
 

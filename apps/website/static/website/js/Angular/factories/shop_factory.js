@@ -19,6 +19,7 @@ happy_cup.factory('shop_factory', function($http){
 					review : false,
 				}
 				shoppingCart.shippingFee = 0;
+				shoppingCart.user = undefined;
 
 
 			} else {
@@ -265,12 +266,12 @@ happy_cup.factory('shop_factory', function($http){
 		$http.post('orders/address/', addressInfo).then(function(response){
 			
 			if (response.data.status === true) {
-				console.log(response.data.shoppingCart)
 				shoppingCart.shipping = response.data.shoppingCart.shipping;
 				shoppingCart.shippingFee = response.data.shoppingCart.shippingFee
 				shoppingCart.subscriptions = response.data.shoppingCart.subscriptions
 				shoppingCart.checkoutStatus.payment = true;
-				callback(shoppingCart);
+				shoppingCart.user = response.data.shoppingCart.user;
+				callback(response);
 			} else {
 				errors = JSON.parse(response.data.errors);
 				callback({errors:errors});

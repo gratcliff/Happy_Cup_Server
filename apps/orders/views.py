@@ -12,6 +12,8 @@ from ..products.models import Coupon, Subscription
 
 from .models import CustomerOrder, SubscriptionOrder, ShippingFee
 
+from ..website.serialize import JsonSerializer
+
 
 import json
 import os
@@ -19,7 +21,7 @@ import stripe
 import time
 import math
 
-
+serialize = JsonSerializer()
 
 
 # Create your views here.
@@ -61,6 +63,7 @@ class CheckShippingAddress(View):
 
 			shoppingCart["shipping"] = loadJson
 			shoppingCart['shippingFee'] = 0
+			saveShipping = False
 
 			try:
 				shoppingCart['shipping']['address'] = "%s %s" % (form.cleaned_data['verify_address']['number'], form.cleaned_data['verify_address']['street'])
@@ -71,6 +74,7 @@ class CheckShippingAddress(View):
 				if shoppingCart['shipping'].get('saveShipping') is True:
 					user_id = shoppingCart['shipping'].get('user_id')
 					customer_id = shoppingCart['shipping'].get('customer_id')
+					saveShipping = True
 
 					if user_id == request.user.id:
 						if not customer_id:
@@ -97,6 +101,7 @@ class CheckShippingAddress(View):
 								shippingAddress.customer = customer
 								shippingAddress.save()
 							except Exception as e:
+								saveShipping = False
 								print e.args
 					else:
 						logout(request)
@@ -123,12 +128,17 @@ class CheckShippingAddress(View):
 				shipping_fee = ShippingFee.objects.filter(min_weight__lte=int(weight), max_weight__gte=int(weight))
 				shoppingCart['shippingFee'] = shipping_fee[0].price
 			
-			shoppingCart['checkoutStatus']['payment'] = True	
+			shoppingCart['checkoutStatus']['payment'] = True
+
+			if saveShipping:
+				user_json = serialize.serialize_user(User.objects.get(id=request.user.id))
+				shoppingCart['user'] = user_json
+			else:
+				user_json = None
+
 			request.session["shoppingCart"] = shoppingCart
 
-
-
-			return JsonResponse({"status": True, 'shoppingCart': request.session["shoppingCart"]})
+			return JsonResponse({"status": True, 'shoppingCart': request.session["shoppingCart"], 'user':user_json})
 
 		else:
 			return JsonResponse({"status": False, "errors": form.errors.as_json()})

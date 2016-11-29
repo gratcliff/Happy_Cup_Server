@@ -144,10 +144,21 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 
 	//event listeners
 
+	$scope.$on('userProfileView', function(event, callback) {
+		callback($scope.currentUser);
+	});
+
+	$scope.$on('userProfileChange', function(event, userData){
+		user_factory.syncUser(userData, function(currentUser){
+			$scope.currentUser = currentUser;
+			$scope.shoppingCart.user = currentUser;
+		});
+	});
+
 	$scope.$on('getShoppingCart', function (event, callback){
 		var waitForContent = $interval(function(){
 			if ($scope.shoppingCart !== undefined) {
-				$interval.cancel(waitForContent)
+				$interval.cancel(waitForContent);
 				callback($scope.shoppingCart);
 			}
 		},10)
@@ -424,7 +435,7 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 				$("body").animate({scrollTop: $('#product-tabs').offset().top-83}, "slow");
 				$interval.cancel(waitForLoad);
 			} catch (err) {
-				console.log('test')
+
 			}
 		});
 	}

@@ -31,16 +31,20 @@ happy_cup.factory('user_factory',function($http){
 	};
 
 	factory.editUser = function(userData, callback){
-		console.log(userData);
-		$http.post('customers/edit/',userData).then(function(response){
-			if (response.data.errors) {
-				callback(response.data);
-			} else {
-				currentUser = response.data.user
-				callback(response.data.user);
-			}
+		if (userData.username == currentUser.username && userData.first_name == currentUser.first_name && userData.last_name == currentUser.last_name && userData.email == currentUser.email) {
+			callback(currentUser);
+		} else {
 
-		});
+			$http.post('customers/edit/',userData).then(function(response){
+				if (response.data.errors) {
+					callback(response.data);
+				} else {
+					currentUser = response.data.user
+					callback(response.data.user);
+				}
+
+			});
+		}
 	}
 
 	factory.loginUser = function(userData, callback) {
@@ -57,6 +61,28 @@ happy_cup.factory('user_factory',function($http){
 			}
 		});
 
+	};
+
+	factory.removeSavedAddress = function(id, callback) {
+
+		$http.post('customers/edit/', {address:id}).then(function(response) {
+			if (response.data.status) {
+				currentUser = response.data.user;
+			}
+			callback(currentUser);
+		})
+		
+	};
+
+	factory.syncUser = function(userData, callback) {
+		currentUser = userData;
+		callback(currentUser);
+	};
+
+	factory.getOrderHistory = function(callback) {
+		$http.get('/customers/orders').then(function(response){
+			callback(response.data);
+		});
 	};
 
 	factory.logout = function(callback) {

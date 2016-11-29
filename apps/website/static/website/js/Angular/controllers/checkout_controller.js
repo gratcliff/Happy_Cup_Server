@@ -57,6 +57,9 @@ happy_cup.controller('checkout_controller', function ($scope, $location, $timeou
 						$anchorScroll('Tel');
 						$scope.submittingInfo = false;
 					} else {
+						if (response.data.user) {
+							$scope.$emit('userProfileChange', response.data.user);
+						}
 						$location.url('/cart/payment');
 					}
 
@@ -77,7 +80,6 @@ happy_cup.controller('checkout_controller', function ($scope, $location, $timeou
 	}
 
 	$scope.populateForms = function(cart, savedAddress) {
-		console.log(cart);
 		if (cart.shipping && !savedAddress) {
 
 			$scope.shippingInfo = cart.shipping

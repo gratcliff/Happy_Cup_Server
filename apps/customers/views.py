@@ -7,7 +7,10 @@ from .forms import UserRegisterForm, UserEditForm
 from django.contrib.auth import authenticate, login, logout
 
 from ..website.serialize import JsonSerializer
+from ..orders.models import CustomerOrder, SubscriptionOrder
+
 from .models import ShippingAddress, Customer
+
 
 
 import json
@@ -43,27 +46,30 @@ class RegisterUser(View):
 class EditUser(View):
 
 	def post(self, request):
-		print "user is being edited"
-		form = UserEditForm(json.loads(request.body))
+
+		data = json.loads(request.body)
+
+		# switch methods if deleting saved address
+		if data.get('address'):
+			self.delete_address(data['address'])
+			user_json = serialize.serialize_user(request.user)
+			return JsonResponse({'status': True, 'user':user_json});
+
+		form = UserEditForm(data, instance=request.user)
 
 		if form.is_valid():
-			prev_username = json.loads(request.body)["prev_username"]
-			username = form.cleaned_data['username']
-			first_name = form.cleaned_data['first_name']
-			last_name = form.cleaned_data['last_name']
-			email = form.cleaned_data['email']
-			user = User.objects.get(username=prev_username)
-			user.username = username
-			user.first_name = first_name
-			user.last_name = last_name
-			user.email = email
-			user.save()
+			user = form.save()
 
-			# Customer.objects.filter(email=email).update(username=username,first_name=first_name,last_name=last_name, email=email)
 			user_json = serialize.serialize_user(user)
+			return JsonResponse({'status': True, 'user':user_json}); 
 
 		else:
 			return JsonResponse({'status': False, 'errors': form.errors.as_json()})
+
+	def delete_address(self, id):
+		
+		address = ShippingAddress.objects.get(id=int(id))
+		address.delete()
 
 
 class LoginUser(View):
@@ -127,6 +133,17 @@ class GetCurrentUser(View):
 		return JsonResponse({'status': False})
 
 
+class GetOrderHistory(View):
+
+	def get(self, request):
+		orders = CustomerOrder.objects.filter(customer=request.user.customer)
+		subscriptions = SubscriptionOrder.objects.filter(customer=request.user.customer)
+
+		orders_json = [order.serialize_model(True) for order in orders]
+		subscription_json = [sub.serialize_model() for sub in subscriptions]
+
+		return JsonResponse({'orders':orders_json, 'subscriptions':subscription_json})
+		
 
 def logout_user(request):
 	logout(request)

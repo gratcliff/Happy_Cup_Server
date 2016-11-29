@@ -16,6 +16,7 @@ class ShoppingCart(object):
 		self.totalItems = 0
 		self.totalPrice = 0
 		self.totalWeight = 0
+		self.user = None
 
 	def to_dictionary(self):
 
@@ -29,7 +30,8 @@ class ShoppingCart(object):
 				"shippingFee" : self.shippingFee,
 				"totalItems" : self.totalItems,
 				"totalPrice": self.totalPrice,
-				"totalWeight": self.totalWeight
+				"totalWeight": self.totalWeight,
+				"user" : self.user
 			}
 
 	def from_dictionary(self, data):
@@ -44,6 +46,7 @@ class ShoppingCart(object):
 		self.totalItems = data['totalItems']
 		self.totalPrice = data['totalPrice']
 		self.totalWeight = data['totalWeight']
+		self.user = data['user']
 
 
 		return self

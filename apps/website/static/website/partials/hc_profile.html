@@ -1,35 +1,85 @@
 <div ng-controller = 'profile_controller'>
 	<div class="container" ng-show="userAllowedInView">
-		<div class="col-md-10 col-sm-12 col-xs-12 col-md-offset-1">
-			<h3><b>Personal Info</b></h3>
-			<table class="table-profile table table-hover table-borderless">
-				<tbody>
-					<tr>
-						<td><label class="control-label">Username:</label></td>
-						<td ng-show="!userEdit">[[currentUser.username]]</td>
-						<td ng-show="userEdit"><input class="form-control" type="text" ng-model="profileEditForm.username"></td>
+		<div class="row">
+			<div class="col-md-6">
+				<h3><b>Personal Info</b></h3>
+				<table class="table-profile table table-hover table-borderless">
+					<tbody>
+						<tr>
+							<td><label class="control-label">Username:</label></td>
+							<td ng-show="!userEdit">[[currentUser.username]]</td>
+							<td ng-show="userEdit"><input class="form-control" type="text" ng-model="profileEditForm.username"></td>
+						</tr>
+						<tr>
+							<td><label class="control-label">First Name:</label></td>
+							<td ng-show="!userEdit" >[[currentUser.first_name]]</td>
+							<td ng-show="userEdit"><input class="form-control" type="text" ng-model="profileEditForm.first_name"></td>
+						</tr>
+						<tr>
+							<td><label class="control-label">Last Name:</label></td>
+							<td ng-show="!userEdit">[[currentUser.last_name]]</td>
+							<td ng-show="userEdit"><input class="form-control" type="text" ng-model="profileEditForm.last_name"></td>
+						</tr>
+						<tr>
+							<td><label class="control-label">Email:</label></td>
+							<td ng-show="!userEdit">[[currentUser.email]]</td>
+							<td ng-show="userEdit"><input class="form-control" value="[[currentUser.email]]" type="text" ng-model="profileEditForm.email"></td>
+						</tr>
+						<tr ng-if="backendErrors">
+							<td colspan="2" class="text-danger">
+								<p class="margin-clear text-danger">Please correct the following errors and submit again</p>
+								<ul>
+									<li ng-repeat="error in backendErrors">[[error.message]]</li>
+								</ul>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<a class="pull-left btn btn-default btn-sm" ng-click="editMode(currentUser)" role="button" ng-show="!userEdit">Edit</a>
+				<a href="/customers/password_change" class="pull-left btn btn-default btn-sm" role="button" ng-show="!userEdit">Change Password</a>
+				<a class="pull-left btn btn-default btn-sm" ng-click="editUser()" role="button" ng-show="userEdit">Save</a>
+				<a class="pull-left btn btn-default btn-sm" ng-click="userEdit = false; backendErrors = undefined;" role="button" ng-show="userEdit">Cancel</a>
+			</div>
+			<div class="col-md-6">
+				<h3><b>Saved Shipping Information</b></h3>
+				<table class="table-profile table table-hover">
+					<tbody>
+						<tr ng-repeat="address in currentUser.shipping_list">
+							<td>
+								[[address.name]]<br>
+								[[address.address.line1]] [[address.address.line2]]<br>
+								[[address.address.city]], [[address.address.state]] [[address.address.postal_code]]<br>
+								[[address.phone]]<br>
+								[[address.email]]
+							</td>
+							<td><button class="btn btn-default" ng-click="removeSavedAddress(address.id)">Remove</button></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		<div class="row">
+			<div class="col-md-6">
+				<h3><b>Order History</b></h3>
+				<table class="table-profile table table-hover">
+
+					<tr ng-repeat="order in orders">
+						<td>[[order.id]]  - more info coming soon</td>
 					</tr>
-					<tr>
-						<td><label class="control-label">First Name:</label></td>
-						<td ng-show="!userEdit">[[currentUser.first_name]]</td>
-						<td ng-show="userEdit"><input class="form-control" type="text" ng-model="profileEditForm.first_name"></td>
+
+				</table>
+			</div>
+			<div class="col-md-6">
+				<h3><b>Subscription History</b></h3>
+				<table class="table-profile table table-hover">
+
+					<tr ng-repeat="sub in subscriptions">
+						<td>[[sub.id]] - more info coming soon</td>
 					</tr>
-					<tr>
-						<td><label class="control-label">Last Name:</label></td>
-						<td ng-show="!userEdit">[[currentUser.last_name]]</td>
-						<td ng-show="userEdit"><input class="form-control" type="text" ng-model="profileEditForm.last_name"></td>
-					</tr>
-					<tr>
-						<td><label class="control-label">Email:</label></td>
-						<td ng-show="!userEdit">[[currentUser.email]]</td>
-						<td ng-show="userEdit"><input class="form-control" value="[[currentUser.email]]" type="text" ng-model="profileEditForm.email"></td>
-					</tr>
-				</tbody>
-			</table>
-			<a class="pull-left btn btn-default btn-sm" ng-click="toggleForm([[currentUser.username]])" role="button" ng-show="!userEdit">Edit</a>
-			<a href="/customers/password_change" class="pull-left btn btn-default btn-sm" ng-click="toggleForm([[currentUser.email]])" role="button" ng-show="!userEdit">Change Password</a>
-			<a class="pull-left btn btn-default btn-sm" ng-click="editUser()" role="button" ng-show="userEdit">Save</a>
-			<a class="pull-left btn btn-default btn-sm" ng-click="cancelEdit()" role="button" ng-show="userEdit">Cancel</a>
+
+				</table>
+			</div>
+			
+		</div>
 		</div>
 	</div>
 </div>
