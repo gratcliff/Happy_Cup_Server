@@ -61,7 +61,23 @@ happy_cup.factory('shop_factory', function($http){
 		
 	};
 
-	factory.addCoffeeToCart = function(order, callback) {
+	factory.addCoffeeToCart = function(coffee, options, callback) {
+
+		var order = {
+			id: coffee.id,
+			name: coffee.name,
+			roast: coffee.roast,
+			featured: coffee.featured,
+			size: options.size,
+			grind: options.grind,
+			qty: options.qty,
+			ship_wt: options.size.ship_wt * options.qty,
+			subtotal: Math.round(options.size.base_price * 100 * options.qty) / 100
+		};
+
+		console.log(shoppingCart.coffee);
+
+
 		var identicalProduct = false;
 		for (idx in shoppingCart.coffee) {
 			// if an identical product exists in the cart, 
@@ -88,7 +104,6 @@ happy_cup.factory('shop_factory', function($http){
 		shoppingCart.totalPrice = roundPrice(shoppingCart.totalPrice, order.subtotal)
 		shoppingCart.totalWeight += order.ship_wt;
 
-		console.log(shoppingCart.totalWeight);
 
 		$http.post('sync/', shoppingCart).then(function(response){
 			callback(shoppingCart);
@@ -96,7 +111,24 @@ happy_cup.factory('shop_factory', function($http){
 		
 	}	
 
-	factory.addSubscriptionsToCart = function(order, callback) {
+	factory.addSubscriptionsToCart = function(sub, options, callback) {
+
+		var order = {
+			id: sub.id,
+			stripe_id : sub.stripe_id,
+			qty: 1,
+			name: sub.name,
+			coffee: options.coffee,
+			size: options.size,
+			grind: options.grind,
+			price: options.size.base_price_plan,
+			subtotal: options.size.base_price_plan,
+			shipments: options.shipments,
+			ship_wt: options.size.ship_wt
+		};
+
+
+
 		var identicalProduct = false;
 		for (idx in shoppingCart.subscriptions) {
 			// adjust the qty and price of the existing one
@@ -129,7 +161,29 @@ happy_cup.factory('shop_factory', function($http){
 		});
 	}		
 
-	factory.addMerchandiseToCart = function(order, callback) {
+	factory.addMerchandiseToCart = function(merch, options, callback) {
+
+		var order = {
+			id: merch.id,
+			qty: 1,
+			name: merch.name,
+			price: merch.price,
+			subtotal: merch.price,
+			featured: merch.featured,
+			ship_wt: merch.ship_wt
+
+		};
+		//Can be length 1 or 3
+		if (options.coffee){
+			order.coffee = options.coffee;
+		}
+		if (options.grind){
+			order.grind = options.grind;
+		}
+		if (options.size){
+			order.size = options.size;
+		}
+
 
 		var identicalProduct = false;
 		for (idx in shoppingCart.merch) {

@@ -30,7 +30,7 @@ happy_cup.factory('content_factory', function($http, $interval){
 			});
 
 		
-	}
+	};
 
 	factory.getPageContent = function(page, callback) {
 
@@ -42,7 +42,19 @@ happy_cup.factory('content_factory', function($http, $interval){
 
 		},10)
 
-	}
+	};
+
+	factory.openCoffeeModal = function(id, callback) {
+
+		angular.forEach(content.home.products.coffee, function(coffee, idx){
+			if (coffee.id == id) {
+				callback(coffee);
+				return
+			}
+			
+		});
+
+	};
 
 
 	return factory;

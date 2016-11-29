@@ -78,12 +78,10 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 
 			emit_message = 'openCoffeeModal';
 			modal = '#coffee_modal'
-			console.log(product.idx, 'coffee');
 		}
 		else if (product.type == 'merchandise' || product.type == 'variety') {
 
 			angular.forEach($scope.products.merchandise, function(merch, idx){
-				console.log(product);
 				if (product.id === merch.id) {
 
 					product.idx = idx;
@@ -92,7 +90,6 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 			});
 			emit_message = 'openMerchandiseModal';
 			modal = '#merch_modal'
-			console.log(product.idx, 'merch');
 
 		}
 		else if (product.type == 'subscription') {
@@ -138,19 +135,9 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 		}
 
 		coffee.addingProduct = true;
-		var data = {
-			id: coffee.id,
-			name: coffee.name,
-			roast: coffee.roast,
-			featured: coffee.featured,
-			size: order.size,
-			grind: order.grind,
-			qty: order.qty,
-			ship_wt: order.size.ship_wt * order.qty,
-			subtotal: Math.round(order.size.base_price * 100 * order.qty) / 100
-		};
+		
 			
-		shop_factory.addCoffeeToCart(data, function(newCart) {
+		shop_factory.addCoffeeToCart(coffee, order, function(newCart) {
 			
 			
 			$timeout(function(){
@@ -172,24 +159,10 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 			}
 			return 
 		}
-		console.log(order)
 
 		sub.addingProduct = true;
-		var data = {
-			id: sub.id,
-			stripe_id : sub.stripe_id,
-			qty: 1,
-			name: sub.name,
-			coffee: order.coffee,
-			size: order.size,
-			grind: order.grind,
-			price: order.size.base_price_plan,
-			subtotal: order.size.base_price_plan,
-			shipments: order.shipments,
-			ship_wt: order.size.ship_wt
-		};
 
-		shop_factory.addSubscriptionsToCart(data, function (newCart){
+		shop_factory.addSubscriptionsToCart(sub, order, function (newCart){
 
 			$timeout(function(){
 				delete sub.addingProduct
@@ -209,29 +182,9 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 			return
 		}
 		merch.addingProduct = true;
-		var data = {
-			id: merch.id,
-			qty: 1,
-			name: merch.name,
-			price: merch.price,
-			subtotal: merch.price,
-			featured: merch.featured,
-			ship_wt: merch.ship_wt
-
-		};
-		//Can be length 1 or 3
-		if (order.coffee){
-			data.coffee = order.coffee;
-		}
-		if (order.grind){
-			data.grind = order.grind;
-		}
-		if (order.size){
-			data.size = order.size;
-		}
 
 
-		shop_factory.addMerchandiseToCart(data, function (newCart){
+		shop_factory.addMerchandiseToCart(merch, order, function (newCart){
 
 			$timeout(function(){
 				delete merch.addingProduct

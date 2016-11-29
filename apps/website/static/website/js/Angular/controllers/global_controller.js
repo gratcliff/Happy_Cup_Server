@@ -165,14 +165,18 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 		
 	});
 
-	$scope.$on('openCoffeeModal', function (event, coffee) {
+	$scope.$on('openCoffeeModal', function (event, coffee, fromOrderHistory) {
 		$scope.coffeeModal = coffee;
 		$scope.coffeeOrder = {};
 		$scope.coffeeOrder.size = coffee.sizes[0];
 		$scope.coffeeOrder.grind = coffee.grinds[0];
 		$scope.coffeeOrder.qty = 1
 		$scope.cartModalError = false;
+		if (fromOrderHistory) {
+			$('#coffee_modal').modal('show');
+		}
 		$scope.mobileModal('#coffee_modal');
+
 	
 	});
 

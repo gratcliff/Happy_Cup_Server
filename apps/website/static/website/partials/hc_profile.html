@@ -60,11 +60,33 @@
 		<div class="row">
 			<div class="col-md-6">
 				<h3><b>Order History</b></h3>
-				<table class="table-profile table table-hover">
-
-					<tr ng-repeat="order in orders">
-						<td>[[order.id]]  - more info coming soon</td>
-					</tr>
+				<table class="table-profile table" ng-repeat="order in orders | orderBy:'-created_at' ">
+					<thead>
+						<th>
+							Date Placed
+							<br><small>[[order.created_at | date:shortDate]]</small>
+						</th>
+						<th>
+							Total
+							<br><small>[[order.totalPrice | currency : symbol : fractionSize]]</small>
+						</th>
+						<th>
+							Order # [[order.id]]
+							<br> <a href="" style="color: white;">Invoice</a>
+						</th>
+					</thead>
+					<tbody>
+						<tr class="text-center">
+							<td colspan="3">Click any product for more info</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<a ng-repeat="coffee in order.coffee" href="" ng-click="openCoffeeModal(coffee.id)">
+									[[coffee.qty]]x [[coffee.size.qty]] [[coffee.name]] [[coffee.grind.name]]<br><br>
+								</a>
+							</td>
+						</tr>
+					</tbody>
 
 				</table>
 			</div>
