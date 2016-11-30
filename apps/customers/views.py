@@ -11,6 +11,8 @@ from ..orders.models import CustomerOrder, SubscriptionOrder
 
 from .models import ShippingAddress, Customer
 
+from django.db import connection
+
 
 
 import json
@@ -136,8 +138,11 @@ class GetCurrentUser(View):
 class GetOrderHistory(View):
 
 	def get(self, request):
-		orders = CustomerOrder.objects.filter(customer=request.user.customer)
-		subscriptions = SubscriptionOrder.objects.filter(customer=request.user.customer)
+
+		customer = Customer.objects.select_related('wholesale_price').prefetch_related('customerorder_set', 'subscriptionorder_set', 'customerorder_set__coupon','subscriptionorder_set__subscription').get(user=request.user)
+
+		orders = customer.customerorder_set.all()
+		subscriptions = customer.subscriptionorder_set.all()
 
 		orders_json = [order.serialize_model(True) for order in orders]
 		subscription_json = [sub.serialize_model() for sub in subscriptions]

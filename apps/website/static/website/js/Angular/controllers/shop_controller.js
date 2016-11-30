@@ -121,7 +121,7 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 
 	});
 
-	$scope.addCoffeeToCart = function(coffee, order, callback) {
+	$scope.addCoffeeToCart = function(coffee, order, idx, callback) {
 		if ($scope.shoppingCart.subscriptions.length) {
 			$scope.cartError = true;
 			$anchorScroll('product-tabs');
@@ -150,12 +150,14 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 
 	}
 
-	$scope.addSubscriptionsToCart = function(sub, order, callback){
+	$scope.addSubscriptionsToCart = function(sub, order, idx, callback){
+		console.log('error')
 		if ($scope.shoppingCart.merch.length || $scope.shoppingCart.coffee.length) {
 			$scope.cartError = true;
 			$anchorScroll('product-tabs');
+			console.log(typeof(callback))
 			if (typeof(callback) === 'function') {
-				callback()
+				callback();
 			}
 			return 
 		}
@@ -172,7 +174,7 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 		});
 	}
 
-	$scope.addMerchToCart = function(merch, order, callback){
+	$scope.addMerchToCart = function(merch, order, idx, callback){
 		if ($scope.shoppingCart.subscriptions.length) {
 			$scope.cartError = true;
 			$anchorScroll('product-tabs');

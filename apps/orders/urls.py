@@ -8,6 +8,7 @@ urlpatterns = [
 	url(r'^subscribe/$', views.ProcessSubscription.as_view()),
 	url(r'^confirmation/$', views.SendEmailConfirmation.as_view()),
 	url(r'^invoice/$', views.ProvideInvoice.as_view()),
+	url(r'^cancel/$', views.CancelSubscription.as_view()),
 	url(r'^webhooks/invoice/$', views.webhooks),
 
 ]

@@ -166,7 +166,7 @@
 							<p>[[coffeeModal.description]]</p>
 							<form class = 'form-horizontal' role = 'form'>
 								<div class="form-group">
-									<p for = 'price' class = 'col-sm-2 control-label'>Price: </p>
+									<label for = 'price' class = 'col-sm-2 control-label'>Price: </label>
 									<div class="col-sm-8">
 										<input type="text" class="form-control form-control-no-style" value="[[coffeeOrder.size.base_price | currency : symbol : fractionSize]]" disabled>
 									</div>
@@ -223,11 +223,11 @@
 							<div class = 'col-xs-12 col-md-7'>
 								<p>[[subscriptionModal.description]]</p>
 								<form class = 'form-horizontal' role = 'form'>
-									<div class="form-group margin-clear">
-										<p for = 'price' class = 'col-sm-2 text-right'>Price: </p>
-									<div class="col-sm-8">
-										<input type="text" class="form-control form-control-no-style" value="[[coffeeOrder.size.base_price | currency : symbol : fractionSize]]" disabled>
-									</div>
+									<div class="form-group">
+										<label for = 'price' class = 'col-sm-2 text-right'>Price: </label>
+										<div class="col-sm-8">
+											<input type="text" class="form-control form-control-no-style" value="[[modalOrder.size.base_price_plan | currency : symbol : fractionSize]]" disabled>
+										</div>
 									</div>
 									<div class = 'form-group has-feedback'>
 										<label for ='size' class = 'col-sm-2 control-label'> Coffee:</label>
@@ -248,7 +248,7 @@
 								</form>
 							</div>
 						</div>
-						<div class="row" ng-show="cartModalError &&shoppingCart.coffee.length || shoppingCart.merch.length ">
+						<div class="row" ng-show="cartModalError && (shoppingCart.coffee.length || shoppingCart.merch.length) ">
 							<div class="col-xs-12">
 								<h5 class = 'text-danger'>
 									*** You currently have one or more subscriptions in your shopping cart and are unable to add one-time purchases of coffee or merchandise for billing reasons. Please purchase these items separately. You can view your cart <a href="#/cart" ng-click="dismissMobileModal()">here.</a>
@@ -280,8 +280,8 @@
 							<div class = 'col-xs-12 col-md-7'>
 								<p>[[merchandiseModal.description]]</p>
 								<form class = 'form-horizontal' role = 'form'>
-									<div class="form-group margin-clear">
-										<p for = 'price' class = 'col-sm-2 text-right'>Price: </p>
+									<div class="form-group">
+										<label for = 'price' class = 'col-sm-3 control-label'>Price: </label>
 									<div class="col-sm-8">
 										<input type="text" class="form-control form-control-no-style" value="[[coffeeOrder.size.base_price | currency : symbol : fractionSize]]" disabled>
 									</div>

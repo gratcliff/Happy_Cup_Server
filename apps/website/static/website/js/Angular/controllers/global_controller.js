@@ -180,18 +180,7 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 	
 	});
 
-	$scope.$on('openWholeSaleModal', function (event, coffee){
-		
-		$scope.wholeSaleCoffeeModal = coffee;
-		$scope.wholeSaleOrder = {};
-		$scope.wholeSaleOrder.size = 1;
-		$scope.wholeSaleOrder.qty = 1;
-		$scope.wholeSaleOrder.grind = coffee.grinds[0];
-		$scope.cartModalError = false;
-		$scope.mobileModal('#wholesale_coffee_modal');
-	})
-
-	$scope.$on('openSubscriptionModal', function (event, sub){
+	$scope.$on('openSubscriptionModal', function (event, sub, fromOrderHistory){
 
 		$scope.subscriptionModal = sub;
 		$scope.modalOrder = {};
@@ -199,11 +188,14 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 		$scope.modalOrder.grind = sub.coffees[0].grinds[0];
 		$scope.modalOrder.size = sub.coffees[0].sizes[0]
 		$scope.cartModalError = false;
+		if (fromOrderHistory) {
+			$('#subscription_modal').modal('show');
+		}
 		$scope.mobileModal('#subscription_modal');
 		
 	})
 
-	$scope.$on('openMerchandiseModal', function (event, merch){
+	$scope.$on('openMerchandiseModal', function (event, merch, fromOrderHistory){
 		$scope.merchandiseModal = merch;
 		$scope.modalOrder = {};
 		$scope.cartModalError = false;
@@ -234,7 +226,9 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 			}
 		});
 			
-		
+		if (fromOrderHistory) {
+			$('#merch_modal').modal('show');
+		}
 		$scope.mobileModal('#merch_modal')
 	})
 
@@ -304,7 +298,7 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 		
 	});
 
-	$scope.$on('orderSubmitted', function(event, data){
+	$scope.$on('orderSubmitted', function(event, data, fromOrderHistory){
 		shop_factory.getShoppingCart(function(cart){
 			$scope.shoppingCart = cart;
 			$scope.orderCompleted = true;
@@ -313,11 +307,17 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 			if ($scope.currentUser !== 'None') {
 				$scope.shoppingCart.user = $scope.currentUser;
 			}
-			$location.url('/cart/completed');
+			if (fromOrderHistory) {
+				$scope.invoiceAvailable = true;
+				$location.url('/cart/invoice');
+			} else {
+				$location.url('/cart/completed');
+			}
+			
 		});
 	})
 
-	$scope.$on('subscriptionSubmitted', function(event, data){
+	$scope.$on('subscriptionSubmitted', function(event, data, fromOrderHistory){
 		shop_factory.getShoppingCart(function(cart){
 			$scope.shoppingCart = cart;
 			$scope.orderCompleted = true;
@@ -326,7 +326,12 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 			if ($scope.currentUser !== 'None') {
 				$scope.shoppingCart.user = $scope.currentUser;
 			}
-			$location.url('/cart/completed');
+			if (fromOrderHistory) {
+				$scope.invoiceAvailable = true;
+				$location.url('/cart/invoice');
+			} else {
+				$location.url('/cart/completed');
+			}
 		});
 	})
 

@@ -386,6 +386,28 @@ class ProvideInvoice(View):
 			print e
 			return JsonResponse({'status': False})
 
+class CancelSubscription(View):
+
+	def post(self, request):
+		try:
+			sub_id = int(request.body)
+			sub = SubscriptionOrder.objects.get(id=sub_id)
+			stripe_id = sub.stripe_id
+			print sub
+
+			subscription = stripe.Subscription.retrieve(stripe_id)
+
+			subscription.delete()
+
+			sub.status = subscription['status']
+			sub.save()
+
+			return JsonResponse({'status': True})
+
+		except Exception as e:
+			print e.args
+			return JsonResponse({'status': False})
+
 def webhooks(request):
 
 	print request.body

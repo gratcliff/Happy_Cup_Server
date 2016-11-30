@@ -7,11 +7,14 @@ happy_cup.controller('profile_controller', function($scope, $location, $timeout,
 			
 			$scope.userEdit = false;
 			$scope.profileEditForm = {};
+			$scope.orderDisplay = { orders: true, subscriptions: false };
 
 			user_factory.getOrderHistory(function(orders){
+
 				$scope.orders = orders.orders;
 				$scope.subscriptions = orders.subscriptions;
 				$scope.userAllowedInView = true;
+
 			});
 
 			
@@ -59,9 +62,77 @@ happy_cup.controller('profile_controller', function($scope, $location, $timeout,
 		});
 	};
 
-	$scope.openCoffeeModal = function(id) {
-		content_factory.openCoffeeModal(id, function(coffee){
+	$scope.toLocaleDate = function(e) {
+		// helper function for filtering order dates
+		var options = { month: 'short', day:'numeric', year:'numeric'};
+		e.filterDate = new Date(e.created_at);
+		e.filterDate = e.filterDate.toLocaleDateString('en-US', options);
+		return e;
+	}
+
+	$scope.viewPreviousInvoice = function(order, type) {
+		if (type == 'order') {
+			var data = {
+				order_id:order.id,
+				customer_id: order.customer
+			};
+
+			$scope.$emit('orderSubmitted', data, true);
+
+		} else {
+			var data = {
+
+			}
+		}
+		
+	};
+
+	$scope.cancelSubscription = function(sub) {
+		shop_factory.cancelSubscription(sub, function(response){
+			if (response.status) {
+				sub.status = 'canceled'
+			}
+		});
+	}
+
+	$scope.openProductModal = function(product, type) {
+		content_factory.openProductModal(product, type, function(response){
+			var listener = ''
+
+			if (type == 'coffee') {
+
+				listener = 'openCoffeeModal';
+
+			} else if (type == 'merchandise') {
+
+				listener = 'openMerchandiseModal';
+
+			} else if (type == 'subscriptions') {
+
+				listener = 'openSubscriptionModal';
+
+			}
+
+			$scope.$emit(listener, response, true);
+			
+		});
+	};
+
+	$scope.openCoffeeModal = function(product, type) {
+		content_factory.openProductModal(product, type, function(coffee){
 			$scope.$emit('openCoffeeModal', coffee, true);
+		});
+	};
+
+	$scope.openMerchandiseModal = function(product, type) {
+		content_factory.openProductModal(product, type, function(merch){
+			$scope.$emit('openMerchandiseModal', merch, true);
+		});
+	};
+
+	$scope.openSubscriptionModal = function(product, type) {
+		content_factory.openProductModal(product, type, function(sub){
+			$scope.$emit('openSubscriptionModal', sub, true);
 		});
 	};
 
@@ -85,36 +156,37 @@ happy_cup.controller('profile_controller', function($scope, $location, $timeout,
 			}
 
 		} else if (productType === 'subscription'){
-
+			console.log(product, order)
 			if ($scope.shoppingCart.merch.length || $scope.shoppingCart.coffee.length) {
 
 				if (typeof(callback) === 'function') {
 					callback()
-				} else {
-					shop_factory.addSubscriptionsToCart(product, order, function(newCart){
-
-						$timeout(function(){
-							delete product.addingProduct
-							$('#subscription_modal').modal('hide')
-							// emits completion event to global controller
-							$scope.$emit('addedToCart');
-						}, 1000);
-
-					});
 				}
 
+			} else {
 
+				shop_factory.addSubscriptionsToCart(product, order, function(newCart){
+
+					$timeout(function(){
+						delete product.addingProduct
+						$('#subscription_modal').modal('hide')
+						// emits completion event to global controller
+						$scope.$emit('addedToCart');
+					}, 1000);
+
+				});
 			}
+
 			
 		} else if (productType === 'merchandise' || productType === 'variety') {
 
 			if ($scope.shoppingCart.subscriptions.length && typeof(callback) === 'function') {
 				callback();
 			} else {
-				shop_factory.addMerchToCart(product, order, function(newCart){
+				shop_factory.addMerchandiseToCart(product, order, function(newCart){
 
 					$timeout(function(){
-						delete merch.addingProduct
+						delete product.addingProduct
 						$('#merch_modal').modal('hide')
 						$scope.$emit('addedToCart');
 					}, 1000);

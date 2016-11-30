@@ -18,13 +18,10 @@ happy_cup.factory('content_factory', function($http, $interval){
 				headerLogo : "https://dl.dropboxusercontent.com/u/8287719/resources/images/Banners/HC_Logo.png",
 				};
 				
-
 			content.contact = {
 
 			};
-		
-
-			
+	
 				callback(content);
 
 			});
@@ -44,12 +41,20 @@ happy_cup.factory('content_factory', function($http, $interval){
 
 	};
 
-	factory.openCoffeeModal = function(id, callback) {
+	factory.openProductModal = function(product, type, callback) {
 
-		angular.forEach(content.home.products.coffee, function(coffee, idx){
-			if (coffee.id == id) {
-				callback(coffee);
+		angular.forEach(content.home.products[type], function(item, idx){
+			if (item.id == product.id && item.name == product.name) {
+				callback(item);
 				return
+			} else if (type == 'subscriptions') {
+
+					if (item.id = product.subscription_id) {
+
+						callback(item);
+						return
+
+					}
 			}
 			
 		});

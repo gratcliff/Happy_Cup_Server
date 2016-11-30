@@ -75,8 +75,6 @@ happy_cup.factory('shop_factory', function($http){
 			subtotal: Math.round(options.size.base_price * 100 * options.qty) / 100
 		};
 
-		console.log(shoppingCart.coffee);
-
 
 		var identicalProduct = false;
 		for (idx in shoppingCart.coffee) {
@@ -154,8 +152,7 @@ happy_cup.factory('shop_factory', function($http){
 		shoppingCart.totalPrice = roundPrice(shoppingCart.totalPrice,order.subtotal);
 		shoppingCart.totalWeight += order.ship_wt;
 
-		console.log(shoppingCart.totalWeight);		
-
+		console.log('factory line 155')
 		$http.post('sync/', shoppingCart).then(function(response){
 			callback(shoppingCart);
 		});
@@ -365,6 +362,16 @@ happy_cup.factory('shop_factory', function($http){
 			callback(response);
 		});
 	}
+
+	factory.cancelSubscription = function(sub, callback) {
+
+		$http.post('orders/cancel/', sub.id).then(function(response) {
+
+			callback(response.data)
+			
+		});
+
+	};
 
 	function roundPrice(previous, additional) {
 

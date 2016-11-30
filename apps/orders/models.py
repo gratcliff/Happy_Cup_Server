@@ -292,6 +292,7 @@ class SubscriptionOrder(models.Model):
 
 		obj = {
 			'subscription' : str(self.subscription),
+			'subscription_id' : self.subscription.id,
 			'coffee' : self.coffee,
 			'grind' : self.grind,
 			'size' : self.size,
@@ -303,7 +304,8 @@ class SubscriptionOrder(models.Model):
 			'subTotalPrice' : self.subTotalPrice,
 			'shipping_fee' : self.shipping_fee,
 			'totalPrice' : self.totalPrice,
-			'other_info' : self.other_info
+			'other_info' : self.other_info,
+			'status' : self.status
 		}
 
 		return obj

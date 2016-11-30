@@ -3,6 +3,7 @@
 		<div class="row">
 			<div class="col-md-6">
 				<h3><b>Personal Info</b></h3>
+				
 				<table class="table-profile table table-hover table-borderless">
 					<tbody>
 						<tr>
@@ -33,16 +34,21 @@
 								</ul>
 							</td>
 						</tr>
+						<tr>
+							<td colspan="2">
+								<a class="pull-left btn btn-default btn-sm" ng-click="editMode(currentUser)" role="button" ng-show="!userEdit">Edit</a>
+								<a href="/customers/password_change" class="pull-left btn btn-default btn-sm" role="button" ng-show="!userEdit">Change Password</a>
+								<a class="pull-left btn btn-default btn-sm" ng-click="editUser()" role="button" ng-show="userEdit">Save</a>
+								<a class="pull-left btn btn-default btn-sm" ng-click="userEdit = false; backendErrors = undefined;" role="button" ng-show="userEdit">Cancel</a>
+							</td>
+						</tr>
 					</tbody>
 				</table>
-				<a class="pull-left btn btn-default btn-sm" ng-click="editMode(currentUser)" role="button" ng-show="!userEdit">Edit</a>
-				<a href="/customers/password_change" class="pull-left btn btn-default btn-sm" role="button" ng-show="!userEdit">Change Password</a>
-				<a class="pull-left btn btn-default btn-sm" ng-click="editUser()" role="button" ng-show="userEdit">Save</a>
-				<a class="pull-left btn btn-default btn-sm" ng-click="userEdit = false; backendErrors = undefined;" role="button" ng-show="userEdit">Cancel</a>
+
 			</div>
 			<div class="col-md-6">
 				<h3><b>Saved Shipping Information</b></h3>
-				<table class="table-profile table table-hover">
+				<table class="table-profile table table-hover"
 					<tbody>
 						<tr ng-repeat="address in currentUser.shipping_list">
 							<td>
@@ -57,10 +63,29 @@
 					</tbody>
 				</table>
 			</div>
-		<div class="row">
-			<div class="col-md-6">
-				<h3><b>Order History</b></h3>
-				<table class="table-profile table" ng-repeat="order in orders | orderBy:'-created_at' ">
+		</div>
+			<!-- Nav tabs -->
+		<div class = 'row' id="product-tabs">
+			<div class="col-md-12">
+				<ul class="nav nav-pills">
+					<li ng-class="{active: orderDisplay.orders === true}"><a ng-click = 'orderDisplay.orders = true; orderDisplay.subscriptions = false' title="Order History"> <span class = 'tab_text'>Order History</span></a></li>
+					<li ng-class="{active: orderDisplay.subscriptions === true}"><a ng-click = 'orderDisplay.subscriptions = true; orderDisplay.orders = false;' title="Subscriptions"><span class = 'tab_text'>Subscription History</span></a></li>
+				</ul>
+			</div>
+		</div>
+
+			<!-- Nav Tab End -->
+
+		<div class="row" ng-show="orderDisplay.orders">
+			<div class="col-xs-10 col-xs-offset-1">
+					<h3 class="text-center"><b>Order History</b></h3>
+					<div class="form-group col-sm-4 col-sm-offset-4 mt-20">
+						<select class="form-control" ng-model="dateFilter">
+							<option value="">All Orders</option>
+							<option ng-repeat="order in orders | map: toLocaleDate | unique: 'filterDate' | orderBy:'-created_at' " value="[[order.filterDate]]">Orders placed on [[order.filterDate]]</option>
+						</select>
+					</div>
+				<table class="table-profile table" ng-repeat="order in orders | filter:dateFilter | orderBy:'-created_at' ">
 					<thead>
 						<th>
 							Date Placed
@@ -72,17 +97,24 @@
 						</th>
 						<th>
 							Order # [[order.id]]
-							<br> <a href="" style="color: white;">Invoice</a>
+							<br> <a href="" style="color: white;" ng-click="viewPreviousInvoice(order, 'order')"><small>View Invoice</small></a>
 						</th>
 					</thead>
 					<tbody>
 						<tr class="text-center">
 							<td colspan="3">Click any product for more info</td>
 						</tr>
-						<tr>
+						<tr ng-if="order.coffee.length">
 							<td colspan="2">
-								<a ng-repeat="coffee in order.coffee" href="" ng-click="openCoffeeModal(coffee.id)">
+								<a ng-repeat="coffee in order.coffee" href="" ng-click="openProductModal(coffee, 'coffee')">
 									[[coffee.qty]]x [[coffee.size.qty]] [[coffee.name]] [[coffee.grind.name]]<br><br>
+								</a>
+							</td>
+						</tr>
+						<tr ng-if="order.merch.length">
+							<td colspan="2">
+								<a ng-repeat="merch in order.merch" href="" ng-click="openProductModal(merch, 'merchandise')">
+									[[merch.qty]]x [[merch.name]]<br><br>
 								</a>
 							</td>
 						</tr>
@@ -90,18 +122,51 @@
 
 				</table>
 			</div>
-			<div class="col-md-6">
-				<h3><b>Subscription History</b></h3>
-				<table class="table-profile table table-hover">
-
-					<tr ng-repeat="sub in subscriptions">
-						<td>[[sub.id]] - more info coming soon</td>
-					</tr>
-
+		</div>
+		<div class="row" ng-show="orderDisplay.subscriptions">
+			<div class="col-xs-10 col-xs-offset-1">
+				<h3 class="text-center"><b>Subscription History</b></h3>
+				<div class="form-group col-sm-4 col-sm-offset-4 mt-20">
+					<select class="form-control" ng-model="statusFilter">
+						<option value="">All Subscriptions</option>
+						<option value="active">Active</option>
+						<option value="canceled">Canceled</option>
+					</select>
+				</div>
+				<table class="table-profile table" ng-repeat="sub in subscriptions | filter:statusFilter | orderBy: ['status', '-created_at'] track by $index">
+					<thead>
+						<th>
+							Activation Date
+							<br><small>[[sub.created_at | date:shortDate]] ([[sub.status]])</small>
+						</th>
+						<th>
+							Total
+							<br><small>[[sub.totalPrice | currency : symbol : fractionSize]]</small>
+						</th>
+						<th>
+							Subscription # [[sub.id]]
+							<br> <a href="" style="color: white;" ng-click="viewPreviousInvoice(sub, 'sub')"><small>View Invoice</small></a>
+						</th>
+					</thead>
+					<tbody>
+						<tr class="text-center">
+							<td colspan="3">Click any plan for more info</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<a href="" ng-click="openProductModal(sub, 'subscriptions')">[[sub.subscription]] - [[sub.quantity]]x [[sub.size]] [[sub.coffee]] [[sub.grind]]</a>
+							</td>
+							<td>
+								<p class="text-danger margin-clear" ng-show="sub.cancelPressed">Cancel this subscription?</p>
+								<button class="btn btn-default" ng-click="sub.cancelPressed = true;" ng-show="sub.status == 'active' && !sub.cancelPressed">Cancel</button>
+								<button class="btn btn-default" ng-click="sub.cancelPressed = undefined;" ng-show="sub.cancelPressed">No</button>
+								<br>
+								<button class="btn btn-default" ng-click="sub.cancelPressed = undefined; cancelSubscription(sub);" ng-show="sub.cancelPressed">Yes, Cancel</button>
+							</td>
+						</tr>
+					</tbody>
 				</table>
 			</div>
-			
-		</div>
 		</div>
 	</div>
 </div>
