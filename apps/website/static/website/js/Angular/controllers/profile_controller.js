@@ -95,13 +95,13 @@ happy_cup.controller('profile_controller', function($scope, $location, $timeout,
 		sub.canceling = true;
 		shop_factory.cancelSubscription(sub, function(response){
 			if (response.status) {
-				sub.status = 'canceled'
-				delete sub.cancelPressed;
-				delete sub.canceling;
-			} else {
-				delete sub.cancelPressed;
-				delete sub.canceling;
+				sub.status = 'canceled';
+
 			}
+
+			delete sub.cancelPressed;
+			delete sub.canceling;
+
 		});
 	}
 
