@@ -14,6 +14,7 @@ happy_cup.controller('profile_controller', function($scope, $location, $timeout,
 				$scope.orders = orders.orders;
 				$scope.subscriptions = orders.subscriptions;
 				$scope.userAllowedInView = true;
+				$scope.doneLoading = true;
 
 			});
 
@@ -81,16 +82,25 @@ happy_cup.controller('profile_controller', function($scope, $location, $timeout,
 
 		} else {
 			var data = {
+				subscriptions: [order],
+				customer_id: order.customer
+			};
 
-			}
+			$scope.$emit('subscriptionSubmitted', data, true);
 		}
 		
 	};
 
 	$scope.cancelSubscription = function(sub) {
+		sub.canceling = true;
 		shop_factory.cancelSubscription(sub, function(response){
 			if (response.status) {
 				sub.status = 'canceled'
+				delete sub.cancelPressed;
+				delete sub.canceling;
+			} else {
+				delete sub.cancelPressed;
+				delete sub.canceling;
 			}
 		});
 	}

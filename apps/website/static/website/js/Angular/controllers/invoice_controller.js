@@ -25,6 +25,7 @@ happy_cup.controller('invoice_controller', function($scope, $location, shop_fact
 
 		} else if (response.invoiceAvailable && response.subOrders.length && response.customer_id){
 
+			console.log(response)
 			$scope.shipping = response.subOrders[0].order.shipping_address;
 			$scope.billing = response.subOrders[0].billing[0];
 			$scope.subscriptions = response.subOrders;

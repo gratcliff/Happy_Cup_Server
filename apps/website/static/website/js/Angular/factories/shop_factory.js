@@ -152,7 +152,6 @@ happy_cup.factory('shop_factory', function($http){
 		shoppingCart.totalPrice = roundPrice(shoppingCart.totalPrice,order.subtotal);
 		shoppingCart.totalWeight += order.ship_wt;
 
-		console.log('factory line 155')
 		$http.post('sync/', shoppingCart).then(function(response){
 			callback(shoppingCart);
 		});

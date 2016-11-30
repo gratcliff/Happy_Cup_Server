@@ -1,4 +1,7 @@
 <div ng-controller = 'profile_controller'>
+	<div class="text-center">
+		<i class="fa fa-spinner fa-5x fa-spin" ng-show="!doneLoading"></i>
+	</div>
 	<div class="container" ng-show="userAllowedInView">
 		<div class="row">
 			<div class="col-md-6">
@@ -79,7 +82,7 @@
 		<div class="row" ng-show="orderDisplay.orders">
 			<div class="col-xs-10 col-xs-offset-1">
 					<h3 class="text-center"><b>Order History</b></h3>
-					<div class="form-group col-sm-4 col-sm-offset-4 mt-20">
+					<div class="form-group col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 mt-20">
 						<select class="form-control" ng-model="dateFilter">
 							<option value="">All Orders</option>
 							<option ng-repeat="order in orders | map: toLocaleDate | unique: 'filterDate' | orderBy:'-created_at' " value="[[order.filterDate]]">Orders placed on [[order.filterDate]]</option>
@@ -100,19 +103,19 @@
 							<br> <a href="" style="color: white;" ng-click="viewPreviousInvoice(order, 'order')"><small>View Invoice</small></a>
 						</th>
 					</thead>
-					<tbody>
+					<tbody class="tbody-outer-borders">
 						<tr class="text-center">
 							<td colspan="3">Click any product for more info</td>
 						</tr>
 						<tr ng-if="order.coffee.length">
-							<td colspan="2">
+							<td colspan="3">
 								<a ng-repeat="coffee in order.coffee" href="" ng-click="openProductModal(coffee, 'coffee')">
 									[[coffee.qty]]x [[coffee.size.qty]] [[coffee.name]] [[coffee.grind.name]]<br><br>
 								</a>
 							</td>
 						</tr>
 						<tr ng-if="order.merch.length">
-							<td colspan="2">
+							<td colspan="3">
 								<a ng-repeat="merch in order.merch" href="" ng-click="openProductModal(merch, 'merchandise')">
 									[[merch.qty]]x [[merch.name]]<br><br>
 								</a>
@@ -133,11 +136,11 @@
 						<option value="canceled">Canceled</option>
 					</select>
 				</div>
-				<table class="table-profile table" ng-repeat="sub in subscriptions | filter:statusFilter | orderBy: ['status', '-created_at'] track by $index">
+				<table class="table-profile table" ng-repeat="sub in subscriptions | filter:statusFilter | orderBy: '-created_at' track by $index">
 					<thead>
 						<th>
 							Activation Date
-							<br><small>[[sub.created_at | date:shortDate]] ([[sub.status]])</small>
+							<br><small>[[sub.created_at | date:shortDate]]</small>
 						</th>
 						<th>
 							Total
@@ -145,23 +148,25 @@
 						</th>
 						<th>
 							Subscription # [[sub.id]]
-							<br> <a href="" style="color: white;" ng-click="viewPreviousInvoice(sub, 'sub')"><small>View Invoice</small></a>
+							<br>
+							<small>[[sub.status | uppercase]]</small>
 						</th>
 					</thead>
-					<tbody>
+					<tbody class="tbody-outer-borders">
 						<tr class="text-center">
 							<td colspan="3">Click any plan for more info</td>
 						</tr>
 						<tr>
 							<td colspan="2">
+								[[sub.status | uppercase]] :
 								<a href="" ng-click="openProductModal(sub, 'subscriptions')">[[sub.subscription]] - [[sub.quantity]]x [[sub.size]] [[sub.coffee]] [[sub.grind]]</a>
 							</td>
 							<td>
-								<p class="text-danger margin-clear" ng-show="sub.cancelPressed">Cancel this subscription?</p>
+								<p class="text-danger margin-clear" ng-show="sub.cancelPressed && !sub.canceling">Cancel this subscription?</p>
 								<button class="btn btn-default" ng-click="sub.cancelPressed = true;" ng-show="sub.status == 'active' && !sub.cancelPressed">Cancel</button>
-								<button class="btn btn-default" ng-click="sub.cancelPressed = undefined;" ng-show="sub.cancelPressed">No</button>
-								<br>
-								<button class="btn btn-default" ng-click="sub.cancelPressed = undefined; cancelSubscription(sub);" ng-show="sub.cancelPressed">Yes, Cancel</button>
+								<button class="btn btn-default" ng-click="sub.cancelPressed = undefined;" ng-show="sub.cancelPressed && !sub.canceling">No</button>
+								<button class="btn btn-default" ng-click="cancelSubscription(sub);" ng-show="sub.cancelPressed && !sub.canceling">Yes, Cancel</button>
+								<i class="fa fa-spinner fa-spin fa-2x" ng-show="sub.canceling"></i>
 							</td>
 						</tr>
 					</tbody>

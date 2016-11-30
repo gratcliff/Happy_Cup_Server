@@ -37,10 +37,13 @@ class UserEditForm(forms.ModelForm):
 
 	def clean(self):
 		cleaned_data = super(UserEditForm, self).clean()
+		print cleaned_data.get('first_name')
 		if self.instance.email != cleaned_data['email']:
 			duplicate = User.objects.filter(email__iexact=cleaned_data['email'])
 			if duplicate:
 				self.add_error('email', 'A user with that email address already exists.')
+		if cleaned_data.get('first_name') == "" or cleaned_data.get('last_name') == "":
+			self.add_error('first_name', 'All fields are required')
 
 
 class CustomerShippingForm(forms.ModelForm):
