@@ -12,5 +12,7 @@ urlpatterns = [
 	url(r'^login/$', views.LoginUser.as_view()),
 	url(r'^logout/$', views.logout_user),
 	url(r'^password_change/$', auth_views.password_change, name='password_change'),
+	url(r'^password_change_done/$', auth_views.password_change_done, name='password_change_done'),
+
 
 ]

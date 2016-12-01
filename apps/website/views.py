@@ -43,12 +43,16 @@ class ProvideContent(View):
 
 		self.content.query_set = QuerySet()
 		self.content.expired_promotion_check()
-		self.content.refresh_geocodes()	
-		self.content.populate_products()
+		self.content.refresh_geocodes()
 		self.content.populate_aboutPage()
 		self.content.populate_locations()
 		self.content.populate_news()
 		self.content.populate_cafe()
+
+		if request.user.is_authenticated:
+			self.content.populate_products(request.user.customer.wholesale_price)
+		else:
+			self.content.populate_products()
 
 		self.context = {
 			'home' : {

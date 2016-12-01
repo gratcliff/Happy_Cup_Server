@@ -18,6 +18,7 @@ class JsonSerializer:
 	def featured_product_expiration(self, expired_promotions):
 
 		global db_modified
+		
 		for promotion in expired_promotions:
 			if not promotion.expired:
 				promotion.coffee_set = []
@@ -27,7 +28,7 @@ class JsonSerializer:
 				promotion.save()
 
 
-	def serialize_coffee(self, coffees, check_featured=True, variety_pack=False):
+	def serialize_coffee(self, coffees, check_featured=True, variety_pack=False, discount=None):
 
 		global db_modified
 
@@ -41,10 +42,10 @@ class JsonSerializer:
 				'name' : coffee.name,
 				'roast' : { 'id' : coffee.roast.id, 'name' : str(coffee.roast), 'origin': coffee.roast.origin } if not variety_pack else None,
 				'grinds' : self.serialize_grinds(coffee.grinds.all()),
-				'sizes' : self.serialize_sizes(coffee.sizes.all(), coffee, check_featured) if not variety_pack else None,
+				'sizes' : self.serialize_sizes(coffee.sizes.all(), coffee, check_featured, discount) if not variety_pack else None,
 				'description' : coffee.description,
 				'image_url' : coffee.image_url,
-				'price_factor' : coffee.price_factor,
+				'price_factor' : coffee.price_factor if not discount else coffee.price_factor - discount,
 				'type' : 'coffee' if not coffee.wholesale else 'wholesale'
 			}
 
@@ -82,12 +83,14 @@ class JsonSerializer:
 		return data
 
 
-	def serialize_sizes(self, sizes, coffee, check_featured):
+	def serialize_sizes(self, sizes, coffee, check_featured, discount):
 		data = []
+
+		customer_discount = discount if discount else 0
 
 		if check_featured:
 			featured_discount = 0 if coffee.featured is None else coffee.featured.discount
-			featured_price_factor = (100 + float(coffee.price_factor) - featured_discount) / 100
+			featured_price_factor = (100 + float(coffee.price_factor) - featured_discount - customer_discount) / 100
 
 		for size in sizes:
 			obj = {
@@ -95,14 +98,16 @@ class JsonSerializer:
 				'qty' : str(size),
 				'ship_wt' : size.qty if size.unit == 'lbs' else float("{0:.2f}".format(size.qty / 16.0)),
 				'base_price' : None if not check_featured else float("{0:.2f}".format(float(size.base_price) * featured_price_factor)),
-				'base_price_plan' : float("{0:.2f}".format(float(size.base_price_plan) * ((100+coffee.price_factor)/100.0))),
+				'base_price_plan' : float("{0:.2f}".format(float(size.base_price_plan) * ((100+coffee.price_factor-customer_discount)/100.0))),
 			}
+
+
 
 			data.append(obj)
 
 		return data
 
-	def serialize_subscriptions(self, subs):
+	def serialize_subscriptions(self, subs, discount=None):
 		data = []
 		global db_modified
 
@@ -114,7 +119,7 @@ class JsonSerializer:
 				'id' : sub.id,
 				'name' : ' '.join(name),
 				'frequency' : sub.frequency,
-				'coffees' : self.serialize_coffee(sub.coffees.all(), False, False)[0],
+				'coffees' : self.serialize_coffee(sub.coffees.all(), False, False, discount)[0],
 				'image_url' : sub.image_url,
 				'type' : 'subscription',
 			}
@@ -367,7 +372,7 @@ class JsonSerializer:
 		customer = None
 
 		try:
-			customer = Customer.objects.prefetch_related('shippingaddress_set').get(user=user)
+			customer = Customer.objects.select_related('wholesale_price').prefetch_related('shippingaddress_set').get(user=user)
 			obj = {
 				'id' : user.id,
 				'username' : user.username,
@@ -375,6 +380,7 @@ class JsonSerializer:
 				'last_name' : user.last_name,
 				'email' : user.email,
 				'customer' : customer.id,
+				'refreshOnLogin' : True if customer.wholesale_price.discount_rate else False,
 				'shipping' : customer.shipping_address(False, True),
 				'shipping_list' : [ address.shipping_address(False, True) for address in customer.shippingaddress_set.all()]
 			}

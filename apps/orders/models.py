@@ -339,9 +339,11 @@ class SubscriptionOrder(models.Model):
 
 		%s
 
+		Price per shipment is $%s.  A separate email will be sent once payment has been processed.
+
 		
 
-		 """ % (subscription['billing'][0]['name'], str(self.subscription), self.id, self.coffee, self.size, self.grind, self.subscription.frequency, self.quantity, self.size, self.coffee, self.grind, self.parse_shipping_address(True))
+		 """ % (subscription['billing'][0]['name'], str(self.subscription), self.id, self.coffee, self.size, self.grind, self.subscription.frequency, self.quantity, self.parse_shipping_address(True), "{0:.2f}".format(self.totalPrice))
 
 		send_mail(subject,message,from_email,recipient)
 

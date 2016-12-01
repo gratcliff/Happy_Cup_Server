@@ -102,6 +102,14 @@
 			<div class="row" ng-show = 'productDisplay.showCoffee === true' id="coffee_products">
 
 				<h1 class = 'row row-centered'>Current Roasts</h1>
+				<h3 class="text-danger text-center" ng-show="currentUser === 'None' ">Please 
+					<a href="" ng-if="currentUser === 'None' && !mobileAndTabletCheck" data-toggle="modal" data-target="#user-reg-modal">Sign Up</a> 
+					<a href="" ng-if="currentUser === 'None' && mobileAndTabletCheck" ng-click="mobileModal('#user-reg-modal')">Sign Up</a> 
+					or 
+					<a href="" ng-if="currentUser === 'None' && !mobileAndTabletCheck" data-toggle="modal" data-target="#user-login-modal">Login</a> 
+					<a href="" ng-if="currentUser === 'None' && mobileAndTabletCheck" ng-click="mobileModal('#user-login-modal')">Login</a> 
+					to view the most up to date pricing.
+				</h3>
 				<div class = 'row row-centered' ng-show="shoppingCart.subscriptions.length && cartError">
 					<h5 class = 'col-sm-10 col-centered text-danger'>
 						*** You currently have one or more subscriptions in your shopping cart and are unable to add one-time purchases of coffee or merchandise for billing reasons. Please purchase these items separately. You can view your cart <a href="#/cart">here.</a>
@@ -181,13 +189,13 @@
 					<p class = 'col-sm-10 col-centered'>Happy Cup sent directly to your door! Choose your favorite roast, or switch things up every month with the "Roaster's Choice" option and try one bag each of our current coffee lineup! A great way to introduce a friend to Happy Cup and spread the Portland coffee scene.</p>
 
 						<h3 class="text-danger" ng-show="currentUser === 'None' ">Please 
-						<a href="" ng-if="currentUser === 'None' && !mobileAndTabletCheck" data-toggle="modal" data-target="#user-reg-modal">Sign Up</a> 
-						<a href="" ng-if="currentUser === 'None' && mobileAndTabletCheck" ng-click="mobileModal('#user-reg-modal')">Sign Up</a> 
-						or 
-						<a href="" ng-if="currentUser === 'None' && !mobileAndTabletCheck" data-toggle="modal" data-target="#user-login-modal">Login</a> 
-						<a href="" ng-if="currentUser === 'None' && mobileAndTabletCheck" ng-click="mobileModal('#user-login-modal')">Login</a> 
-						to view subscription options.
-					</h3>
+							<a href="" ng-if="currentUser === 'None' && !mobileAndTabletCheck" data-toggle="modal" data-target="#user-reg-modal">Sign Up</a> 
+							<a href="" ng-if="currentUser === 'None' && mobileAndTabletCheck" ng-click="mobileModal('#user-reg-modal')">Sign Up</a> 
+							or 
+							<a href="" ng-if="currentUser === 'None' && !mobileAndTabletCheck" data-toggle="modal" data-target="#user-login-modal">Login</a> 
+							<a href="" ng-if="currentUser === 'None' && mobileAndTabletCheck" ng-click="mobileModal('#user-login-modal')">Login</a> 
+							to view subscription options.
+						</h3>
 				</div>
 				<div class = 'row row-centered' ng-show="cartError && (shoppingCart.coffee.length || shoppingCart.merch.length)">
 					<h5 class = 'col-sm-10 col-centered text-danger'>
@@ -212,10 +220,10 @@
 							<td ng-if="mobileAndTabletCheck"><a class = 'margin-clear btn btn-group btn-brown' ng-click="openSubscriptionModal(subscription, $index)">+</a></td>
 							<td >[[subscription.name]]</td>
 							<td class = 'hidden-xs'><select class = 'form-control' ng-init = 'order.coffee=subscription.coffees[0]'
-							ng-model = 'order.coffee' ng-options = 'coffee.name for coffee in subscription.coffees'></select>
+							ng-model = 'order.coffee' ng-options = 'coffee.name for coffee in subscription.coffees' ng-change="changeSubscriptionOptions(order, 'coffee')"></select>
 							</td>
 							<td>[[order.size.base_price_plan | currency : symbol : fractionSize]] / [[subscription.frequency]]wk</td>
-							<td class="hidden-xs"><select class="form-control" ng-init="order.size=order.coffee.sizes[0]" ng-model="order.size" ng-options="size.qty for size in order.coffee.sizes track by size.id" ng-change="order.size = order.size != undefined ? order.size : order.coffee.sizes[0]"></select>
+							<td class="hidden-xs"><select class="form-control" ng-init="order.size=order.coffee.sizes[0]" ng-model="order.size" ng-options="size.qty for size in order.coffee.sizes track by size.id" ng-change="changeSubscriptionOptions(order, 'size')"></select>
 							<td class="hidden-xs"><select class = 'form-control' ng-init="order.grind=order.coffee.grinds[0]" ng-model = 'order.grind' ng-options = 'grind.name for grind in order.coffee.grinds track by grind.id' ng-change="order.grind = order.grind != undefined ? order.grind : order.coffee.grinds[0]"></select>
 							</td>
 							<td class="hidden-xs">

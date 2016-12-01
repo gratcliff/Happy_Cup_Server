@@ -51,6 +51,9 @@ class ShoppingCart(object):
 
 		return self
 
+	def is_empty(self):
+		return totalItems == 0
+
 
 
 					

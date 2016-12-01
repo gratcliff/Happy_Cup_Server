@@ -25,7 +25,6 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 					if ($scope.currentUser !== 'None') {
 						$scope.shoppingCart.user = $scope.currentUser;
 					}
-					// console.log($scope.shoppingCart)
 				});
 
 			});
@@ -100,7 +99,11 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 
 					//dismiss flash alert
 					$timeout(function() {
-						$scope.userRegAlert = false;
+						if ($scope.currentUser.refreshOnLogin) {
+							$window.location = '/';
+						} else {
+							$scope.userRegAlert = true;
+						}
 					}, 2000);
 				}
 			});
@@ -211,7 +214,6 @@ happy_cup.controller('global_controller', function ($window, $scope, $location, 
 				// reset qty to 0 for each option
 				angular.forEach($scope.merchandiseModal.coffees, function(coffee, key){
 					coffee.qty = 0;
-
 
 				});
 			} else {

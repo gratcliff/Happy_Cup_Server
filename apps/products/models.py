@@ -53,7 +53,9 @@ class Subscription(Timestamp):
 		return '%s Week Plan' % (self.frequency,)
 
 	def create_or_retreive_plan(self, price, shipping_fee):
-		price_int = int(price*100) + int(shipping_fee*100)
+		price = price*100
+		shipping_fee = shipping_fee*100
+		price_int = int(price+shipping_fee)
 		plan_id = "%s-week-plan-%s" % (self.frequency, str(price_int))
 
 

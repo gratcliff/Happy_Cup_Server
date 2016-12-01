@@ -150,8 +150,21 @@ happy_cup.controller('shop_controller', function ($scope, $timeout, $anchorScrol
 
 	}
 
+	$scope.changeSubscriptionOptions = function(order, key) {
+		var found = false;
+			angular.forEach(order.coffee.sizes, function(size, idx){
+				if (size.id == order.size.id) {
+					order.size = size
+					found = true;
+				}
+			});
+			if (!found) {
+				order.size = order.coffee.sizes[0];
+			}
+
+	}
+
 	$scope.addSubscriptionsToCart = function(sub, order, idx, callback){
-		console.log('error')
 		if ($scope.shoppingCart.merch.length || $scope.shoppingCart.coffee.length) {
 			$scope.cartError = true;
 			$anchorScroll('product-tabs');

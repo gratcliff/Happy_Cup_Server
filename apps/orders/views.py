@@ -264,7 +264,6 @@ class SendEmailConfirmation(View):
 	def post(self, request):
 		try:
 			data = json.loads(request.body)
-			print data
 			order_id = data.get('order_id')
 			cust_id = data.get('customer_id')
 			if data.get('subscriptions'):

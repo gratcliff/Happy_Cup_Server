@@ -24,13 +24,16 @@ class ContentProvider(object):
 		self.cafeContent = []
 
 
-	def populate_products(self):
+	def populate_products(self, discount=None):
+
+		if hasattr(discount, 'discount_rate'):
+			discount = discount.discount_rate
 
 		self.featured_products = []
 
-		(self.coffee_json, self.featured_coffee) = self.json_serializer.serialize_coffee(self.query_set.coffee)
+		(self.coffee_json, self.featured_coffee) = self.json_serializer.serialize_coffee(self.query_set.coffee, True, False, discount)
 
-		self.subscription_json = self.json_serializer.serialize_subscriptions(self.query_set.subscriptions)
+		self.subscription_json = self.json_serializer.serialize_subscriptions(self.query_set.subscriptions, discount)
 
 		(self.merchandise_json, self.featured_merchandise) = self.json_serializer.serialize_merch(self.query_set.merchandise)
 

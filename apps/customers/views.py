@@ -89,6 +89,7 @@ class LoginUser(View):
 				if user is not None:
 
 					login(request, user)
+					del request.session['shoppingCart']
 					user_json = serialize.serialize_user(user)
 					return JsonResponse({'status': True, 'user':user_json});
 
@@ -100,6 +101,7 @@ class LoginUser(View):
 				if user is not None:
 
 					login(request, user)
+					del request.session['shoppingCart']
 					user_json = serialize.serialize_user(user)
 					return JsonResponse({'status': True, 'user':user_json});
 
@@ -111,6 +113,7 @@ class LoginUser(View):
 			if user is not None:
 
 				login(request, user)
+				del request.session['shoppingCart']
 				user_json = serialize.serialize_user(user)
 				return JsonResponse({'status': True, 'user':user_json});
 
