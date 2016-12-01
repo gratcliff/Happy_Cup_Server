@@ -8,6 +8,8 @@ License URI:http://support.wrapbootstrap.com/
 File Description: Place here your custom CSS styles
 */
 
+
+
 .form-control-no-style {
 	background-color: inherit !important;
 	border: 0 !important;
@@ -19,6 +21,10 @@ File Description: Place here your custom CSS styles
 
 #full-width-header {
 	width: 100%;
+}
+
+#logo_img{
+	height: 125px;
 }
 
 .banner.video-background-banner {
@@ -634,19 +640,6 @@ fieldset legend {
 	}
 }
 
-@media (max-width: 768px) {
-	#full-width-header {
-		width: inherit;
-	}
-	#map-canvas {
-		height: 250px;
-	}
-
-	.modal-qty-input {
-		margin-top: 15px;
-	}
-}
-
 @media only screen and (min-width: 768px) {
 	.modal:before {
 	  content: '';
@@ -660,7 +653,32 @@ fieldset legend {
 
 @media (max-width: 768px) {
 
-   .blog_images_first_container{
+	#logo-box {
+		margin-top: -30px;
+	}
+
+	#logo {
+		display: inline-block;
+	}
+
+	#logo_img{
+		height: 70px;
+		position: absolute;
+		top: 45px;
+	}
+
+	#full-width-header {
+		width: inherit;
+	}
+	#map-canvas {
+		height: 250px;
+	}
+
+	.modal-qty-input {
+		margin-top: 15px;
+	}
+
+  .blog_images_first_container{
 		width: 100%;
 		position: relative;
 		height: 200px;
@@ -670,7 +688,7 @@ fieldset legend {
 	    opacity: 1;
 	}
 
-    .blog_images_container{
+   .blog_images_container{
 		width: 100%;
 		position: relative;
 		height: 200px;

@@ -16,7 +16,7 @@ happy_cup.factory('content_factory', function($http, $interval){
 				content.stripe_public_key = response.data.stripe_public_key;
 				content.contact = response.data.contact;
 				content.global = {
-				headerLogo : "https://dl.dropboxusercontent.com/u/8287719/resources/images/Banners/HC_Logo.png",
+				headerLogo : "https://s3-us-west-2.amazonaws.com/happycupwebsitefiles/resources/images/general_resources/HC_Logo.png",
 				};
 				
 			
