@@ -22,6 +22,7 @@ class ContentProvider(object):
 		self.cafeCarousel = []
 		self.cafeHours = []
 		self.cafeContent = []
+		self.contact = []
 
 
 	def populate_products(self, discount=None):
@@ -61,6 +62,9 @@ class ContentProvider(object):
 		self.cafeCarousel = self.json_serializer.serialize_carousel(self.query_set.cafeCarousel)
 		self.cafeHours = self.json_serializer.serialize_hours(self.query_set.cafeHours)
 		self.cafeContent = self.json_serializer.serialize_cafeContent(self.query_set.cafeContent)
+
+	def populate_contact(self):
+		self.contact = self.query_set.contact[0].serialize_model()
 
 	def expired_promotion_check(self):
 		self.json_serializer.featured_product_expiration(self.query_set.expired_promotions)

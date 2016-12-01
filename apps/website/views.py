@@ -48,6 +48,7 @@ class ProvideContent(View):
 		self.content.populate_locations()
 		self.content.populate_news()
 		self.content.populate_cafe()
+		self.content.populate_contact()
 
 		if request.user.is_authenticated:
 			self.content.populate_products(request.user.customer.wholesale_price)
@@ -75,6 +76,7 @@ class ProvideContent(View):
 				'hours' : self.content.cafeHours,
 				'content' : self.content.cafeContent
 			},
+			'contact' : self.content.contact,
 			'stripe_public_key' : os.environ.get('STRIPE_PUB_TEST')
 		}
 

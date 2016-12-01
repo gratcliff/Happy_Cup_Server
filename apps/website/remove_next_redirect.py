@@ -11,5 +11,7 @@ class RemoveNextMiddleware(object):
 			if request.path == settings.LOGIN_URL and 'next' in request.GET:
 				return HttpResponseRedirect(settings.LOGIN_URL)
 			if request.path == '/admin/login/' and 'next' in request.GET:
-				return HttpResponseRedirect(settings.LOGIN_URL)
+				if request.user.is_authenticated:
+					if not request.user.is_superuser and not request.user.is_staff:
+						return HttpResponseRedirect(settings.LOGIN_URL)
 			return response

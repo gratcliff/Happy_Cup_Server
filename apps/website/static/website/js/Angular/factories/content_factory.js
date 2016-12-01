@@ -14,13 +14,12 @@ happy_cup.factory('content_factory', function($http, $interval){
 				content.blog = response.data.blogPosts;
 				content.cafe = response.data.cafe;
 				content.stripe_public_key = response.data.stripe_public_key;
+				content.contact = response.data.contact;
 				content.global = {
 				headerLogo : "https://dl.dropboxusercontent.com/u/8287719/resources/images/Banners/HC_Logo.png",
 				};
 				
-			content.contact = {
-
-			};
+			
 	
 				callback(content);
 

@@ -26,4 +26,3 @@ class CustomerAdmin(admin.ModelAdmin):
 	
 admin.site.register(Customer, CustomerAdmin)
 admin.site.register(WholesalePrice)
-admin.site.register(ShippingAddress)

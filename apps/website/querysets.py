@@ -3,7 +3,7 @@ from ..products.models import Coffee, Subscription, Merchandise, VarietyPack, Pr
 from ..about_page.models import FullWidthSection, StaffMemberEntry
 from ..locations.models import Location
 from ..news.models import BlogPost
-from ..cafe.models import CafeCarouselImage, Cafe_hours, Cafe_content
+from .models import CafeCarouselImage, Cafe_hours, Cafe_content, ContactPage
 
 from django.utils import timezone
 from datetime import datetime, timedelta
@@ -25,6 +25,7 @@ class QuerySet(object):
 		self.cafeCarousel = CafeCarouselImage.objects.all()
 		self.cafeHours = Cafe_hours.objects.all()
 		self.cafeContent = Cafe_content.objects.all()
+		self.contact = ContactPage.objects.all()
 
 		self.refresh_geocodes = Location.objects.filter(updated_at__lte=timezone.now()-timedelta(days=30)).first()
 

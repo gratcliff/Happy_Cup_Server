@@ -23,7 +23,7 @@ class WholesalePrice(models.Model):
 		return "%s percent" % (str(self.discount_rate),)
 
 class Customer(models.Model):
-	user = models.OneToOneField(User, blank = True, null = True, limit_choices_to={'is_staff':False, 'customer': None})
+	user = models.OneToOneField(User, blank = True, null = True, limit_choices_to={'customer': None})
 	stripe_id = models.TextField(blank=True)
 	wholesale_price = models.ForeignKey(WholesalePrice, blank = True, null = True, on_delete = models.SET_NULL, help_text="Leave blank to use default price")
 	name = models.CharField(max_length=64, blank=True)
@@ -158,6 +158,7 @@ class ShippingAddress(models.Model):
 
 	class Meta:
 		unique_together = ('customer', 'name', 'address', 'address2', 'city', 'state', 'zipcode')
+		verbose_name_plural = 'Shipping Addresses'
 
 	def shipping_address(self, no_html=False, as_json=False):
 		if no_html:

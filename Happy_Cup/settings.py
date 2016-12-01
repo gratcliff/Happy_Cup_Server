@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'apps.locations',
     'apps.news',
     'apps.orders',
-    'apps.cafe',
     'tinymce',
 ]
 
