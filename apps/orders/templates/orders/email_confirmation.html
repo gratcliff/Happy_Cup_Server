@@ -47,11 +47,11 @@
 													<td style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: left;">
 														<h5>Happy Cup Coffee Company</h5>
 														<p>
-															2850 NE Sandy Blvd.<br>
-															Portland, OR 97232<br>
-															Billing: 971-302-7461<br>
-															Ordering: 503-544-7052<br>
-															E-mail: <a href="mailto:adamBray@happycup.com">adamBray@happycup.com</a>
+															{{company_info.hq_address_line1}}<br>
+															{{company_info.hq_address_line2}}<br>
+															Billing: {{company_info.billing_phone}}<br>
+															Ordering: {{company_info.account_phone}}<br>
+															E-mail: <a href="mailto:{{company_info.account_email}}">{{company_info.account_email}}</a>
 														</p>
 													</td>
 													<td style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: left; padding-left: 100px;">
@@ -210,7 +210,7 @@
 					<table align="center" border="0" cellpadding="0" cellspacing="0" width="960" style="border-collapse: collapse; margin-top: 15px;">
 						<tr style="font-family: helvetica, Arial, sans-serif; font-size: 14px; line-height: 21px; text-align: left;">
 							<td>
-							If you have any questions concerning this invoice, contact <strong>Cheryl Yeats</strong>, tel: <strong>971-302-7461</strong>, email: <strong><a href="mailto:cherylyeats@happycup.com"> cherylyeats@happycup.com</strong></a> <br> Thank you for your business!
+							If you have any questions concerning this invoice, contact <strong>{{company_info.billing_contact}}</strong>, tel: <strong>{{company_info.billing_phone}}</strong>, email: <strong><a href="mailto:{{company_info.billing_email}}"> {{company_info.billing_email}}</strong></a> <br> Thank you for your business!
 							</td>
 						</tr>
 					</table>

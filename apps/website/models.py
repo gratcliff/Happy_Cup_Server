@@ -121,15 +121,18 @@ class Cafe_content(Timestamp):
 class ContactPage(Timestamp):
 
 	image_url = models.URLField('Image on page top',help_text="Link from Amazon S3. To ensure proper styling, image should be no smaller than 945 pixels wide and 532 pixels high.", blank=True)
-	roaster_line1 = models.CharField('Happy Cup Roaster: Line 1', max_length=32,blank=True)
-	roaster_line2 = models.CharField('Happy Cup Roaster: Line 2', max_length=32,blank=True)
-	account_line1 = models.CharField('Account Questions: Line 1', max_length=32,blank=True)
-	account_line2 = models.CharField('Account Questions: Line 2', max_length=32,blank=True)
-	account_line3 = models.CharField('Account Questions: Line 3', max_length=32,blank=True)
-	billing_line1 = models.CharField('Billing Questions: Line 1', max_length=32,blank=True)
-	billing_line2 = models.CharField('Billing Questions: Line 2', max_length=32,blank=True)
-	billing_line3 = models.CharField('Billing Questions: Line 3', max_length=32,blank=True)
+	roaster_address = models.CharField('Happy Cup Roaster\'s Address', max_length=32,blank=True)
+	roaster_phone = models.CharField('Happy Cup Roaster\'s Phone', max_length=15,blank=True)
+	account_contact = models.CharField('Contact for Account Questions', max_length=32,blank=True)
+	account_phone = models.CharField('Account Questions Phone', max_length=15,blank=True)
+	account_email = models.EmailField('Account Questions Email', max_length=48,blank=True)
+	billing_contact = models.CharField('Contact For Billing Questions', max_length=32,blank=True)
+	billing_phone = models.CharField('Billing Questions Phone', max_length=15,blank=True)
+	billing_email = models.EmailField('Billing Questions Email', max_length=48,blank=True)
 	media_kit_url = models.URLField(help_text='Link from Amazon S3', blank=True)
+	hq_address_line1 = models.CharField('Street Address of company headquarters', max_length=32)
+	hq_address_line2 = models.CharField('City, State, Zip of company headquarters', max_length=32)
+	main_phone = models.CharField("Company\'s primary phone number", max_length=14)
 
 	def __str__(self):
 		return 'Contact Page Content'
@@ -138,15 +141,19 @@ class ContactPage(Timestamp):
 	def serialize_model(self):
 		return {
 			'image_url' : self.image_url,
-			'roaster_line1' : self.roaster_line1,
-			'roaster_line2' : self.roaster_line2,
-			'account_line1' : self.account_line1,
-			'account_line2' : self.account_line2,
-			'account_line3' : self.account_line3,
-			'billing_line1' : self.billing_line1,
-			'billing_line2' : self.billing_line2,
-			'billing_line3' : self.billing_line3,
-			'media_kit_url' : self.media_kit_url
+			'roaster_address' : self.roaster_address,
+			'roaster_phone' : self.roaster_phone,
+			'account_contact' : self.account_contact,
+			'account_phone' : self.account_phone,
+			'account_email' : self.account_email,
+			'billing_contact' : self.billing_contact,
+			'billing_phone' : self.billing_phone,
+			'billing_email' : self.billing_email,
+			'media_kit_url' : self.media_kit_url,
+			'hq_address' : '%s %s' % (self.hq_address_line1, self.hq_address_line2),
+			'hq_address_line1' : self.hq_address_line1,
+			'hq_address_line2' : self.hq_address_line2,
+			'main_phone' : self.main_phone
 		}
 
 

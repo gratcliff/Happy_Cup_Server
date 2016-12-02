@@ -6,6 +6,7 @@ from django.template.loader import render_to_string
 
 from ..customers.models import Customer
 from ..products.models import Coffee, Merchandise, Subscription, VarietyPack, Coupon
+from ..website.models import ContactPage
 
 import json
 import math
@@ -206,7 +207,8 @@ class CustomerOrder(models.Model):
 		message_context = {
 			'shipping': build_context['order']['shipping_address'],
 			'billing' : build_context['charge']['source'],
-			'order': build_context['order']
+			'order': build_context['order'],
+			'company_info' : ContactPage.objects.all()[0]
 		}
 
 		subject = "Your Happy Cup Coffee Order"
@@ -236,6 +238,7 @@ class SubscriptionOrder(models.Model):
 	other_info = models.TextField(blank=True)
 	created_at = models.DateTimeField(auto_now_add=True)
 	updated_at = models.DateTimeField(auto_now=True)
+
 
 	def create_stripe_subscription(self, customer_id, plan_id, quantity):
 		try:
@@ -322,6 +325,8 @@ class SubscriptionOrder(models.Model):
 		# 	'billing' : build_context['charge']['source'],
 		# 	'order': build_context['order']
 		# }
+
+		company_info = ContactPage.objects.all()[0]
 
 		subject = "Your Happy Cup Coffee Subscription"
 		recipient = [ subscription['billing'][0]['email'] ]
