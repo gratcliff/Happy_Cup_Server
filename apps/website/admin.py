@@ -6,6 +6,12 @@ from .forms import Cafe_contentForm
 
 # Register your models here.
 
+admin.site.site_header = 'Happy Cup Website Administration'
+admin.site.site_title = 'Website Administration | Happy Cup'
+admin.site.index_title = ''
+
+admin.site.index_template = 'admin/index.html'
+
 admin.site.disable_action('delete_selected')
 
 
@@ -49,7 +55,6 @@ class ContactPageAdmin(admin.ModelAdmin):
 			return True
 	def has_delete_permission(self, request, obj=None):
 		return False
-
 
 admin.site.register(CafeCarouselImage, CafeCarouselImageAdmin)
 admin.site.register(Cafe_hours, CafeHoursAdmin)

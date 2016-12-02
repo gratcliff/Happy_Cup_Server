@@ -59,6 +59,32 @@ class CustomerOrderAdmin(admin.ModelAdmin):
 
 	order_date.short_description = "Order Date (UTC)"
 
+class SubscriptionOrderAdmin(admin.ModelAdmin):
+	list_display = ('products', 'subscription', 'activation_date', 'status', 'subscription_num', 'subscription_info', 'customer', 'ship_to')
+	search_fields = ['id', 'customer__id', 'customer__user__first_name', 'customer__user__last_name', 'customer__name', 'shipping_address']
+	list_filter = ('customer__user__email', 'status',)
+	list_per_page = 10
+	date_hierarchy = 'created_at'
+
+	def get_readonly_fields(self, request, obj):
+		return [field.name for field in self.model._meta.fields]
+
+	def activation_date(self, obj):
+		date = obj.created_at.strftime("%b %d, %Y %H:%M %Z")
+		return date
+
+	def subscription_num(self, obj):
+		return obj.id
+	def subscription_info(self, obj):
+		link = format_html("<a href='https://dashboard.stripe.com/test/subscriptions/%s' target='_blank'>Subscription Info</a>" % (obj.stripe_id,))
+		return link
+	def ship_to(self, obj):
+		return format_html(obj.parse_shipping_address())
+	def products(self, obj):
+		return '%sx %s bag(s) of %s %s' % (obj.quantity, obj.size, obj.coffee, obj.grind)
+
+	activation_date.short_description = "Activation Date (UTC)"
+
 admin.site.register(CustomerOrder, CustomerOrderAdmin)
 admin.site.register(ShippingFee, ShippingFeeAdmin)
-admin.site.register(SubscriptionOrder)
+admin.site.register(SubscriptionOrder, SubscriptionOrderAdmin)

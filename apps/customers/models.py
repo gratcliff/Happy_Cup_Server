@@ -47,26 +47,33 @@ class Customer(models.Model):
 		return '%s %s (%s), Customer ID: %s' % (self.user.first_name, self.user.last_name, self.user.email, self.id)
 
 	def create_or_retreive_customer(self, source, user):
-		new_customer = False
+		
 		if self.stripe_id:
 			try:
 				id_list = self.stripe_id.split(', ')
 				for cust_id in id_list:
 					if len(id_list) > 1:
-						time.sleep(0.25)
+						time.sleep(0.1)
 					customer = stripe.Customer.retrieve(cust_id)
 					for key in customer.sources.get('data'):
+						new_customer = False
 						if key['last4'] != source['card']['last4']:
+							print 'last4'
 							new_customer = True
 						if key['exp_month'] != source['card']['exp_month']:
+							print 'exp_month'
 							new_customer = True
 						if key['exp_year'] != source['card']['exp_year']:
+							print 'exp_year'
 							new_customer = True
 						if key['address_zip'] != source['card']['address_zip']:
+							print 'zip'
 							new_customer = True
 
-				if not new_customer:
-					return customer
+						if not new_customer:
+							print customer
+							return customer
+
 			except stripe.error.InvalidRequestError as e:
 				print 'invalid request'
 				print e.json_body
