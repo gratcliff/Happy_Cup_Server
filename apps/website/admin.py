@@ -37,6 +37,17 @@ class CafeContentAdmin(admin.ModelAdmin):
 		return False
 
 class CafeHoursAdmin(admin.ModelAdmin):
+
+	fields = (
+		('monday_open', 'monday_close'),
+		('tuesday_open', 'tuesday_close'),
+		('wednesday_open', 'wednesday_close'),
+		('thursday_open', 'thursday_close'),
+		('friday_open', 'friday_close'),
+		('saturday_open', 'saturday_close'),
+		('sunday_open', 'sunday_close'),
+	)
+
 	def has_add_permission (self, request):
 		num_objects = self.model.objects.count()
 		if num_objects >= 1:
